@@ -72,3 +72,375 @@ img {
     font-size: 3rem;
   }
 }
+/* ========================================================= */
+/* GLOBAL SMOOTH SCROLL */
+/* ========================================================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+/* ========================================================= */
+/* IOS-LIKE MOTION */
+/* ========================================================= */
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+  -webkit-touch-callout: none;
+}
+
+
+/* ========================================================= */
+/* SOFT GLOW */
+/* ========================================================= */
+
+@keyframes softGlow {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.95);
+  }
+
+  50% {
+    opacity: 0.75;
+    transform: scale(1.05);
+  }
+}
+
+.glow-animation {
+  animation: softGlow 6s ease-in-out infinite;
+}
+
+
+/* ========================================================= */
+/* FIREFLY */
+/* ========================================================= */
+
+@keyframes firefly {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.8);
+  }
+
+  25% {
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.35);
+  }
+
+  75% {
+    opacity: 0.3;
+  }
+}
+
+.firefly-animation {
+  animation: firefly 3.8s ease-in-out infinite;
+}
+
+
+/* ========================================================= */
+/* HORIZONTAL SCROLL */
+/* ========================================================= */
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+
+/* ========================================================= */
+/* MOBILE PERFORMANCE */
+/* ========================================================= */
+
+@media (max-width: 640px) {
+  .glow-animation {
+    animation-duration: 7s;
+  }
+
+  .firefly-animation {
+    animation-duration: 4.2s;
+  }
+}
+
+
+/* ========================================================= */
+/* REDUCE MOTION ACCESSIBILITY */
+/* ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+/* ========================================================= */
+/* SECTION TYPOGRAPHY */
+/* ========================================================= */
+
+.section-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: rgba(23, 4, 1, 0.45);
+}
+
+.section-title {
+  margin-top: 0.75rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.5rem;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: #170401;
+}
+
+
+/* ========================================================= */
+/* NAV LINK */
+/* ========================================================= */
+
+.nav-link {
+  position: relative;
+  color: rgba(25, 24, 20, 0.7);
+  transition:
+    color 300ms ease,
+    transform 300ms ease;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 100%;
+  height: 1px;
+  background: #170401;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-link:hover {
+  color: #170401;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+@import "tailwindcss";
+
+/* ========================================================= */
+/* BASE */
+/* ========================================================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #e9e1d2;
+  color: #191814;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(245, 180, 70, 0.3);
+  color: #170401;
+}
+
+
+/* ========================================================= */
+/* NAVIGATION */
+/* ========================================================= */
+
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  color: rgba(25, 24, 20, 0.65);
+  transition:
+    color 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 100%;
+  height: 1px;
+  background: #170401;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-link:hover {
+  color: #170401;
+  transform: translateY(-1px);
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+
+/* ========================================================= */
+/* SECTION LABEL */
+/* ========================================================= */
+
+.section-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: rgba(25, 24, 20, 0.45);
+}
+
+.section-title {
+  margin-top: 12px;
+  font-family: serif;
+  font-size: 2.5rem;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: #170401;
+}
+
+@media (min-width: 640px) {
+  .section-label {
+    font-size: 12px;
+  }
+
+  .section-title {
+    font-size: 3rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .section-title {
+    font-size: 3.75rem;
+  }
+}
+
+
+/* ========================================================= */
+/* FIREFLY */
+/* ========================================================= */
+
+@keyframes firefly {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.75);
+  }
+
+  25% {
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+
+  75% {
+    opacity: 0.4;
+  }
+}
+
+.firefly-animation {
+  animation: firefly 3.8s ease-in-out infinite;
+}
+
+
+/* ========================================================= */
+/* LENTERA GLOW */
+/* ========================================================= */
+
+@keyframes glowPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.95);
+  }
+
+  50% {
+    opacity: 0.85;
+    transform: scale(1.05);
+  }
+}
+
+.glow-animation {
+  animation: glowPulse 6s ease-in-out infinite;
+}
+
+
+/* ========================================================= */
+/* MOBILE HORIZONTAL SCROLL */
+/* ========================================================= */
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+
+/* ========================================================= */
+/* MOBILE TOUCH */
+/* ========================================================= */
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* ========================================================= */
+/* REDUCE MOTION */
+/* ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
