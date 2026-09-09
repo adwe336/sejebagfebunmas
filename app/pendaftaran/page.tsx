@@ -113,7 +113,7 @@ export default function Home() {
             className="flex items-center gap-2.5 transition-transform duration-300 active:scale-[0.97]"
           >
             <img
-              src="/Logo JEBAG FEB.png"
+              src="/Logo JEBAG FEB.webp"
               alt="Jegeg Bagus FEB Unmas"
               className="h-8 w-8 object-contain sm:h-9 sm:w-9"
             />
@@ -285,7 +285,7 @@ export default function Home() {
             <div className="relative overflow-hidden rounded-[1.5rem] border border-black/[0.08] bg-white/35 p-2 shadow-[0_20px_60px_rgba(23,4,1,0.10)] backdrop-blur-xl sm:rounded-[2rem] sm:p-3">
 
               <img
-                src="/HERO.png"
+                src="/HERO.webp"
                 alt="Jegeg Bagus FEB Unmas 2027"
                 className="h-auto w-full rounded-[1.1rem] object-cover transition-transform duration-700 hover:scale-[1.015] sm:rounded-[1.5rem]"
               />
@@ -562,21 +562,21 @@ export default function Home() {
           <div className="relative flex items-center justify-center">
 
             <img
-              src="/LOGO PEMILIHAN.png"
+              src="/LOGO PEMILIHAN.webp"
               alt=""
               aria-hidden="true"
               className="absolute z-0 w-[62%] max-w-[250px] scale-105 opacity-80 blur-xl drop-shadow-[0_0_35px_rgba(255,220,140,0.9)] sm:w-[70%] sm:max-w-[280px]"
             />
 
             <img
-              src="/LOGO PEMILIHAN.png"
+              src="/LOGO PEMILIHAN.webp"
               alt=""
               aria-hidden="true"
               className="absolute z-0 w-[62%] max-w-[250px] opacity-70 blur-md drop-shadow-[0_0_25px_rgba(255,225,150,1)] sm:w-[70%] sm:max-w-[280px]"
             />
 
             <img
-              src="/LOGO PEMILIHAN.png"
+              src="/LOGO PEMILIHAN.webp"
               alt="Logo Pemilihan Jegeg Bagus FEB Unmas 2027"
               className="relative z-10 mx-auto w-[62%] max-w-[250px] object-contain drop-shadow-[0_0_18px_rgba(255,220,140,0.75)] transition-transform duration-700 hover:scale-[1.025] sm:w-[70%] sm:max-w-[280px] lg:w-full"
             />
@@ -842,14 +842,14 @@ export default function Home() {
       {/* FOOTER */}
       {/* ========================================================= */}
 
-      <footer className="border-t border-white/10 bg-[#191915] py-8 text-[#f5f1e8] sm:py-10">
+      <footer className="border-t border-white/10 !bg-[#2a1616] py-8 text-[#f5f1e8] sm:py-10">
 
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 sm:flex-row sm:items-center sm:justify-between md:px-8">
 
           <div className="flex items-center gap-3">
 
             <img
-              src="/Logo JEBAG FEB.png"
+              src="/Logo JEBAG FEB.webp"
               alt="Logo Jegeg Bagus FEB Unmas"
               className="h-10 w-10 object-contain sm:h-11 sm:w-11"
             />

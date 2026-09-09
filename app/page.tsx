@@ -264,7 +264,7 @@ export default function Home() {
         {/* ======================================================= */}
 
         <div
-          className={`absolute left-0 right-0 top-full mt-2 overflow-hidden rounded-[24px] border border-white/40 bg-[#f5f1e8]/65 shadow-[0_20px_50px_rgba(23,4,1,0.12)] backdrop-blur-2xl backdrop-saturate-150 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden ${
+          className={`absolute left-0 right-0 top-full mt-2 overflow-hidden rounded-[24px] border border-white/40 bg-[#f5f1e8]/95 shadow-[0_20px_50px_rgba(23,4,1,0.12)] backdrop-blur-2xl backdrop-saturate-150 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden ${
             menuOpen
               ? "pointer-events-auto translate-y-0 opacity-100"
               : "pointer-events-none -translate-y-2 opacity-0"
@@ -309,7 +309,7 @@ export default function Home() {
             <Link
               href="/pendaftaran"
               onClick={() => setMenuOpen(false)}
-              className="flex items-center justify-center rounded-[18px] bg-[#170401]/90 px-5 py-3.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white shadow-lg transition-all duration-300 active:scale-[0.98]"
+              className="flex items-center justify-center rounded-[18px] bg-[#2a1616]/90 px-5 py-3.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white shadow-lg transition-all duration-300 active:scale-[0.98]"
             >
               Daftar Sekarang
             </Link>
@@ -402,14 +402,14 @@ export default function Home() {
 
               <Link
                 href="/pendaftaran"
-                className="flex items-center justify-center rounded-full bg-[#170401] px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:bg-[#f5b446] hover:text-[#170401] active:scale-[0.97]"
+                className="flex items-center justify-center rounded-full bg-[#2a1616] px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:bg-[#e8e2da]/40 hover:text-[#9b7637] active:scale-[0.97]"
               >
                 Daftar Sekarang
               </Link>
 
               <a
                 href="#tentang"
-                className="flex items-center justify-center rounded-full border border-black/15 px-7 py-3.5 text-sm font-semibold transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[#170401] hover:text-white active:scale-[0.97]"
+                className="flex items-center justify-center rounded-full border border-black/15 px-7 py-3.5 text-sm font-semibold transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[#9b7637]/88 hover:text-white active:scale-[0.97]"
               >
                 Kenali Pemilihan
               </a>
@@ -491,7 +491,7 @@ export default function Home() {
 
           <div>
 
-            <p className="section-label !text-[#2a1616]">
+            <p className="section-label !text-[#9b7637]">
               Pemilihan Jegeg Bagus
             </p>
 
@@ -688,7 +688,7 @@ export default function Home() {
 
           <div className="pointer-events-none absolute left-1/2 top-0 h-40 w-[60%] -translate-x-1/2 rounded-full bg-[#f5d98a]/[0.035] blur-[90px]" />
 
-          <div className="relative z-10 mx-auto max-w-7xl px-5 pb-24 pt-14 md:px-8 md:pb-32 md:pt-20">
+          <div className="relative z-10 mx-auto max-w-7xl px-5 pb-24 md:px-8 md:pb-32 md:pt-14">
 
             {/* ================================================= */}
             {/* HEADER */}
@@ -696,12 +696,8 @@ export default function Home() {
 
             <div className="max-w-2xl">
 
-              <p className="text-[10px] uppercase tracking-[0.28em] text-[#f5d98a]/70 sm:text-xs sm:tracking-[0.35em]">
+              <h2 className="mt-1 text-3xl leading-tight tracking-tight text-[#e8e2da] sm:text-5xl md:text-6xl">
                 Rangkaian Pemilihan
-              </p>
-
-              <h2 className="mt-3 font-serif text-4xl leading-tight tracking-tight text-white sm:text-5xl md:text-6xl">
-                Tahapan Perjalanan
               </h2>
 
               <p className="mt-4 max-w-lg text-sm leading-6 text-white/45 sm:text-base sm:leading-7">
@@ -1018,7 +1014,7 @@ export default function Home() {
       {/* FOOTER */}
       {/* ========================================================= */}
 
-      <footer className="border-t border-white/10 bg-[#191915] py-8 text-[#f5f1e8] sm:py-10">
+      <footer className="border-t border-white/10 bg-[#2a1616] py-8 text-[#f5f1e8] sm:py-10">
 
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 sm:flex-row sm:items-center sm:justify-between md:px-8">
 
@@ -1045,7 +1041,7 @@ export default function Home() {
           </div>
 
           <div className="text-xs text-white/40">
-            © 2027 Jegeg Bagus FEB Unmas
+            © 2026 Jegeg Bagus FEB Unmas
           </div>
 
         </div>
