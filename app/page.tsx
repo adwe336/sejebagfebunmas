@@ -17,6 +17,7 @@ export default function Home() {
   const [timelineVisible, setTimelineVisible] = useState(false);
 
   const timelineRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null);
 
   /* ========================================================= */
   /* COUNTDOWN */
@@ -69,6 +70,46 @@ export default function Home() {
   }, []);
 
   /* ========================================================= */
+  /* CLOSE MOBILE MENU WHEN CLICKING OUTSIDE */
+  /* ========================================================= */
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        menuOpen &&
+        navRef.current &&
+        !navRef.current.contains(event.target as Node)
+      ) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuOpen]);
+
+  /* ========================================================= */
+  /* CLOSE MENU WHEN SCREEN BECOMES DESKTOP */
+  /* ========================================================= */
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  /* ========================================================= */
   /* TIMELINE SCROLL REVEAL */
   /* ========================================================= */
 
@@ -101,11 +142,15 @@ export default function Home() {
       {/* NAVBAR */}
       {/* ========================================================= */}
 
-      <nav className="fixed left-1/2 top-3 z-50 w-[calc(100%-24px)] max-w-5xl -translate-x-1/2 rounded-full border border-black/[0.08] bg-[#f5f1e8]/60 shadow-[0_8px_30px_rgba(23,4,1,0.08)] backdrop-blur-2xl backdrop-saturate-150">
-
+      <nav
+        ref={navRef}
+        className="fixed left-1/2 top-3 z-50 w-[calc(100%-24px)] max-w-5xl -translate-x-1/2 rounded-full border border-black/[0.08] bg-[#f5f1e8]/60 shadow-[0_8px_30px_rgba(23,4,1,0.08)] backdrop-blur-2xl backdrop-saturate-150"
+      >
         <div className="flex h-12 items-center justify-between px-3 sm:h-14 sm:px-4">
 
-          {/* LOGO */}
+          {/* ===================================================== */}
+          {/* LOGO + BRAND */}
+          {/* ===================================================== */}
 
           <a
             href="#"
@@ -118,18 +163,20 @@ export default function Home() {
               className="h-8 w-8 object-contain sm:h-9 sm:w-9"
             />
 
-            <div className="hidden leading-tight sm:block">
-              <p className="text-[11px] font-semibold tracking-wide">
+            <div className="leading-tight">
+              <p className="text-[10px] font-semibold tracking-[0.08em] sm:text-[11px] sm:tracking-wide">
                 JEGEG BAGUS
               </p>
 
-              <p className="text-[8px] uppercase tracking-[0.2em] text-black/50">
+              <p className="text-[7px] uppercase tracking-[0.18em] text-black/50 sm:text-[8px] sm:tracking-[0.2em]">
                 FEB UNMAS
               </p>
             </div>
           </a>
 
+          {/* ===================================================== */}
           {/* DESKTOP MENU */}
+          {/* ===================================================== */}
 
           <div className="hidden items-center gap-6 text-xs font-medium lg:flex">
 
@@ -151,28 +198,34 @@ export default function Home() {
 
           </div>
 
+          {/* ===================================================== */}
           {/* RIGHT */}
+          {/* ===================================================== */}
 
           <div className="flex items-center gap-2">
 
             <Link
               href="/pendaftaran"
+              onClick={() => setMenuOpen(false)}
               className="hidden rounded-full bg-[#170401] px-4 py-2 text-[10px] font-semibold uppercase tracking-wider text-white shadow-sm transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:bg-[#f5b446] hover:text-[#170401] active:scale-[0.96] sm:block"
             >
               Daftar Sekarang
             </Link>
 
+            {/* ================================================= */}
             {/* HAMBURGER */}
+            {/* ================================================= */}
 
             <button
               type="button"
-              onClick={() => setMenuOpen(!menuOpen)}
+              onClick={() => setMenuOpen((prev) => !prev)}
               aria-label={menuOpen ? "Tutup menu" : "Buka menu"}
               aria-expanded={menuOpen}
               className="group relative flex h-9 w-9 items-center justify-center rounded-full bg-white/25 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.88] lg:hidden"
             >
               <div className="relative h-[14px] w-[16px]">
 
+                {/* TOP */}
                 <span
                   className={`absolute left-0 h-[1.5px] w-4 rounded-full bg-[#170401] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                     menuOpen
@@ -181,6 +234,7 @@ export default function Home() {
                   }`}
                 />
 
+                {/* MIDDLE */}
                 <span
                   className={`absolute left-0 top-[6px] h-[1.5px] w-4 rounded-full bg-[#170401] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                     menuOpen
@@ -189,6 +243,7 @@ export default function Home() {
                   }`}
                 />
 
+                {/* BOTTOM */}
                 <span
                   className={`absolute left-0 h-[1.5px] w-4 rounded-full bg-[#170401] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                     menuOpen
@@ -204,7 +259,9 @@ export default function Home() {
 
         </div>
 
+        {/* ======================================================= */}
         {/* MOBILE MENU */}
+        {/* ======================================================= */}
 
         <div
           className={`absolute left-0 right-0 top-full mt-2 overflow-hidden rounded-[24px] border border-white/40 bg-[#f5f1e8]/65 shadow-[0_20px_50px_rgba(23,4,1,0.12)] backdrop-blur-2xl backdrop-saturate-150 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden ${
@@ -438,11 +495,11 @@ export default function Home() {
 
           <div>
 
-            <p className="section-label">
+            <p className="section-label !text-[#2a1616]">
               Pemilihan Jegeg Bagus
             </p>
 
-            <h2 className="mt-3 whitespace-nowrap font-serif text-3xl leading-[1.05] tracking-tight text-[#170401] sm:text-4xl md:text-5xl">
+            <h2 className="mt-3 font-serif text-3xl leading-[1.05] tracking-tight text-[#170401] sm:text-4xl md:text-5xl">
               Bukan hanya kompetisi
             </h2>
 
@@ -468,14 +525,7 @@ export default function Home() {
 
           {/* KANAN */}
 
-          <div className="space-y-5 text-sm leading-7 text-black/65 sm:text-base sm:leading-8 lg:pt-30">
-
-            <p>
-              Pemilihan Jegeg Bagus FEB Unmas merupakan
-              ruang bagi mahasiswa untuk mengembangkan
-              potensi diri, membangun karakter, dan
-              memperluas wawasan.
-            </p>
+          <div className="space-y-5 text-sm leading-7 text-black/65 sm:text-base sm:leading-8 lg:pt-40">
 
             <p>
               Lebih dari sekadar mencari seorang pemenang,
@@ -504,7 +554,7 @@ export default function Home() {
 
       <section
         id="lentera"
-        className="relative scroll-mt-24 overflow-hidden bg-[#170401] text-white"
+        className="relative overflow-hidden bg-[#170401] text-white"
       >
 
         {/* ===================================================== */}
@@ -608,19 +658,16 @@ export default function Home() {
             <div className="mt-7 grid gap-3 sm:mt-10 sm:grid-cols-3 sm:gap-4">
 
               <ConceptCard
-                number="01"
                 title="Anggakara"
                 text="Berani melangkah"
               />
 
               <ConceptCard
-                number="02"
                 title="Baswara"
                 text="Cahaya yang menginspirasi"
               />
 
               <ConceptCard
-                number="03"
                 title="Danirmala"
                 text="Tulus dalam pengabdian"
               />
@@ -631,102 +678,261 @@ export default function Home() {
 
         </div>
 
-        {/* ===================================================== */}
-        {/* ALUR */}
-        {/* ===================================================== */}
+ {/* ===================================================== */}
+{/* ALUR */}
+{/* ===================================================== */}
+
+<div
+  id="alur"
+  className="relative scroll-mt-24"
+>
+
+  {/* Ambient light */}
+
+  <div className="pointer-events-none absolute left-1/2 top-0 h-40 w-[60%] -translate-x-1/2 rounded-full bg-[#f5d98a]/[0.035] blur-[90px]" />
+
+
+  <div className="relative z-10 mx-auto max-w-7xl px-5 pb-24 pt-14 md:px-8 md:pb-32 md:pt-20">
+
+    {/* ================================================= */}
+    {/* HEADER */}
+    {/* ================================================= */}
+
+    <div className="max-w-2xl">
+
+      <p className="text-[10px] uppercase tracking-[0.28em] text-[#f5d98a]/70 sm:text-xs sm:tracking-[0.35em]">
+        Rangkaian Pemilihan
+      </p>
+
+      <h2 className="mt-3 font-serif text-4xl leading-tight tracking-tight text-white sm:text-5xl md:text-6xl">
+        Tahapan Perjalanan
+      </h2>
+
+      <p className="mt-4 max-w-lg text-sm leading-6 text-white/45 sm:text-base sm:leading-7">
+        Setiap tahapan menjadi bagian dari perjalanan
+        untuk mengenal diri, berkembang, dan mengambil
+        peran.
+      </p>
+
+    </div>
+
+
+    {/* ================================================= */}
+    {/* MOBILE TIMELINE */}
+    {/* ================================================= */}
+
+    <div
+      ref={timelineRef}
+      className="relative mt-14 sm:hidden"
+    >
+
+      {/* ============================= */}
+      {/* BASE VERTICAL LINE */}
+      {/* ============================= */}
+
+      <div
+        className="
+          absolute
+          left-1/2
+          top-3
+          bottom-3
+          w-px
+          -translate-x-1/2
+          bg-[#f5d98a]/15
+        "
+      />
+
+
+      {/* ============================= */}
+      {/* ANIMATED VERTICAL LINE */}
+      {/* ============================= */}
+
+      <div
+        className={`
+          absolute
+          left-1/2
+          top-3
+          w-px
+          -translate-x-1/2
+          bg-[#f5d98a]
+          shadow-[0_0_12px_rgba(245,217,138,0.8)]
+          transition-all
+          duration-[1800ms]
+          ease-out
+
+          ${
+            timelineVisible
+              ? "h-[calc(100%-24px)] opacity-100"
+              : "h-0 opacity-0"
+          }
+        `}
+      />
+
+
+      {/* ============================= */}
+      {/* TIMELINE ITEMS */}
+      {/* ============================= */}
+
+      <div className="relative flex flex-col gap-9">
+
+        <MobileTimelineItem
+          number="01"
+          title="Pendaftaran"
+          visible={timelineVisible}
+          delay="0ms"
+          side="left"
+        />
+
+        <MobileTimelineItem
+          number="02"
+          title="Seleksi"
+          visible={timelineVisible}
+          delay="180ms"
+          side="right"
+        />
+
+        <MobileTimelineItem
+          number="03"
+          title="Pra Karantina"
+          visible={timelineVisible}
+          delay="360ms"
+          side="left"
+        />
+
+        <MobileTimelineItem
+          number="04"
+          title="Karantina"
+          visible={timelineVisible}
+          delay="540ms"
+          side="right"
+        />
+
+        <MobileTimelineItem
+          number="05"
+          title="Grand Final"
+          visible={timelineVisible}
+          delay="720ms"
+          side="left"
+        />
+
+      </div>
+
+    </div>
+
+
+    {/* ================================================= */}
+    {/* TABLET + DESKTOP TIMELINE */}
+    {/* ================================================= */}
+
+    <div
+      className="
+        no-scrollbar
+        mt-16
+        hidden
+        overflow-x-auto
+        pb-8
+        sm:block
+        sm:mt-20
+      "
+    >
+
+      <div className="relative min-w-[820px] px-4">
+
+
+        {/* ============================= */}
+        {/* BASE LINE */}
+        {/* ============================= */}
 
         <div
-          id="alur"
-          className="relative scroll-mt-24"
-        >
+          className="
+            absolute
+            left-4
+            right-4
+            top-3
+            h-px
+            bg-[#f5d98a]/15
+          "
+        />
 
-          <div className="pointer-events-none absolute left-1/2 top-0 h-40 w-[60%] -translate-x-1/2 rounded-full bg-[#f5d98a]/[0.035] blur-[90px]" />
 
-          <div className="relative z-10 mx-auto max-w-7xl px-5 pb-24 pt-14 md:px-8 md:pb-32 md:pt-20">
+        {/* ============================= */}
+        {/* ANIMATED LINE */}
+        {/* ============================= */}
 
-            <div className="max-w-2xl">
+        <div
+          className={`
+            absolute
+            left-4
+            top-3
+            h-px
+            bg-gradient-to-r
+            from-[#f5d98a]
+            via-[#f5d98a]
+            to-[#f5d98a]/20
+            shadow-[0_0_12px_rgba(245,217,138,0.8)]
+            transition-all
+            duration-[1800ms]
+            ease-out
 
-              <p className="text-[10px] uppercase tracking-[0.28em] text-[#f5d98a]/70 sm:text-xs sm:tracking-[0.35em]">
-                Rangkaian Pemilihan
-              </p>
+            ${
+              timelineVisible
+                ? "w-[calc(100%-32px)] opacity-100"
+                : "w-0 opacity-0"
+            }
+          `}
+        />
 
-              <h2 className="mt-3 font-serif text-4xl leading-tight tracking-tight text-white sm:text-5xl md:text-6xl">
-                Tahapan Perjalanan
-              </h2>
 
-            </div>
+        {/* ============================= */}
+        {/* DESKTOP ITEMS */}
+        {/* ============================= */}
 
-            {/* TIMELINE */}
+        <div className="relative grid grid-cols-5">
 
-            <div
-              ref={timelineRef}
-              className="no-scrollbar -mx-5 mt-16 overflow-x-auto px-5 pb-8 sm:mx-0 sm:mt-20 sm:px-0"
-            >
+          <TimelineItem
+            number="01"
+            title="Pendaftaran"
+            visible={timelineVisible}
+            delay="0ms"
+          />
 
-              <div className="relative min-w-[820px] px-4 sm:px-0">
+          <TimelineItem
+            number="02"
+            title="Seleksi"
+            visible={timelineVisible}
+            delay="180ms"
+          />
 
-                {/* BASE LINE */}
+          <TimelineItem
+            number="03"
+            title="Pra Karantina"
+            visible={timelineVisible}
+            delay="360ms"
+          />
 
-                <div className="absolute left-4 right-4 top-3 h-px bg-[#f5d98a]/15" />
+          <TimelineItem
+            number="04"
+            title="Karantina"
+            visible={timelineVisible}
+            delay="540ms"
+          />
 
-                {/* ANIMATED LINE */}
-
-                <div
-                  className={`absolute left-4 top-3 h-px bg-gradient-to-r from-[#f5d98a] via-[#f5d98a] to-[#f5d98a]/20 shadow-[0_0_12px_rgba(245,217,138,0.8)] transition-all duration-[1800ms] ease-out ${
-                    timelineVisible
-                      ? "w-[calc(100%-32px)] opacity-100"
-                      : "w-0 opacity-0"
-                  }`}
-                />
-
-                {/* ITEMS */}
-
-                <div className="relative grid grid-cols-5">
-
-                  <TimelineItem
-                    number="01"
-                    title="Pendaftaran"
-                    visible={timelineVisible}
-                    delay="0ms"
-                  />
-
-                  <TimelineItem
-                    number="02"
-                    title="Seleksi"
-                    visible={timelineVisible}
-                    delay="180ms"
-                  />
-
-                  <TimelineItem
-                    number="03"
-                    title="Pra Karantina"
-                    visible={timelineVisible}
-                    delay="360ms"
-                  />
-
-                  <TimelineItem
-                    number="04"
-                    title="Karantina"
-                    visible={timelineVisible}
-                    delay="540ms"
-                  />
-
-                  <TimelineItem
-                    number="05"
-                    title="Grand Final"
-                    visible={timelineVisible}
-                    delay="720ms"
-                  />
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
+          <TimelineItem
+            number="05"
+            title="Grand Final"
+            visible={timelineVisible}
+            delay="720ms"
+          />
 
         </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
 
       </section>
 
@@ -913,20 +1119,14 @@ function CountdownItem({
 /* =============================================================== */
 
 function ConceptCard({
-  number,
   title,
   text,
 }: {
-  number: string;
   title: string;
   text: string;
 }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-white/[0.045] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:bg-white/[0.07] active:scale-[0.99] sm:p-5">
-
-      <p className="text-[9px] tracking-[0.2em] text-[#f5d98a]/50">
-        {number}
-      </p>
 
       <h3 className="mt-2 font-serif text-base text-white sm:text-xl">
         {title}
@@ -946,12 +1146,10 @@ function ConceptCard({
 /* =============================================================== */
 
 function TimelineItem({
-  number,
   title,
   visible,
   delay,
 }: {
-  number: string;
   title: string;
   visible: boolean;
   delay: string;
@@ -980,10 +1178,6 @@ function TimelineItem({
 
       <div className="mt-7 pr-6 sm:pr-10">
 
-        <p className="text-[10px] font-medium tracking-[0.25em] text-[#f5d98a]/70 sm:text-xs">
-          {number}
-        </p>
-
         <h3 className="mt-2 max-w-[150px] font-serif text-base leading-tight text-white sm:text-lg md:text-xl">
           {title}
         </h3>
@@ -993,7 +1187,143 @@ function TimelineItem({
     </div>
   );
 }
+function MobileTimelineItem({
+  number,
+  title,
+  visible,
+  delay,
+  side,
+}: {
+  number: string;
+  title: string;
+  visible: boolean;
+  delay: string;
+  side: "left" | "right";
+}) {
+  const isLeft = side === "left";
 
+  return (
+    <div
+      className={`
+        relative
+        min-h-[92px]
+        transition-all
+        duration-700
+        ease-[cubic-bezier(0.22,1,0.36,1)]
+
+        ${
+          visible
+            ? "translate-y-0 scale-100 opacity-100"
+            : "translate-y-5 scale-[0.96] opacity-0"
+        }
+      `}
+      style={{
+        transitionDelay: delay,
+      }}
+    >
+
+      {/* ================================================= */}
+      {/* CONNECTOR */}
+      {/* ================================================= */}
+
+      <div
+        className={`
+          absolute
+          top-3
+          h-px
+          bg-[#f5d98a]/25
+
+          ${
+            isLeft
+              ? "right-1/2 mr-3 w-[calc(50%-24px)]"
+              : "left-1/2 ml-3 w-[calc(50%-24px)]"
+          }
+        `}
+      />
+
+
+      {/* ================================================= */}
+      {/* CENTER DOT */}
+      {/* ================================================= */}
+
+      <div
+        className="
+          absolute
+          left-1/2
+          top-0
+          z-10
+          flex
+          h-6
+          w-6
+          -translate-x-1/2
+          items-center
+          justify-center
+          rounded-full
+          border
+          border-[#f5d98a]/50
+          bg-[#170401]
+          shadow-[0_0_0_5px_#170401,0_0_18px_rgba(245,217,138,0.15)]
+        "
+      >
+
+        <div
+          className="
+            firefly-animation
+            h-2
+            w-2
+            rounded-full
+            bg-[#f5d98a]
+            shadow-[0_0_12px_rgba(245,217,138,0.8)]
+          "
+        />
+
+      </div>
+
+
+      {/* ================================================= */}
+      {/* CONTENT */}
+      {/* ================================================= */}
+
+      <div
+        className={`
+          w-[42%]
+
+          ${
+            isLeft
+              ? "mr-auto pr-2 text-right"
+              : "ml-auto pl-2 text-left"
+          }
+        `}
+      >
+
+        <p
+          className="
+            text-[9px]
+            font-medium
+            tracking-[0.22em]
+            text-[#f5d98a]/60
+          "
+        >
+          {number}
+        </p>
+
+        <h3
+          className="
+            mt-1
+            font-serif
+            text-lg
+            leading-tight
+            text-white
+          "
+        >
+          {title}
+        </h3>
+
+      </div>
+
+    </div>
+  );
+}
 
 /* =============================================================== */
 /* CONTACT CARD */
