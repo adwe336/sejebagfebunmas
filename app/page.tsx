@@ -428,8 +428,6 @@ export default function Home() {
 
       <section className="relative overflow-hidden bg-[#2a1616] py-8 text-[#f5f1e8] md:py-10">
 
-        {/* INTERNAL LIGHT ONLY */}
-
         <div className="pointer-events-none absolute left-[-10%] top-1/2 h-72 w-72 -translate-y-1/2 rounded-full bg-[#f5d98a]/10 blur-[100px]" />
 
         <div className="pointer-events-none absolute right-[-10%] top-1/2 h-72 w-72 -translate-y-1/2 rounded-full bg-[#f5b446]/10 blur-[100px]" />
@@ -482,8 +480,6 @@ export default function Home() {
         id="tentang"
         className="relative scroll-mt-24 overflow-hidden bg-[#e9e1d2] py-16 sm:py-20 md:py-24"
       >
-
-        {/* SOFT ATMOSPHERE */}
 
         <div className="pointer-events-none absolute left-[5%] top-[10%] h-64 w-64 rounded-full bg-[#f5d98a]/[0.07] blur-[100px]" />
 
@@ -678,261 +674,239 @@ export default function Home() {
 
         </div>
 
- {/* ===================================================== */}
-{/* ALUR */}
-{/* ===================================================== */}
-
-<div
-  id="alur"
-  className="relative scroll-mt-24"
->
-
-  {/* Ambient light */}
-
-  <div className="pointer-events-none absolute left-1/2 top-0 h-40 w-[60%] -translate-x-1/2 rounded-full bg-[#f5d98a]/[0.035] blur-[90px]" />
-
-
-  <div className="relative z-10 mx-auto max-w-7xl px-5 pb-24 pt-14 md:px-8 md:pb-32 md:pt-20">
-
-    {/* ================================================= */}
-    {/* HEADER */}
-    {/* ================================================= */}
-
-    <div className="max-w-2xl">
-
-      <p className="text-[10px] uppercase tracking-[0.28em] text-[#f5d98a]/70 sm:text-xs sm:tracking-[0.35em]">
-        Rangkaian Pemilihan
-      </p>
-
-      <h2 className="mt-3 font-serif text-4xl leading-tight tracking-tight text-white sm:text-5xl md:text-6xl">
-        Tahapan Perjalanan
-      </h2>
-
-      <p className="mt-4 max-w-lg text-sm leading-6 text-white/45 sm:text-base sm:leading-7">
-        Setiap tahapan menjadi bagian dari perjalanan
-        untuk mengenal diri, berkembang, dan mengambil
-        peran.
-      </p>
-
-    </div>
-
-
-    {/* ================================================= */}
-    {/* MOBILE TIMELINE */}
-    {/* ================================================= */}
-
-    <div
-      ref={timelineRef}
-      className="relative mt-14 sm:hidden"
-    >
-
-      {/* ============================= */}
-      {/* BASE VERTICAL LINE */}
-      {/* ============================= */}
-
-      <div
-        className="
-          absolute
-          left-1/2
-          top-3
-          bottom-3
-          w-px
-          -translate-x-1/2
-          bg-[#f5d98a]/15
-        "
-      />
-
-
-      {/* ============================= */}
-      {/* ANIMATED VERTICAL LINE */}
-      {/* ============================= */}
-
-      <div
-        className={`
-          absolute
-          left-1/2
-          top-3
-          w-px
-          -translate-x-1/2
-          bg-[#f5d98a]
-          shadow-[0_0_12px_rgba(245,217,138,0.8)]
-          transition-all
-          duration-[1800ms]
-          ease-out
-
-          ${
-            timelineVisible
-              ? "h-[calc(100%-24px)] opacity-100"
-              : "h-0 opacity-0"
-          }
-        `}
-      />
-
-
-      {/* ============================= */}
-      {/* TIMELINE ITEMS */}
-      {/* ============================= */}
-
-      <div className="relative flex flex-col gap-9">
-
-        <MobileTimelineItem
-          number="01"
-          title="Pendaftaran"
-          visible={timelineVisible}
-          delay="0ms"
-          side="left"
-        />
-
-        <MobileTimelineItem
-          number="02"
-          title="Seleksi"
-          visible={timelineVisible}
-          delay="180ms"
-          side="right"
-        />
-
-        <MobileTimelineItem
-          number="03"
-          title="Pra Karantina"
-          visible={timelineVisible}
-          delay="360ms"
-          side="left"
-        />
-
-        <MobileTimelineItem
-          number="04"
-          title="Karantina"
-          visible={timelineVisible}
-          delay="540ms"
-          side="right"
-        />
-
-        <MobileTimelineItem
-          number="05"
-          title="Grand Final"
-          visible={timelineVisible}
-          delay="720ms"
-          side="left"
-        />
-
-      </div>
-
-    </div>
-
-
-    {/* ================================================= */}
-    {/* TABLET + DESKTOP TIMELINE */}
-    {/* ================================================= */}
-
-    <div
-      className="
-        no-scrollbar
-        mt-16
-        hidden
-        overflow-x-auto
-        pb-8
-        sm:block
-        sm:mt-20
-      "
-    >
-
-      <div className="relative min-w-[820px] px-4">
-
-
-        {/* ============================= */}
-        {/* BASE LINE */}
-        {/* ============================= */}
+        {/* ===================================================== */}
+        {/* ALUR */}
+        {/* ===================================================== */}
 
         <div
-          className="
-            absolute
-            left-4
-            right-4
-            top-3
-            h-px
-            bg-[#f5d98a]/15
-          "
-        />
+          ref={timelineRef}
+          id="alur"
+          className="relative scroll-mt-24"
+        >
 
+          {/* Ambient light */}
 
-        {/* ============================= */}
-        {/* ANIMATED LINE */}
-        {/* ============================= */}
+          <div className="pointer-events-none absolute left-1/2 top-0 h-40 w-[60%] -translate-x-1/2 rounded-full bg-[#f5d98a]/[0.035] blur-[90px]" />
 
-        <div
-          className={`
-            absolute
-            left-4
-            top-3
-            h-px
-            bg-gradient-to-r
-            from-[#f5d98a]
-            via-[#f5d98a]
-            to-[#f5d98a]/20
-            shadow-[0_0_12px_rgba(245,217,138,0.8)]
-            transition-all
-            duration-[1800ms]
-            ease-out
+          <div className="relative z-10 mx-auto max-w-7xl px-5 pb-24 pt-14 md:px-8 md:pb-32 md:pt-20">
 
-            ${
-              timelineVisible
-                ? "w-[calc(100%-32px)] opacity-100"
-                : "w-0 opacity-0"
-            }
-          `}
-        />
+            {/* ================================================= */}
+            {/* HEADER */}
+            {/* ================================================= */}
 
+            <div className="max-w-2xl">
 
-        {/* ============================= */}
-        {/* DESKTOP ITEMS */}
-        {/* ============================= */}
+              <p className="text-[10px] uppercase tracking-[0.28em] text-[#f5d98a]/70 sm:text-xs sm:tracking-[0.35em]">
+                Rangkaian Pemilihan
+              </p>
 
-        <div className="relative grid grid-cols-5">
+              <h2 className="mt-3 font-serif text-4xl leading-tight tracking-tight text-white sm:text-5xl md:text-6xl">
+                Tahapan Perjalanan
+              </h2>
 
-          <TimelineItem
-            number="01"
-            title="Pendaftaran"
-            visible={timelineVisible}
-            delay="0ms"
-          />
+              <p className="mt-4 max-w-lg text-sm leading-6 text-white/45 sm:text-base sm:leading-7">
+                Setiap tahapan menjadi bagian dari perjalanan
+                untuk mengenal diri, berkembang, dan mengambil
+                peran.
+              </p>
 
-          <TimelineItem
-            number="02"
-            title="Seleksi"
-            visible={timelineVisible}
-            delay="180ms"
-          />
+            </div>
 
-          <TimelineItem
-            number="03"
-            title="Pra Karantina"
-            visible={timelineVisible}
-            delay="360ms"
-          />
+            {/* ================================================= */}
+            {/* MOBILE TIMELINE */}
+            {/* ================================================= */}
 
-          <TimelineItem
-            number="04"
-            title="Karantina"
-            visible={timelineVisible}
-            delay="540ms"
-          />
+            <div className="relative mt-14 sm:hidden">
 
-          <TimelineItem
-            number="05"
-            title="Grand Final"
-            visible={timelineVisible}
-            delay="720ms"
-          />
+              {/* BASE VERTICAL LINE */}
+
+              <div
+                className="
+                  absolute
+                  left-1/2
+                  top-3
+                  bottom-3
+                  w-px
+                  -translate-x-1/2
+                  bg-[#f5d98a]/15
+                "
+              />
+
+              {/* ANIMATED VERTICAL LINE */}
+
+              <div
+                className={`
+                  absolute
+                  left-1/2
+                  top-3
+                  w-px
+                  -translate-x-1/2
+                  bg-[#f5d98a]
+                  shadow-[0_0_12px_rgba(245,217,138,0.8)]
+                  transition-all
+                  duration-[1800ms]
+                  ease-out
+
+                  ${
+                    timelineVisible
+                      ? "h-[calc(100%-24px)] opacity-100"
+                      : "h-0 opacity-0"
+                  }
+                `}
+              />
+
+              {/* TIMELINE ITEMS */}
+
+              <div className="relative flex flex-col gap-9">
+
+                <MobileTimelineItem
+                  number="01"
+                  title="Pendaftaran"
+                  visible={timelineVisible}
+                  delay="0ms"
+                  side="left"
+                />
+
+                <MobileTimelineItem
+                  number="02"
+                  title="Seleksi"
+                  visible={timelineVisible}
+                  delay="180ms"
+                  side="right"
+                />
+
+                <MobileTimelineItem
+                  number="03"
+                  title="Pra Karantina"
+                  visible={timelineVisible}
+                  delay="360ms"
+                  side="left"
+                />
+
+                <MobileTimelineItem
+                  number="04"
+                  title="Karantina"
+                  visible={timelineVisible}
+                  delay="540ms"
+                  side="right"
+                />
+
+                <MobileTimelineItem
+                  number="05"
+                  title="Grand Final"
+                  visible={timelineVisible}
+                  delay="720ms"
+                  side="left"
+                />
+
+              </div>
+
+            </div>
+
+            {/* ================================================= */}
+            {/* TABLET + DESKTOP TIMELINE */}
+            {/* ================================================= */}
+
+            <div
+              className="
+                no-scrollbar
+                mt-16
+                hidden
+                overflow-x-auto
+                pb-8
+                sm:block
+                sm:mt-20
+              "
+            >
+
+              <div className="relative min-w-[820px] px-4">
+
+                {/* BASE LINE */}
+
+                <div
+                  className="
+                    absolute
+                    left-4
+                    right-4
+                    top-3
+                    h-px
+                    bg-[#f5d98a]/15
+                  "
+                />
+
+                {/* ANIMATED LINE */}
+
+                <div
+                  className={`
+                    absolute
+                    left-4
+                    top-3
+                    h-px
+                    bg-gradient-to-r
+                    from-[#f5d98a]
+                    via-[#f5d98a]
+                    to-[#f5d98a]/20
+                    shadow-[0_0_12px_rgba(245,217,138,0.8)]
+                    transition-all
+                    duration-[1800ms]
+                    ease-out
+
+                    ${
+                      timelineVisible
+                        ? "w-[calc(100%-32px)] opacity-100"
+                        : "w-0 opacity-0"
+                    }
+                  `}
+                />
+
+                {/* DESKTOP ITEMS */}
+
+                <div className="relative grid grid-cols-5">
+
+                  <TimelineItem
+                    number="01"
+                    title="Pendaftaran"
+                    visible={timelineVisible}
+                    delay="0ms"
+                  />
+
+                  <TimelineItem
+                    number="02"
+                    title="Seleksi"
+                    visible={timelineVisible}
+                    delay="180ms"
+                  />
+
+                  <TimelineItem
+                    number="03"
+                    title="Pra Karantina"
+                    visible={timelineVisible}
+                    delay="360ms"
+                  />
+
+                  <TimelineItem
+                    number="04"
+                    title="Karantina"
+                    visible={timelineVisible}
+                    delay="540ms"
+                  />
+
+                  <TimelineItem
+                    number="05"
+                    title="Grand Final"
+                    visible={timelineVisible}
+                    delay="720ms"
+                  />
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
 
         </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
 
       </section>
 
@@ -941,8 +915,6 @@ export default function Home() {
       {/* ========================================================= */}
 
       <section className="relative overflow-hidden bg-[#170401] py-20 text-white sm:py-24 md:py-32">
-
-        {/* INTERNAL ATMOSPHERE */}
 
         <div className="pointer-events-none absolute left-1/2 top-[20%] h-64 w-[70%] -translate-x-1/2 rounded-full bg-[#f5d98a]/[0.035] blur-[100px]" />
 
@@ -987,8 +959,6 @@ export default function Home() {
       {/* ========================================================= */}
 
       <section className="relative overflow-hidden bg-[#e9e1d2] py-20 sm:py-24 md:py-28">
-
-        {/* SOFT LIGHT */}
 
         <div className="pointer-events-none absolute left-[10%] top-[15%] h-64 w-64 rounded-full bg-[#f5d98a]/[0.07] blur-[100px]" />
 
@@ -1167,15 +1137,19 @@ function TimelineItem({
         transitionDelay: delay,
       }}
     >
+
       {/* DOT */}
 
       <div className="relative z-10 flex h-6 w-6 items-center justify-center rounded-full border border-[#f5d98a]/50 bg-[#170401] shadow-[0_0_0_5px_#170401,0_0_18px_rgba(245,217,138,0.15)]">
+
         <div className="firefly-animation h-2 w-2 rounded-full bg-[#f5d98a] shadow-[0_0_12px_rgba(245,217,138,0.8)]" />
+
       </div>
 
       {/* CONTENT */}
 
       <div className="mt-7 pr-6 sm:pr-10">
+
         <p className="text-[10px] font-medium tracking-[0.25em] text-[#f5d98a]/70 sm:text-xs">
           {number}
         </p>
@@ -1183,10 +1157,18 @@ function TimelineItem({
         <h3 className="mt-2 max-w-[150px] font-serif text-base leading-tight text-white sm:text-lg md:text-xl">
           {title}
         </h3>
+
       </div>
+
     </div>
   );
 }
+
+
+/* =============================================================== */
+/* MOBILE TIMELINE ITEM */
+/* =============================================================== */
+
 function MobileTimelineItem({
   number,
   title,
@@ -1241,7 +1223,6 @@ function MobileTimelineItem({
         `}
       />
 
-
       {/* ================================================= */}
       {/* CENTER DOT */}
       {/* ================================================= */}
@@ -1278,7 +1259,6 @@ function MobileTimelineItem({
         />
 
       </div>
-
 
       {/* ================================================= */}
       {/* CONTENT */}
@@ -1324,6 +1304,7 @@ function MobileTimelineItem({
     </div>
   );
 }
+
 
 /* =============================================================== */
 /* CONTACT CARD */
