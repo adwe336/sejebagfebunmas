@@ -9,16 +9,6 @@ import Link from "next/link";
 
 const countdownTargets = [
   {
-    title: "Pendaftaran Panitia Pelaksana",
-    dateLabel: "26 September 2026",
-    target: new Date("2026-09-26T23:59:59+08:00").getTime(),
-  },
-  {
-    title: "Pendaftaran Finalis",
-    dateLabel: "12 Oktober 2026",
-    target: new Date("2026-10-12T23:59:59+08:00").getTime(),
-  },
-  {
     title: "Grand Final",
     dateLabel: "17 Januari 2027",
     target: new Date("2027-01-17T00:00:00+08:00").getTime(),
@@ -93,7 +83,7 @@ export default function Home() {
   const navRef = useRef<HTMLElement>(null);
 
   /* ========================================================= */
-  /* MULTIPLE COUNTDOWNS */
+  /* COUNTDOWN */
   /* ========================================================= */
 
   useEffect(() => {
@@ -420,8 +410,6 @@ export default function Home() {
 
       <section className="relative overflow-hidden bg-[#f5f1e8] pt-24 md:pt-28">
 
-        {/* IPHONE STYLE LIGHT */}
-
         <div
           className="
             pointer-events-none
@@ -559,7 +547,7 @@ export default function Home() {
             <p className="
               mt-6
               max-w-xl
-              text-md
+              text-base
               leading-6
               text-black/60
               sm:text-base
@@ -621,66 +609,84 @@ export default function Home() {
 
       <section
         className="
-          relative overflow-hidden
+          relative
+          overflow-hidden
           bg-[#21100d]
-          py-10
+          py-12
           text-[#f5f1e8]
-          sm:py-12
+          sm:py-14
           md:py-16
         "
       >
 
-        {/* IPHONE WALLPAPER GRADIENT */}
+        {/* ===================================================== */}
+        {/* IPHONE WALLPAPER */}
+        {/* ===================================================== */}
 
-        <div className="
-          pointer-events-none
-          absolute inset-0
-          bg-[radial-gradient(circle_at_15%_20%,rgba(245,217,138,0.16),transparent_32%),radial-gradient(circle_at_85%_70%,rgba(184,126,48,0.14),transparent_35%),linear-gradient(135deg,#170401_0%,#351812_45%,#21100d_100%)]
-        " />
+        <div
+          className="
+            pointer-events-none
+            absolute
+            inset-0
+            bg-[radial-gradient(circle_at_12%_15%,rgba(245,217,138,0.16),transparent_30%),radial-gradient(circle_at_85%_70%,rgba(184,126,48,0.15),transparent_34%),radial-gradient(circle_at_50%_100%,rgba(116,35,26,0.30),transparent_40%),linear-gradient(135deg,#170401_0%,#351812_45%,#21100d_100%)]
+          "
+        />
 
-        <div className="
-          pointer-events-none
-          absolute
-          left-1/2
-          top-1/2
-          h-[320px]
-          w-[65%]
-          -translate-x-1/2
-          -translate-y-1/2
-          rounded-full
-          bg-[#f5d98a]/[0.035]
-          blur-[110px]
-        " />
+        {/* SOFT CENTER LIGHT */}
+
+        <div
+          className="
+            pointer-events-none
+            absolute
+            left-1/2
+            top-1/2
+            h-[380px]
+            w-[70%]
+            -translate-x-1/2
+            -translate-y-1/2
+            rounded-full
+            bg-[#f5d98a]/[0.035]
+            blur-[120px]
+          "
+        />
+
+        {/* ===================================================== */}
+        {/* HEADER */}
+        {/* ===================================================== */}
 
         <div className="relative z-10 mx-auto max-w-7xl px-5 md:px-8">
 
-          {/* HEADER */}
+          <div className="mb-8 text-center sm:mb-10">
 
-          <div className="mb-7 text-center sm:mb-9">
-
-            <p className="
-              text-[9px]
-              uppercase
-              tracking-[0.3em]
-              text-[#f5d98a]/65
-              sm:text-[10px]
-            ">
+            <p
+              className="
+                text-[9px]
+                uppercase
+                tracking-[0.3em]
+                text-[#f5d98a]/65
+                sm:text-[10px]
+              "
+            >
               Perjalanan menuju
             </p>
 
-            <h2 className="
-              mt-2
-              font-serif
-              text-3xl
-              tracking-tight
-              sm:text-4xl
-            ">
+            <h2
+              className="
+                mt-2
+                font-serif
+                text-3xl
+                tracking-tight
+                sm:text-4xl
+              "
+            >
               Hitung Mundur
             </h2>
 
           </div>
 
-          {/* CAROUSEL */}
+          {/* ===================================================== */}
+          {/* CARDS */}
+          {/* ===================================================== */}
 
           <div
             className="
@@ -702,36 +708,49 @@ export default function Home() {
             "
           >
 
-            {countdownTargets.map((item, index) => (
-              <CountdownCard
-                key={item.title}
-                title={item.title}
-                dateLabel={item.dateLabel}
-                countdown={countdowns[index]}
-                index={index}
-              />
-            ))}
+            {/* ================================================= */}
+            {/* PANITIA LEPAS */}
+            {/* ================================================= */}
+
+            <RegistrationCard
+              type="Panitia Pelaksana"
+              badge="OPEN RECRUITMENT • PENDAFTARAN PANITIA LEPAS"
+              title="Mari ikut menjadi bagian dari perjalanan."
+              date="11–26 September 2026"
+              image="/Ayu.webp"
+              buttonText="Daftar Panitia"
+              href="https://forms.google.com/"
+              description="Bergabung sebagai bagian dari panitia pelaksana dan ambil peran di balik perjalanan Pemilihan Jegeg Bagus FEB Unmas 2027."
+              imagePosition="center"
+            />
+
+            {/* ================================================= */}
+            {/* FINALIS */}
+            {/* ================================================= */}
+
+            <FinalistCard />
+
+            {/* ================================================= */}
+            {/* GRAND FINAL */}
+            {/* ================================================= */}
+
+            <CountdownCard
+              title="Grand Final"
+              dateLabel="17 Januari 2027"
+              countdown={countdowns[0]}
+            />
 
           </div>
 
-          {/* MOBILE SCROLL INDICATOR */}
+          {/* MOBILE INDICATOR */}
 
           <div className="mt-4 flex justify-center gap-1.5 md:hidden">
 
-            {countdownTargets.map((_, index) => (
-              <span
-                key={index}
-                className={`
-                  h-1 rounded-full
-                  transition-all duration-500
-                  ${
-                    index === 0
-                      ? "w-5 bg-[#f5d98a]"
-                      : "w-1.5 bg-white/20"
-                  }
-                `}
-              />
-            ))}
+            <span className="h-1.5 w-5 rounded-full bg-[#f5d98a]" />
+
+            <span className="h-1.5 w-1.5 rounded-full bg-white/20" />
+
+            <span className="h-1.5 w-1.5 rounded-full bg-white/20" />
 
           </div>
 
@@ -755,8 +774,6 @@ export default function Home() {
         "
       >
 
-        {/* IPHONE STYLE GRADIENT */}
-
         <div className="
           pointer-events-none
           absolute inset-0
@@ -778,8 +795,6 @@ export default function Home() {
 
         <div className="relative z-10 mx-auto grid max-w-7xl gap-10 px-5 md:gap-12 md:px-8 lg:grid-cols-2 lg:items-start">
 
-          {/* LEFT */}
-
           <div>
 
             <p className="section-label !text-[#9b7637]">
@@ -798,8 +813,6 @@ export default function Home() {
             ">
               Bukan hanya kompetisi
             </h2>
-
-            {/* VIDEO */}
 
             <div className="
               mt-8
@@ -826,11 +839,9 @@ export default function Home() {
 
           </div>
 
-          {/* RIGHT */}
-
           <div className="
             space-y-5
-            text-md
+            text-base
             leading-7
             text-black/65
             sm:text-base
@@ -883,17 +894,11 @@ export default function Home() {
         "
       >
 
-        {/* ===================================================== */}
-        {/* SOFT IPHONE-STYLE BACKGROUND */}
-        {/* ===================================================== */}
-
         <div className="
           pointer-events-none
           absolute inset-0
           bg-[radial-gradient(circle_at_50%_28%,rgba(255,248,226,0.13),transparent_22%),radial-gradient(circle_at_15%_20%,rgba(245,217,138,0.12),transparent_28%),radial-gradient(circle_at_90%_65%,rgba(245,180,70,0.07),transparent_30%),linear-gradient(135deg,#170401_0%,#29100b_42%,#170401_100%)]
         " />
-
-        {/* MAIN SOFT LIGHT */}
 
         <div className="
           pointer-events-none
@@ -907,8 +912,6 @@ export default function Home() {
           bg-[#fff6df]/[0.045]
           blur-[120px]
         " />
-
-        {/* WARM SIDE LIGHT */}
 
         <div className="
           pointer-events-none
@@ -934,17 +937,13 @@ export default function Home() {
           blur-[130px]
         " />
 
-        {/* DARK VIGNETTE */}
-
         <div className="
           pointer-events-none
           absolute inset-0
           bg-[radial-gradient(ellipse_at_center,transparent_25%,rgba(5,1,0,0.35)_62%,rgba(5,1,0,0.8)_100%)]
         " />
 
-        {/* ===================================================== */}
         {/* FIREFLIES */}
-        {/* ===================================================== */}
 
         <div className="pointer-events-none absolute inset-0">
 
@@ -964,19 +963,9 @@ export default function Home() {
 
           <span className="firefly-animation absolute left-[90%] top-[25%] h-1 w-1 rounded-full bg-[#fff6df]/20 blur-[1px] [animation-delay:1.1s]" />
 
-          <span className="firefly-animation absolute left-[12%] top-[72%] h-1 w-1 rounded-full bg-[#fff6df]/20 blur-[1px] [animation-delay:2.5s]" />
-
-          <span className="firefly-animation absolute left-[27%] top-[82%] h-1.5 w-1.5 rounded-full bg-[#fff6df]/20 blur-[1px] [animation-delay:1.7s]" />
-
-          <span className="firefly-animation absolute left-[58%] top-[78%] h-1 w-1 rounded-full bg-[#f5b446]/20 blur-[1px] [animation-delay:3.5s]" />
-
-          <span className="firefly-animation absolute left-[84%] top-[80%] h-1 w-1 rounded-full bg-[#fff6df]/20 blur-[1px] [animation-delay:0.5s]" />
-
         </div>
 
-        {/* ===================================================== */}
         {/* LENTERA CONTENT */}
-        {/* ===================================================== */}
 
         <div className="
           relative z-10
@@ -1034,8 +1023,6 @@ export default function Home() {
               lg:mt-0
             ">
 
-              {/* SOFT WHITE CREAM AURA */}
-
               <div className="
                 pointer-events-none
                 absolute
@@ -1051,8 +1038,6 @@ export default function Home() {
                 blur-[70px]
               " />
 
-              {/* SECOND LIGHT */}
-
               <div className="
                 pointer-events-none
                 absolute
@@ -1067,8 +1052,6 @@ export default function Home() {
                 bg-[#fffdf4]/[0.16]
                 blur-[45px]
               " />
-
-              {/* OUTER LOGO GLOW */}
 
               <img
                 src="/LOGO PEMILIHAN.webp"
@@ -1088,8 +1071,6 @@ export default function Home() {
                 "
               />
 
-              {/* SOFT GLOW */}
-
               <img
                 src="/LOGO PEMILIHAN.webp"
                 alt=""
@@ -1106,8 +1087,6 @@ export default function Home() {
                   sm:max-w-[280px]
                 "
               />
-
-              {/* ACTUAL LOGO */}
 
               <img
                 src="/LOGO PEMILIHAN.webp"
@@ -1162,7 +1141,7 @@ export default function Home() {
               <p className="
                 mt-7
                 max-w-2xl
-                text-md
+                text-base
                 leading-7
                 text-white/60
                 sm:text-lg
@@ -1267,7 +1246,7 @@ export default function Home() {
                 sm:leading-7
               ">
                 Setiap tahapan menjadi bagian dari perjalanan
-                untuk mengenal diri dan berkembang
+                untuk mengenal diri dan berkembang.
               </p>
 
             </div>
@@ -1309,7 +1288,7 @@ export default function Home() {
               <div className="relative flex flex-col gap-9">
 
                 <MobileTimelineItem
-                  number="01"
+                  date="21 SEP 2026"
                   title="Pendaftaran"
                   visible={timelineVisible}
                   delay="0ms"
@@ -1317,7 +1296,7 @@ export default function Home() {
                 />
 
                 <MobileTimelineItem
-                  number="02"
+                  date="12 OKT 2026"
                   title="Seleksi"
                   visible={timelineVisible}
                   delay="180ms"
@@ -1325,7 +1304,7 @@ export default function Home() {
                 />
 
                 <MobileTimelineItem
-                  number="03"
+                  date="24 OKT 2026"
                   title="Pra Karantina"
                   visible={timelineVisible}
                   delay="360ms"
@@ -1333,7 +1312,7 @@ export default function Home() {
                 />
 
                 <MobileTimelineItem
-                  number="04"
+                  date="14–16 JAN 2027"
                   title="Karantina"
                   visible={timelineVisible}
                   delay="540ms"
@@ -1341,7 +1320,7 @@ export default function Home() {
                 />
 
                 <MobileTimelineItem
-                  number="05"
+                  date="17 JAN 2027"
                   title="Grand Final"
                   visible={timelineVisible}
                   delay="720ms"
@@ -1399,35 +1378,35 @@ export default function Home() {
                 <div className="relative grid grid-cols-5">
 
                   <TimelineItem
-                    number="01"
+                    date="21 SEP 2026"
                     title="Pendaftaran"
                     visible={timelineVisible}
                     delay="0ms"
                   />
 
                   <TimelineItem
-                    number="02"
+                    date="12 OKT 2026"
                     title="Seleksi"
                     visible={timelineVisible}
                     delay="180ms"
                   />
 
                   <TimelineItem
-                    number="03"
+                    date="24 OKT 2026"
                     title="Pra Karantina"
                     visible={timelineVisible}
                     delay="360ms"
                   />
 
                   <TimelineItem
-                    number="04"
+                    date="14–16 JAN 2027"
                     title="Karantina"
                     visible={timelineVisible}
                     delay="540ms"
                   />
 
                   <TimelineItem
-                    number="05"
+                    date="17 JAN 2027"
                     title="Grand Final"
                     visible={timelineVisible}
                     delay="720ms"
@@ -1455,8 +1434,6 @@ export default function Home() {
         md:py-32
       ">
 
-        {/* IPHONE STYLE CTA GRADIENT */}
-
         <div className="
           pointer-events-none
           absolute inset-0
@@ -1474,28 +1451,6 @@ export default function Home() {
           rounded-full
           bg-[#fff6df]/[0.025]
           blur-[100px]
-        " />
-
-        <div className="
-          pointer-events-none
-          absolute
-          -right-20
-          -top-20
-          h-72
-          w-72
-          rounded-full
-          border border-white/10
-        " />
-
-        <div className="
-          pointer-events-none
-          absolute
-          -bottom-32
-          -left-20
-          h-80
-          w-80
-          rounded-full
-          border border-white/10
         " />
 
         <div className="
@@ -1588,36 +1543,10 @@ export default function Home() {
         md:py-28
       ">
 
-        {/* IPHONE STYLE GRADIENT */}
-
         <div className="
           pointer-events-none
           absolute inset-0
           bg-[radial-gradient(circle_at_15%_15%,rgba(255,255,255,0.45),transparent_28%),radial-gradient(circle_at_85%_85%,rgba(245,217,138,0.13),transparent_30%),linear-gradient(135deg,#eee7da,#e4d9c7,#dcd0bd)]
-        " />
-
-        <div className="
-          pointer-events-none
-          absolute
-          left-[10%]
-          top-[15%]
-          h-64
-          w-64
-          rounded-full
-          bg-white/25
-          blur-[100px]
-        " />
-
-        <div className="
-          pointer-events-none
-          absolute
-          right-[5%]
-          bottom-[10%]
-          h-72
-          w-72
-          rounded-full
-          bg-[#f5b446]/[0.05]
-          blur-[110px]
         " />
 
         <div className="
@@ -1737,19 +1666,27 @@ export default function Home() {
 }
 
 /* =============================================================== */
-/* COUNTDOWN CARD */
+/* REGISTRATION CARD */
 /* =============================================================== */
 
-function CountdownCard({
+function RegistrationCard({
+  type,
+  badge,
   title,
-  dateLabel,
-  countdown,
-  index,
+  date,
+  image,
+  buttonText,
+  href,
+  description,
 }: {
+  type: string;
+  badge: string;
   title: string;
-  dateLabel: string;
-  countdown: CountdownValue;
-  index: number;
+  date: string;
+  image: string;
+  buttonText: string;
+  href: string;
+  description: string;
 }) {
   return (
     <div
@@ -1758,7 +1695,435 @@ function CountdownCard({
         min-w-[86vw]
         snap-center
         overflow-hidden
-        rounded-[28px]
+        rounded-[30px]
+        border
+        border-white/[0.13]
+        bg-black
+        shadow-[0_25px_70px_rgba(0,0,0,0.25)]
+        sm:min-w-[500px]
+        md:min-w-0
+      "
+    >
+
+      {/* PHOTO */}
+
+      <div className="absolute inset-0">
+
+        <img
+          src={image}
+          alt={type}
+          className="
+            h-full
+            min-h-[430px]
+            w-full
+            object-cover
+          "
+        />
+
+        {/* DARK GRADIENT */}
+
+        <div
+          className="
+            absolute
+            inset-0
+            bg-[linear-gradient(180deg,rgba(0,0,0,0.12)_0%,rgba(15,3,1,0.18)_25%,rgba(15,3,1,0.70)_68%,rgba(10,2,1,0.96)_100%)]
+          "
+        />
+
+        {/* WARM LIGHT */}
+
+        <div
+          className="
+            pointer-events-none
+            absolute
+            right-[-10%]
+            top-[-5%]
+            h-64
+            w-64
+            rounded-full
+            bg-[#f5d98a]/20
+            blur-[90px]
+          "
+        />
+
+      </div>
+
+      {/* CONTENT */}
+
+      <div className="
+        relative
+        z-10
+        flex
+        min-h-[430px]
+        flex-col
+        justify-between
+        p-5
+        sm:p-6
+      ">
+
+        {/* TOP */}
+
+        <div>
+
+          <div className="
+            inline-flex
+            max-w-full
+            rounded-full
+            border
+            border-white/15
+            bg-black/25
+            px-3
+            py-2
+            backdrop-blur-xl
+          ">
+
+            <p className="
+              max-w-[300px]
+              text-[8px]
+              font-semibold
+              uppercase
+              tracking-[0.14em]
+              text-[#f5d98a]
+              sm:text-[9px]
+            ">
+              {badge}
+            </p>
+
+          </div>
+
+          <p className="
+            mt-5
+            text-[9px]
+            uppercase
+            tracking-[0.25em]
+            text-white/55
+          ">
+            {type}
+          </p>
+
+        </div>
+
+        {/* BOTTOM */}
+
+        <div>
+
+          <p className="
+            text-[10px]
+            uppercase
+            tracking-[0.22em]
+            text-[#f5d98a]
+          ">
+            {date}
+          </p>
+
+          <h3 className="
+            mt-2
+            max-w-[330px]
+            font-serif
+            text-2xl
+            leading-tight
+            text-white
+            sm:text-3xl
+          ">
+            {title}
+          </h3>
+
+          <p className="
+            mt-3
+            max-w-[390px]
+            text-xs
+            leading-5
+            text-white/55
+            sm:text-sm
+            sm:leading-6
+          ">
+            {description}
+          </p>
+
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+              mt-5
+              inline-flex
+              items-center
+              justify-center
+              rounded-full
+              border
+              border-white/15
+              bg-white/10
+              px-5
+              py-3
+              text-xs
+              font-semibold
+              text-white
+              backdrop-blur-xl
+              transition-all
+              duration-500
+              hover:-translate-y-1
+              hover:bg-[#f5d98a]
+              hover:text-[#170401]
+            "
+          >
+            {buttonText} →
+          </a>
+
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+/* =============================================================== */
+/* FINALIST CARD */
+/* =============================================================== */
+
+function FinalistCard() {
+  return (
+    <div
+      className="
+        relative
+        min-w-[86vw]
+        snap-center
+        overflow-hidden
+        rounded-[30px]
+        border
+        border-white/[0.13]
+        bg-[#120302]
+        shadow-[0_25px_70px_rgba(0,0,0,0.25)]
+        sm:min-w-[500px]
+        md:min-w-0
+      "
+    >
+
+      {/* BACKGROUND */}
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          inset-0
+          bg-[radial-gradient(circle_at_50%_18%,rgba(245,217,138,0.16),transparent_28%),linear-gradient(145deg,#170401,#30100b,#110202)]
+        "
+      />
+
+      {/* ===================================================== */}
+      {/* LOCKSCREEN PHOTOS */}
+      {/* ===================================================== */}
+
+      <div className="
+        relative
+        flex
+        min-h-[430px]
+        items-center
+        justify-center
+        overflow-hidden
+      ">
+
+        {/* BAGUS */}
+
+        <div
+          className="
+            absolute
+            left-[8%]
+            top-[12%]
+            h-[260px]
+            w-[43%]
+            rotate-[-7deg]
+            overflow-hidden
+            rounded-[24px]
+            border
+            border-white/15
+            bg-white/10
+            shadow-[0_25px_50px_rgba(0,0,0,0.35)]
+            backdrop-blur-xl
+            sm:left-[9%]
+            sm:h-[300px]
+          "
+        >
+
+          <img
+            src="/Bagus.webp"
+            alt="Bagus"
+            className="
+              h-full
+              w-full
+              object-cover
+            "
+          />
+
+          <div className="
+            absolute
+            inset-0
+            bg-gradient-to-b
+            from-transparent
+            via-transparent
+            to-black/60
+          " />
+
+        </div>
+
+        {/* JEGEG */}
+
+        <div
+          className="
+            absolute
+            right-[8%]
+            top-[18%]
+            h-[260px]
+            w-[43%]
+            rotate-[7deg]
+            overflow-hidden
+            rounded-[24px]
+            border
+            border-white/15
+            bg-white/10
+            shadow-[0_25px_50px_rgba(0,0,0,0.35)]
+            backdrop-blur-xl
+            sm:right-[9%]
+            sm:h-[300px]
+          "
+        >
+
+          <img
+            src="/Jegeg.webp"
+            alt="Jegeg"
+            className="
+              h-full
+              w-full
+              object-cover
+            "
+          />
+
+          <div className="
+            absolute
+            inset-0
+            bg-gradient-to-b
+            from-transparent
+            via-transparent
+            to-black/60
+          " />
+
+        </div>
+
+        {/* SOFT LIGHT */}
+
+        <div
+          className="
+            pointer-events-none
+            absolute
+            left-1/2
+            top-1/2
+            h-52
+            w-52
+            -translate-x-1/2
+            -translate-y-1/2
+            rounded-full
+            bg-[#f5d98a]/10
+            blur-[80px]
+          "
+        />
+
+        {/* CONTENT OVERLAY */}
+
+        <div className="
+          absolute
+          inset-x-5
+          bottom-5
+          z-20
+          sm:inset-x-6
+          sm:bottom-6
+        ">
+
+          <p className="
+            text-[9px]
+            uppercase
+            tracking-[0.25em]
+            text-[#f5d98a]
+          ">
+            01–12 Oktober 2026
+          </p>
+
+          <h3 className="
+            mt-2
+            font-serif
+            text-2xl
+            leading-tight
+            text-white
+            sm:text-3xl
+          ">
+            Pendaftaran Finalis
+          </h3>
+
+          <p className="
+            mt-2
+            max-w-[350px]
+            text-xs
+            leading-5
+            text-white/55
+            sm:text-sm
+          ">
+            Saatnya mengambil langkah dan menjadi bagian
+            dari perjalanan Jegeg Bagus FEB Unmas 2027.
+          </p>
+
+          <Link
+            href="/pendaftaran-finalis"
+            className="
+              mt-5
+              inline-flex
+              items-center
+              justify-center
+              rounded-full
+              border
+              border-white/15
+              bg-white/10
+              px-5
+              py-3
+              text-xs
+              font-semibold
+              text-white
+              backdrop-blur-xl
+              transition-all
+              duration-500
+              hover:-translate-y-1
+              hover:bg-[#f5d98a]
+              hover:text-[#170401]
+            "
+          >
+            Daftar Finalis →
+          </Link>
+
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+/* =============================================================== */
+/* GRAND FINAL COUNTDOWN CARD */
+/* =============================================================== */
+
+function CountdownCard({
+  title,
+  dateLabel,
+  countdown,
+}: {
+  title: string;
+  dateLabel: string;
+  countdown: CountdownValue;
+}) {
+  return (
+    <div
+      className="
+        relative
+        min-w-[86vw]
+        snap-center
+        overflow-hidden
+        rounded-[30px]
         border
         border-white/[0.12]
         bg-white/[0.075]
@@ -1775,23 +2140,31 @@ function CountdownCard({
       {/* CARD LIGHT */}
 
       <div
-        className={`
+        className="
           pointer-events-none
           absolute
-          -right-16
-          -top-16
-          h-40
-          w-40
+          -right-20
+          -top-20
+          h-48
+          w-48
           rounded-full
-          blur-[65px]
-          ${
-            index === 0
-              ? "bg-[#f5d98a]/10"
-              : index === 1
-              ? "bg-[#f5b446]/10"
-              : "bg-[#fff6df]/10"
-          }
-        `}
+          bg-[#fff6df]/10
+          blur-[70px]
+        "
+      />
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          -bottom-20
+          -left-20
+          h-48
+          w-48
+          rounded-full
+          bg-[#f5b446]/[0.07]
+          blur-[70px]
+        "
       />
 
       <div className="relative z-10">
@@ -1808,21 +2181,16 @@ function CountdownCard({
               tracking-[0.25em]
               text-[#f5d98a]/65
             ">
-              {index === 0
-                ? "Tahap 01"
-                : index === 1
-                ? "Tahap 02"
-                : "Puncak Acara"}
+              Puncak Acara
             </p>
 
             <h3 className="
               mt-2
-              max-w-[270px]
               font-serif
-              text-xl
+              text-2xl
               leading-tight
               text-white
-              sm:text-2xl
+              sm:text-3xl
             ">
               {title}
             </h3>
@@ -1883,11 +2251,14 @@ function CountdownCard({
         <div className="
           mt-5
           flex
-          items-center
-          justify-between
+          flex-col
+          gap-4
           border-t
           border-white/[0.08]
           pt-4
+          sm:flex-row
+          sm:items-center
+          sm:justify-between
         ">
 
           <p className="
@@ -1896,17 +2267,35 @@ function CountdownCard({
             tracking-[0.2em]
             text-white/30
           ">
-            Jegeg Bagus FEB Unmas
+            Menuju malam puncak
           </p>
 
-          <span className="
-            text-[9px]
-            uppercase
-            tracking-[0.2em]
-            text-[#f5d98a]/55
-          ">
-            2027
-          </span>
+          <Link
+            href="/grand-final"
+            className="
+              inline-flex
+              items-center
+              justify-center
+              rounded-full
+              border
+              border-white/10
+              bg-white/[0.06]
+              px-4
+              py-2.5
+              text-[10px]
+              font-semibold
+              uppercase
+              tracking-[0.14em]
+              text-white/70
+              transition-all
+              duration-500
+              hover:-translate-y-0.5
+              hover:bg-[#f5d98a]
+              hover:text-[#170401]
+            "
+          >
+            Selengkapnya →
+          </Link>
 
         </div>
 
@@ -2022,12 +2411,12 @@ function ConceptCard({
 /* =============================================================== */
 
 function TimelineItem({
-  number,
+  date,
   title,
   visible,
   delay,
 }: {
-  number: string;
+  date: string;
   title: string;
   visible: boolean;
   delay: string;
@@ -2050,62 +2439,60 @@ function TimelineItem({
         transitionDelay: delay,
       }}
     >
-      <div
-        className="
-          relative
-          z-10
-          flex
-          h-6
-          w-6
-          items-center
-          justify-center
+
+      <div className="
+        relative
+        z-10
+        flex
+        h-6
+        w-6
+        items-center
+        justify-center
+        rounded-full
+        border
+        border-[#f5d98a]/50
+        bg-[#170401]
+        shadow-[0_0_0_5px_#170401,0_0_18px_rgba(245,217,138,0.15)]
+      ">
+
+        <div className="
+          firefly-animation
+          h-2
+          w-2
           rounded-full
-          border
-          border-[#f5d98a]/50
-          bg-[#170401]
-          shadow-[0_0_0_5px_#170401,0_0_18px_rgba(245,217,138,0.15)]
-        "
-      >
-        <div
-          className="
-            firefly-animation
-            h-2
-            w-2
-            rounded-full
-            bg-[#f5d98a]
-            shadow-[0_0_12px_rgba(245,217,138,0.8)]
-          "
-        />
+          bg-[#f5d98a]
+          shadow-[0_0_12px_rgba(245,217,138,0.8)]
+        " />
+
       </div>
 
       <div className="mt-7 pr-6 sm:pr-10">
-        <p
-          className="
-            text-[10px]
-            font-medium
-            tracking-[0.25em]
-            text-[#f5d98a]/70
-            sm:text-xs
-          "
-        >
-          {number}
+
+        <p className="
+          text-[10px]
+          font-medium
+          tracking-[0.25em]
+          text-[#f5d98a]/70
+          sm:text-xs
+        ">
+          {date}
         </p>
 
-        <h3
-          className="
-            mt-2
-            max-w-[150px]
-            font-serif
-            text-base
-            leading-tight
-            text-white
-            sm:text-lg
-            md:text-xl
-          "
-        >
+        <h3 className="
+          mt-2
+          max-w-[150px]
+          font-serif
+          text-base
+          leading-tight
+          text-white
+          sm:text-lg
+          md:text-xl
+        ">
           {title}
         </h3>
+
       </div>
+
     </div>
   );
 }
@@ -2115,13 +2502,13 @@ function TimelineItem({
 /* =============================================================== */
 
 function MobileTimelineItem({
-  number,
+  date,
   title,
   visible,
   delay,
   side,
 }: {
-  number: string;
+  date: string;
   title: string;
   visible: boolean;
   delay: string;
@@ -2147,6 +2534,7 @@ function MobileTimelineItem({
         transitionDelay: delay,
       }}
     >
+
       <div
         className={`
           absolute
@@ -2161,35 +2549,33 @@ function MobileTimelineItem({
         `}
       />
 
-      <div
-        className="
-          absolute
-          left-1/2
-          top-0
-          z-10
-          flex
-          h-6
-          w-6
-          -translate-x-1/2
-          items-center
-          justify-center
+      <div className="
+        absolute
+        left-1/2
+        top-0
+        z-10
+        flex
+        h-6
+        w-6
+        -translate-x-1/2
+        items-center
+        justify-center
+        rounded-full
+        border
+        border-[#f5d98a]/50
+        bg-[#170401]
+        shadow-[0_0_0_5px_#170401,0_0_18px_rgba(245,217,138,0.15)]
+      ">
+
+        <div className="
+          firefly-animation
+          h-2
+          w-2
           rounded-full
-          border
-          border-[#f5d98a]/50
-          bg-[#170401]
-          shadow-[0_0_0_5px_#170401,0_0_18px_rgba(245,217,138,0.15)]
-        "
-      >
-        <div
-          className="
-            firefly-animation
-            h-2
-            w-2
-            rounded-full
-            bg-[#f5d98a]
-            shadow-[0_0_12px_rgba(245,217,138,0.8)]
-          "
-        />
+          bg-[#f5d98a]
+          shadow-[0_0_12px_rgba(245,217,138,0.8)]
+        " />
+
       </div>
 
       <div
@@ -2202,32 +2588,32 @@ function MobileTimelineItem({
           }
         `}
       >
-        <p
-          className="
-            text-[9px]
-            font-medium
-            tracking-[0.22em]
-            text-[#f5d98a]/60
-          "
-        >
-          {number}
+
+        <p className="
+          text-[9px]
+          font-medium
+          tracking-[0.22em]
+          text-[#f5d98a]/60
+        ">
+          {date}
         </p>
 
-        <h3
-          className="
-            mt-1
-            font-serif
-            text-lg
-            leading-tight
-            text-white
-          "
-        >
+        <h3 className="
+          mt-1
+          font-serif
+          text-lg
+          leading-tight
+          text-white
+        ">
           {title}
         </h3>
+
       </div>
+
     </div>
   );
 }
+
 /* =============================================================== */
 /* CONTACT CARD */
 /* =============================================================== */
