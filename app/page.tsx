@@ -105,17 +105,20 @@ function getCountdown(target: number): CountdownValue {
 /* =============================================================== */
 
 export default function Home() {
-  const [countdowns, setCountdowns] = useState<
-    CountdownValue[]
-  >(
-    countdownTargets.map((item) =>
-      getCountdown(item.target)
-    )
+  const [countdowns, setCountdowns] = useState<CountdownValue[]>(
+    countdownTargets.map(() => ({
+      days: "000",
+      hours: "00",
+      minutes: "00",
+      seconds: "00",
+    }))
   );
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [timelineVisible, setTimelineVisible] =
     useState(false);
+
+  const [showPanitiaPopup, setShowPanitiaPopup] = useState(false);
 
   /* REGISTRATION SLIDER */
 
@@ -134,6 +137,28 @@ export default function Home() {
   /* ========================================================= */
   /* COUNTDOWN */
   /* ========================================================= */
+
+  useEffect(() => {
+    setShowPanitiaPopup(true);
+  }, []);
+
+  useEffect(() => {
+    if (!showPanitiaPopup) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setShowPanitiaPopup(false);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [showPanitiaPopup]);
 
   useEffect(() => {
     const updateCountdowns = () => {
@@ -639,9 +664,9 @@ export default function Home() {
           >
 
             <RegistrationCard
-              badge="PENDAFTARAN DIPERPANJANG"
+              badge="Hari terakhir pendaftaran!"
               title="Daftar Menjadi Panitia Pelaksana"
-              date="11–26 September 2026"
+              date="01–11 September 2026"
               image="/Ayu.webp"
               buttonText="Daftar Panitia"
               href={PANITIA_FORM_URL}
@@ -1175,10 +1200,100 @@ export default function Home() {
       </footer>
 
       {/* ========================================================= */}
+      {/* PANITIA POPUP */}
+      {/* ========================================================= */}
+      {showPanitiaPopup && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/75 px-4 py-6 backdrop-blur-sm sm:px-6 sm:py-8"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="panitia-popup-title"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              setShowPanitiaPopup(false);
+            }
+          }}
+        >
+          {/* MOBILE: dibuat seperti RegistrationCard, bukan memenuhi layar */}
+          <div className="group relative flex h-[min(82vh,640px)] w-[min(88vw,430px)] flex-col overflow-hidden rounded-[30px] border border-white/[0.14] bg-white/[0.055] text-[#f5f1e8] shadow-[0_30px_100px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.14)] backdrop-blur-2xl animate-[panitiaPopupIn_.35s_ease-out] sm:h-auto sm:max-h-[86vh] sm:w-full sm:max-w-5xl md:grid md:grid-cols-[0.95fr_1.05fr]">
+            <div className="pointer-events-none absolute inset-0 z-20 bg-[linear-gradient(145deg,rgba(255,255,255,0.12),rgba(255,255,255,0.025)_45%,rgba(0,0,0,0.20))]" />
+            <div className="pointer-events-none absolute -right-20 -top-20 z-20 h-64 w-64 rounded-full bg-[#f5d98a]/[0.10] blur-[90px]" />
+
+            <button
+              type="button"
+              onClick={() => setShowPanitiaPopup(false)}
+              aria-label="Tutup popup"
+              className="absolute right-4 top-4 z-40 flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black/30 text-lg leading-none text-white/80 backdrop-blur-md transition hover:bg-white/10 hover:text-white"
+            >
+              ×
+            </button>
+
+            {/* IMAGE — sama karakter dengan RegistrationCard */}
+            <div className="relative mx-5 mt-5 h-[52%] shrink-0 overflow-hidden rounded-[24px] shadow-[0_20px_45px_rgba(0,0,0,0.28)] sm:mx-6 sm:mt-6 sm:h-[55%] md:m-6 md:h-auto md:min-h-[500px] md:rounded-[24px]">
+              <div className="relative h-full w-full overflow-hidden rounded-[24px]">
+                <img
+                  src="/Ayu.webp"
+                  alt="Panitia Pelaksana Jegeg Bagus FEB Unmas 2027"
+                  className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.015]"
+                />
+
+              </div>
+            </div>
+
+            {/* CONTENT — padat di HP agar popup tidak terlalu tinggi */}
+            <div className="relative z-30 flex min-h-0 flex-1 flex-col items-center px-5 pb-5 pt-1 text-center sm:px-6 sm:pb-6 md:justify-center md:p-10 lg:p-12">
+              <div className="inline-flex items-center justify-center rounded-full bg-[#FF0B03] px-5 py-2 text-[9px] font-black uppercase tracking-[0.16em] text-white shadow-[0_8px_24px_rgba(255,11,3,0.28)] sm:px-6 sm:py-2.5 sm:text-[10px]">
+               Hari terakhir pendaftaran!
+              </div>
+
+              <h2 id="panitia-popup-title" className="mt-1.5 max-w-xl text-[1.65rem] leading-[1.02] tracking-tight sm:text-3xl md:text-4xl">
+                Jangan Lewatkan!
+              </h2>
+
+              <p className="mt-2.5 max-w-lg text-[10px] leading-[1.45] text-white/60 sm:mt-4 sm:text-sm sm:leading-6">
+                Panitia Pemilihan Jegeg Bagus FEB Unmas 2027
+              </p>
+
+              <div className="mt-3 rounded-[16px] border border-white/[0.08] bg-white/[0.035] px-3.5 py-2.5 sm:mt-5 sm:rounded-2xl sm:px-4 sm:py-3.5">
+                <p className="text-[7px] uppercase tracking-[0.22em] text-white/40 sm:text-[9px]">
+                  Periode pendaftaran
+                </p>
+                <p className="mt-0.5 text-[11px] font-semibold text-[#f5f1e8] sm:mt-1 sm:text-base">
+                  01–11 September 2026
+                </p>
+              </div>
+
+              <div className="mt-3 flex justify-center gap-2.5 sm:mt-6">
+                <a
+                  href={PANITIA_FORM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-10 items-center justify-center rounded-full bg-[#f5d98a] px-4 text-[10px] font-semibold text-[#21100d] transition hover:-translate-y-0.5 hover:bg-[#ffe5a8] sm:min-h-12 sm:flex-1 sm:px-6 sm:text-sm"
+                >
+                  Daftar Sekarang
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
       {/* CUSTOM ANIMATIONS */}
       {/* ========================================================= */}
 
       <style jsx global>{`
+        @keyframes panitiaPopupIn {
+          from {
+            opacity: 0;
+            transform: translateY(14px) scale(0.98);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
         @keyframes lanternGlow {
           0%,
           100% {
