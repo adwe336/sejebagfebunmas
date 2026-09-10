@@ -1137,7 +1137,7 @@ export default function Home() {
 
           <div className="flex flex-wrap items-center gap-2 text-xs">
             <a
-              href="https://www.instagram.com/jegegbagusunmas/"
+              href="https://www.instagram.com/sejebagfebunmas/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram Jegeg Bagus Unmas"
@@ -1147,7 +1147,7 @@ export default function Home() {
             </a>
 
             <a
-              href="https://www.tiktok.com/sejebagfebunmas/"
+              href="https://www.tiktok.com/@sejebagfebunmas?is_from_webapp=1&sender_device=pc"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="TikTok Jegeg Bagus FEB Unmas"
