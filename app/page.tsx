@@ -4,6 +4,37 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 /* =============================================================== */
+/* LINKS */
+/* =============================================================== */
+
+const PANITIA_FORM_URL = "https://forms.gle/Nt1ehuB7dHEGAkGM9";
+
+/* =============================================================== */
+/* WHATSAPP */
+/* =============================================================== */
+/*
+  Isi dengan nomor WhatsApp menggunakan format internasional
+  tanpa tanda + dan tanpa spasi.
+
+  Contoh:
+  081234567890
+  menjadi:
+  6281234567890
+*/
+
+const WHATSAPP_AYU = "+6285956682525";
+const WHATSAPP_DIKI = "+6287700571658";
+
+function whatsappLink(
+  number: string,
+  message: string
+) {
+  return `https://wa.me/${number}?text=${encodeURIComponent(
+    message
+  )}`;
+}
+
+/* =============================================================== */
 /* COUNTDOWN TARGETS */
 /* =============================================================== */
 
@@ -11,7 +42,9 @@ const countdownTargets = [
   {
     title: "Grand Final",
     dateLabel: "17 Januari 2027",
-    target: new Date("2027-01-17T00:00:00+08:00").getTime(),
+    target: new Date(
+      "2027-01-17T00:00:00+08:00"
+    ).getTime(),
   },
 ];
 
@@ -72,15 +105,31 @@ function getCountdown(target: number): CountdownValue {
 /* =============================================================== */
 
 export default function Home() {
-  const [countdowns, setCountdowns] = useState<CountdownValue[]>(
-    countdownTargets.map((item) => getCountdown(item.target))
+  const [countdowns, setCountdowns] = useState<
+    CountdownValue[]
+  >(
+    countdownTargets.map((item) =>
+      getCountdown(item.target)
+    )
   );
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [timelineVisible, setTimelineVisible] = useState(false);
+  const [timelineVisible, setTimelineVisible] =
+    useState(false);
 
-  const timelineRef = useRef<HTMLDivElement>(null);
-  const navRef = useRef<HTMLElement>(null);
+  /* REGISTRATION SLIDER */
+
+  const [activeRegistration, setActiveRegistration] =
+    useState(0);
+
+  const registrationRef =
+    useRef<HTMLDivElement>(null);
+
+  const timelineRef =
+    useRef<HTMLDivElement>(null);
+
+  const navRef =
+    useRef<HTMLElement>(null);
 
   /* ========================================================= */
   /* COUNTDOWN */
@@ -97,27 +146,77 @@ export default function Home() {
 
     updateCountdowns();
 
-    const interval = setInterval(updateCountdowns, 1000);
+    const interval = setInterval(
+      updateCountdowns,
+      1000
+    );
 
     return () => clearInterval(interval);
   }, []);
+
+  /* ========================================================= */
+  /* REGISTRATION SLIDER */
+  /* ========================================================= */
+
+  const handleRegistrationScroll = () => {
+    const container = registrationRef.current;
+
+    if (!container) return;
+
+    const cards = Array.from(
+      container.children
+    ) as HTMLElement[];
+
+    if (!cards.length) return;
+
+    const containerCenter =
+      container.scrollLeft +
+      container.clientWidth / 2;
+
+    let closestIndex = 0;
+    let closestDistance = Infinity;
+
+    cards.forEach((card, index) => {
+      const cardCenter =
+        card.offsetLeft +
+        card.offsetWidth / 2;
+
+      const distance = Math.abs(
+        containerCenter - cardCenter
+      );
+
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = index;
+      }
+    });
+
+    setActiveRegistration(closestIndex);
+  };
 
   /* ========================================================= */
   /* CLOSE MOBILE MENU OUTSIDE */
   /* ========================================================= */
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (
+      event: MouseEvent
+    ) => {
       if (
         menuOpen &&
         navRef.current &&
-        !navRef.current.contains(event.target as Node)
+        !navRef.current.contains(
+          event.target as Node
+        )
       ) {
         setMenuOpen(false);
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener(
+      "mousedown",
+      handleClickOutside
+    );
 
     return () => {
       document.removeEventListener(
@@ -138,10 +237,16 @@ export default function Home() {
       }
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener(
+      "resize",
+      handleResize
+    );
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener(
+        "resize",
+        handleResize
+      );
     };
   }, []);
 
@@ -154,22 +259,34 @@ export default function Home() {
 
     if (!element) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimelineVisible(true);
-          observer.disconnect();
+    const observer =
+      new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setTimelineVisible(true);
+            observer.disconnect();
+          }
+        },
+        {
+          threshold: 0.25,
         }
-      },
-      {
-        threshold: 0.25,
-      }
-    );
+      );
 
     observer.observe(element);
 
     return () => observer.disconnect();
   }, []);
+
+  const scrollToRegistration = () => {
+    const section = document.getElementById("registration");
+
+    if (!section) return;
+
+    section.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#e9e1d2] text-[#191814]">
@@ -180,18 +297,7 @@ export default function Home() {
 
       <nav
         ref={navRef}
-        className="
-          fixed left-1/2 top-3 z-50
-          w-[calc(100%-24px)]
-          max-w-5xl
-          -translate-x-1/2
-          rounded-full
-          border border-black/[0.08]
-          bg-[#f5f1e8]/60
-          shadow-[0_8px_30px_rgba(23,4,1,0.08)]
-          backdrop-blur-2xl
-          backdrop-saturate-150
-        "
+        className="fixed left-1/2 top-3 z-50 w-[calc(100%-24px)] max-w-5xl -translate-x-1/2 rounded-full border border-black/[0.08] bg-[#f5f1e8]/60 shadow-[0_8px_30px_rgba(23,4,1,0.08)] backdrop-blur-2xl backdrop-saturate-150"
       >
         <div className="flex h-12 items-center justify-between px-3 sm:h-14 sm:px-4">
 
@@ -200,11 +306,7 @@ export default function Home() {
           <a
             href="#"
             onClick={() => setMenuOpen(false)}
-            className="
-              flex items-center gap-2.5
-              transition-transform duration-300
-              active:scale-[0.97]
-            "
+            className="flex items-center gap-2.5 transition-transform duration-300 active:scale-[0.97]"
           >
             <img
               src="/Logo JEBAG FEB.webp"
@@ -239,7 +341,10 @@ export default function Home() {
               Alur
             </a>
 
-            <Link href="/program" className="nav-link">
+            <Link
+              href="/program"
+              className="nav-link"
+            >
               Program
             </Link>
 
@@ -250,25 +355,13 @@ export default function Home() {
           <div className="flex items-center gap-2">
 
             <Link
-              href="/pendaftaran"
-              onClick={() => setMenuOpen(false)}
-              className="
-                hidden rounded-full
-                bg-[#170401]
-                px-4 py-2
-                text-[10px]
-                font-semibold
-                uppercase
-                tracking-wider
-                text-white
-                shadow-sm
-                transition-all
-                duration-500
-                hover:-translate-y-0.5
-                hover:bg-[#f5b446]
-                hover:text-[#170401]
-                sm:block
-              "
+              href="#registration"
+              onClick={(event) => {
+                event.preventDefault();
+                setMenuOpen(false);
+                scrollToRegistration();
+              }}
+              className="hidden rounded-full bg-[#170401] px-4 py-2 text-[10px] font-semibold uppercase tracking-wider text-white shadow-sm transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#f5b446] hover:text-[#170401] sm:block"
             >
               Daftar Sekarang
             </Link>
@@ -277,22 +370,18 @@ export default function Home() {
 
             <button
               type="button"
-              onClick={() => setMenuOpen((prev) => !prev)}
+              onClick={() =>
+                setMenuOpen(
+                  (prev) => !prev
+                )
+              }
               aria-label={
-                menuOpen ? "Tutup menu" : "Buka menu"
+                menuOpen
+                  ? "Tutup menu"
+                  : "Buka menu"
               }
               aria-expanded={menuOpen}
-              className="
-                group relative
-                flex h-9 w-9
-                items-center justify-center
-                rounded-full
-                bg-white/25
-                transition-all
-                duration-300
-                active:scale-[0.88]
-                lg:hidden
-              "
+              className="group relative flex h-9 w-9 items-center justify-center rounded-full bg-white/25 transition-all duration-300 active:scale-[0.88] lg:hidden"
             >
               <div className="relative h-[14px] w-[16px]">
 
@@ -350,7 +439,9 @@ export default function Home() {
 
             <a
               href="#tentang"
-              onClick={() => setMenuOpen(false)}
+              onClick={() =>
+                setMenuOpen(false)
+              }
               className="flex rounded-[18px] px-4 py-3.5 text-sm"
             >
               Tentang
@@ -358,7 +449,9 @@ export default function Home() {
 
             <a
               href="#lentera"
-              onClick={() => setMenuOpen(false)}
+              onClick={() =>
+                setMenuOpen(false)
+              }
               className="flex rounded-[18px] px-4 py-3.5 text-sm"
             >
               Lentera
@@ -366,7 +459,9 @@ export default function Home() {
 
             <a
               href="#alur"
-              onClick={() => setMenuOpen(false)}
+              onClick={() =>
+                setMenuOpen(false)
+              }
               className="flex rounded-[18px] px-4 py-3.5 text-sm"
             >
               Alur
@@ -374,7 +469,9 @@ export default function Home() {
 
             <Link
               href="/program"
-              onClick={() => setMenuOpen(false)}
+              onClick={() =>
+                setMenuOpen(false)
+              }
               className="flex rounded-[18px] px-4 py-3.5 text-sm"
             >
               Program
@@ -383,19 +480,13 @@ export default function Home() {
             <div className="my-1 h-px bg-black/[0.06]" />
 
             <Link
-              href="/pendaftaran"
-              onClick={() => setMenuOpen(false)}
-              className="
-                flex items-center justify-center
-                rounded-[18px]
-                bg-[#2a1616]/90
-                px-5 py-3.5
-                text-[10px]
-                font-semibold
-                uppercase
-                tracking-[0.16em]
-                text-white
-              "
+              href="#registration"
+              onClick={(event) => {
+                event.preventDefault();
+                setMenuOpen(false);
+                scrollToRegistration();
+              }}
+              className="flex items-center justify-center rounded-[18px] bg-[#2a1616]/90 px-5 py-3.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white"
             >
               Daftar Sekarang
             </Link>
@@ -411,48 +502,15 @@ export default function Home() {
       <section className="relative overflow-hidden bg-[#f5f1e8] pt-24 md:pt-28">
 
         <div
-          className="
-            pointer-events-none
-            absolute
-            right-[-5%]
-            top-[5%]
-            h-[420px]
-            w-[420px]
-            rounded-full
-            bg-[#f5d98a]/25
-            blur-[120px]
-            sm:h-[600px]
-            sm:w-[600px]
-          "
+          className="pointer-events-none absolute right-[-5%] top-[5%] h-[420px] w-[420px] rounded-full bg-[#f5d98a]/25 blur-[120px] sm:h-[600px] sm:w-[600px]"
         />
 
         <div
-          className="
-            pointer-events-none
-            absolute
-            left-[-15%]
-            top-[45%]
-            h-[350px]
-            w-[350px]
-            rounded-full
-            bg-[#e5b45b]/10
-            blur-[120px]
-          "
+          className="pointer-events-none absolute left-[-15%] top-[45%] h-[350px] w-[350px] rounded-full bg-[#e5b45b]/10 blur-[120px]"
         />
 
         <div
-          className="
-            pointer-events-none
-            absolute
-            left-1/2
-            top-[35%]
-            h-[400px]
-            w-[65%]
-            -translate-x-1/2
-            rounded-full
-            bg-white/40
-            blur-[120px]
-          "
+          className="pointer-events-none absolute left-1/2 top-[35%] h-[400px] w-[65%] -translate-x-1/2 rounded-full bg-white/40 blur-[120px]"
         />
 
         <div className="relative mx-auto flex w-full max-w-7xl flex-col px-5 pb-16 md:px-8 md:pb-20 lg:grid lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-12 lg:py-20">
@@ -463,43 +521,17 @@ export default function Home() {
 
             <div className="absolute -inset-4 rounded-[2rem] bg-[#b58b3b]/10 blur-3xl" />
 
-            <div className="
-              relative overflow-hidden
-              rounded-[1.5rem]
-              border border-black/[0.08]
-              bg-white/35
-              p-2
-              shadow-[0_20px_60px_rgba(23,4,1,0.10)]
-              backdrop-blur-xl
-              sm:rounded-[2rem]
-              sm:p-3
-            ">
+            <div className="relative overflow-hidden rounded-[1.5rem] border border-black/[0.08] bg-white/35 p-2 shadow-[0_20px_60px_rgba(23,4,1,0.10)] backdrop-blur-xl sm:rounded-[2rem] sm:p-3">
 
               <img
                 src="/HERO.webp"
                 alt="Jegeg Bagus FEB Unmas 2027"
-                className="
-                  h-auto w-full
-                  rounded-[1.1rem]
-                  object-cover
-                  transition-transform
-                  duration-700
-                  hover:scale-[1.015]
-                  sm:rounded-[1.5rem]
-                "
+                className="h-auto w-full rounded-[1.1rem] object-cover transition-transform duration-700 hover:scale-[1.015] sm:rounded-[1.5rem]"
               />
 
             </div>
 
-            <div className="
-              absolute -bottom-5 -left-4
-              hidden rounded-2xl
-              border border-black/10
-              bg-[#f5f1e8]/70
-              p-5 shadow-xl
-              backdrop-blur-xl
-              md:block
-            ">
+            <div className="absolute -bottom-5 -left-4 hidden rounded-2xl border border-black/10 bg-[#f5f1e8]/70 p-5 shadow-xl backdrop-blur-xl md:block">
 
               <p className="text-[10px] uppercase tracking-[0.2em] text-black/45">
                 Jegeg Bagus
@@ -521,16 +553,7 @@ export default function Home() {
               Pemilihan Jegeg Bagus FEB Unmas 2027
             </p>
 
-            <h1 className="
-              font-serif
-              text-[3.4rem]
-              leading-[0.88]
-              tracking-tight
-              text-[#2a1616]
-              sm:text-6xl
-              md:text-7xl
-              lg:text-[5.8rem]
-            ">
+            <h1 className="font-serif text-[3.4rem] leading-[0.88] tracking-tight text-[#2a1616] sm:text-6xl md:text-7xl lg:text-[5.8rem]">
               Anggakara
 
               <br />
@@ -544,16 +567,7 @@ export default function Home() {
               Danirmala
             </h1>
 
-            <p className="
-              mt-6
-              max-w-xl
-              text-base
-              leading-6
-              text-black/60
-              sm:text-base
-              sm:leading-7
-              md:text-lg
-            ">
+            <p className="mt-6 max-w-xl text-base leading-6 text-black/60 sm:text-base sm:leading-7 md:text-lg">
               Sebuah perjalanan untuk mengenal potensi,
               membangun karakter, memperluas wawasan,
               dan mengambil peran sebagai representasi
@@ -563,35 +577,19 @@ export default function Home() {
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
 
               <Link
-                href="/pendaftaran"
-                className="
-                  flex items-center justify-center
-                  rounded-full
-                  bg-[#2a1616]
-                  px-7 py-3.5
-                  text-sm font-semibold text-white
-                  shadow-lg
-                  transition-all duration-500
-                  hover:-translate-y-1
-                  hover:bg-[#e8e2da]
-                  hover:text-[#9b7637]
-                "
+                href="#registration"
+                onClick={(event) => {
+                  event.preventDefault();
+                  scrollToRegistration();
+                }}
+                className="flex items-center justify-center rounded-full bg-[#2a1616] px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition-all duration-500 hover:-translate-y-1 hover:bg-[#e8e2da] hover:text-[#9b7637]"
               >
                 Daftar Sekarang
               </Link>
 
               <a
                 href="#tentang"
-                className="
-                  flex items-center justify-center
-                  rounded-full
-                  border border-black/15
-                  px-7 py-3.5
-                  text-sm font-semibold
-                  transition-all duration-500
-                  hover:bg-[#9b7637]
-                  hover:text-white
-                "
+                className="flex items-center justify-center rounded-full border border-black/15 px-7 py-3.5 text-sm font-semibold transition-all duration-500 hover:bg-[#9b7637] hover:text-white"
               >
                 Kenali Pemilihan
               </a>
@@ -604,135 +602,53 @@ export default function Home() {
       </section>
 
       {/* ========================================================= */}
-      {/* APPLE LOCKSCREEN STYLE COUNTDOWN */}
+      {/* COUNTDOWN / REGISTRATION */}
       {/* ========================================================= */}
 
       <section
-        className="
-          relative
-          overflow-hidden
-          bg-[#21100d]
-          py-12
-          text-[#f5f1e8]
-          sm:py-14
-          md:py-16
-        "
+        id="registration"
+        className="relative scroll-mt-24 overflow-hidden bg-[#21100d] py-12 text-[#f5f1e8] sm:py-14 md:py-16"
       >
 
-        {/* ===================================================== */}
-        {/* IPHONE WALLPAPER */}
-        {/* ===================================================== */}
-
         <div
-          className="
-            pointer-events-none
-            absolute
-            inset-0
-            bg-[radial-gradient(circle_at_12%_15%,rgba(245,217,138,0.16),transparent_30%),radial-gradient(circle_at_85%_70%,rgba(184,126,48,0.15),transparent_34%),radial-gradient(circle_at_50%_100%,rgba(116,35,26,0.30),transparent_40%),linear-gradient(135deg,#170401_0%,#351812_45%,#21100d_100%)]
-          "
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_15%,rgba(245,217,138,0.16),transparent_30%),radial-gradient(circle_at_85%_70%,rgba(184,126,48,0.15),transparent_34%),radial-gradient(circle_at_50%_100%,rgba(116,35,26,0.30),transparent_40%),linear-gradient(135deg,#170401_0%,#351812_45%,#21100d_100%)]"
         />
 
-        {/* SOFT CENTER LIGHT */}
-
-        <div
-          className="
-            pointer-events-none
-            absolute
-            left-1/2
-            top-1/2
-            h-[380px]
-            w-[70%]
-            -translate-x-1/2
-            -translate-y-1/2
-            rounded-full
-            bg-[#f5d98a]/[0.035]
-            blur-[120px]
-          "
-        />
-
-        {/* ===================================================== */}
-        {/* HEADER */}
-        {/* ===================================================== */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[380px] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f5d98a]/[0.035] blur-[120px]" />
 
         <div className="relative z-10 mx-auto max-w-7xl px-5 md:px-8">
 
           <div className="mb-8 text-center sm:mb-10">
 
-            <p
-              className="
-                text-[9px]
-                uppercase
-                tracking-[0.3em]
-                text-[#f5d98a]/65
-                sm:text-[10px]
-              "
-            >
-              Perjalanan menuju
+            <p className="text-[9px] uppercase tracking-[0.3em] text-[#f5d98a]/65 sm:text-[10px]">
+              Ambil bagian dalam perjalanan
             </p>
 
-            <h2
-              className="
-                mt-2
-                font-serif
-                text-3xl
-                tracking-tight
-                sm:text-4xl
-              "
-            >
-              Hitung Mundur
+            <h2 className="mt-2 font-serif text-2xl tracking-tight sm:text-xl md:text-4xl">
+              Jegeg Bagus FEB Unmas 2027
             </h2>
 
           </div>
 
-          {/* ===================================================== */}
-          {/* CARDS */}
-          {/* ===================================================== */}
-
           <div
-            className="
-              no-scrollbar
-              -mx-5
-              flex
-              snap-x
-              snap-mandatory
-              gap-4
-              overflow-x-auto
-              px-5
-              pb-3
-              sm:mx-0
-              sm:px-0
-              md:grid
-              md:grid-cols-3
-              md:gap-5
-              md:overflow-visible
-            "
+            ref={registrationRef}
+            onScroll={
+              handleRegistrationScroll
+            }
+            className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-3 scroll-smooth sm:mx-0 sm:px-0 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible"
           >
 
-            {/* ================================================= */}
-            {/* PANITIA LEPAS */}
-            {/* ================================================= */}
-
             <RegistrationCard
-              type="Panitia Pelaksana"
-              badge="OPEN RECRUITMENT • PENDAFTARAN PANITIA LEPAS"
-              title="Mari ikut menjadi bagian dari perjalanan."
+              badge="PENDAFTARAN DIPERPANJANG"
+              title="Daftar Menjadi Panitia Pelaksana"
               date="11–26 September 2026"
               image="/Ayu.webp"
               buttonText="Daftar Panitia"
-              href="https://forms.google.com/"
-              description="Bergabung sebagai bagian dari panitia pelaksana dan ambil peran di balik perjalanan Pemilihan Jegeg Bagus FEB Unmas 2027."
-              imagePosition="center"
+              href={PANITIA_FORM_URL}
+              description="Terbuka bagi mahasiswa FEB Unmas."
             />
 
-            {/* ================================================= */}
-            {/* FINALIS */}
-            {/* ================================================= */}
-
             <FinalistCard />
-
-            {/* ================================================= */}
-            {/* GRAND FINAL */}
-            {/* ================================================= */}
 
             <CountdownCard
               title="Grand Final"
@@ -742,15 +658,26 @@ export default function Home() {
 
           </div>
 
-          {/* MOBILE INDICATOR */}
+          {/* SLIDER INDICATOR */}
 
           <div className="mt-4 flex justify-center gap-1.5 md:hidden">
 
-            <span className="h-1.5 w-5 rounded-full bg-[#f5d98a]" />
-
-            <span className="h-1.5 w-1.5 rounded-full bg-white/20" />
-
-            <span className="h-1.5 w-1.5 rounded-full bg-white/20" />
+            {[0, 1, 2].map(
+              (index) => (
+                <span
+                  key={index}
+                  className={`
+                    h-1.5 rounded-full
+                    transition-all duration-300
+                    ${
+                      activeRegistration === index
+                        ? "w-5 bg-[#f5d98a]"
+                        : "w-1.5 bg-white/20"
+                    }
+                  `}
+                />
+              )
+            )}
 
           </div>
 
@@ -763,35 +690,16 @@ export default function Home() {
 
       <section
         id="tentang"
-        className="
-          relative
-          scroll-mt-24
-          overflow-hidden
-          bg-[#e9e1d2]
-          py-16
-          sm:py-20
-          md:py-24
-        "
+        className="relative scroll-mt-24 overflow-hidden bg-[#e9e1d2] py-16 sm:py-20 md:py-24"
       >
 
-        <div className="
-          pointer-events-none
-          absolute inset-0
-          bg-[radial-gradient(circle_at_10%_15%,rgba(255,255,255,0.55),transparent_28%),radial-gradient(circle_at_90%_75%,rgba(245,217,138,0.14),transparent_32%),linear-gradient(135deg,#eee7da_0%,#e5dac8_48%,#dcd0bc_100%)]
-        " />
+        {/* BACKGROUND */}
 
-        <div className="
-          pointer-events-none
-          absolute
-          left-1/2
-          top-[20%]
-          h-[400px]
-          w-[60%]
-          -translate-x-1/2
-          rounded-full
-          bg-white/30
-          blur-[120px]
-        " />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_15%,rgba(255,255,255,0.65),transparent_28%),radial-gradient(circle_at_90%_75%,rgba(245,217,138,0.18),transparent_32%),linear-gradient(135deg,#eee7da_0%,#e5dac8_48%,#dcd0bc_100%)]" />
+
+        <div className="pointer-events-none absolute left-1/2 top-[20%] h-[400px] w-[60%] -translate-x-1/2 rounded-full bg-white/35 blur-[120px]" />
+
+        {/* CONTENT */}
 
         <div className="relative z-10 mx-auto grid max-w-7xl gap-10 px-5 md:gap-12 md:px-8 lg:grid-cols-2 lg:items-start">
 
@@ -801,28 +709,11 @@ export default function Home() {
               Pemilihan Jegeg Bagus
             </p>
 
-            <h2 className="
-              mt-3
-              font-serif
-              text-3xl
-              leading-[1.05]
-              tracking-tight
-              text-[#170401]
-              sm:text-4xl
-              md:text-5xl
-            ">
-              Bukan hanya kompetisi
+            <h2 className="mt-3 font-serif text-3xl leading-[1.05] tracking-tight text-[#170401] sm:text-4xl md:text-5xl">
+              Bukan Hanya Kompetisi
             </h2>
 
-            <div className="
-              mt-8
-              overflow-hidden
-              rounded-2xl
-              border border-black/10
-              bg-black
-              shadow-[0_15px_50px_rgba(23,4,1,0.15)]
-              sm:mt-10
-            ">
+            <div className="mt-8 overflow-hidden rounded-2xl border border-black/10 bg-black shadow-[0_15px_50px_rgba(23,4,1,0.15)] sm:mt-10">
 
               <div className="relative aspect-video w-full">
 
@@ -839,16 +730,7 @@ export default function Home() {
 
           </div>
 
-          <div className="
-            space-y-5
-            text-base
-            leading-7
-            text-black/65
-            sm:text-base
-            sm:leading-8
-            lg:pt-40
-            md:text-lg
-          ">
+          <div className="space-y-5 text-base leading-7 text-black/65 sm:text-base sm:leading-8 lg:pt-40 md:text-lg">
 
             <p>
               Lebih dari sekadar mencari seorang pemenang,
@@ -859,17 +741,7 @@ export default function Home() {
               Denpasar.
             </p>
 
-            <div className="
-              border-l-2
-              border-[#f5b446]
-              pl-5
-              font-serif
-              text-lg
-              leading-7
-              text-black/80
-              sm:text-xl
-              sm:leading-8
-            ">
+            <div className="border-l-2 border-[#f5b446] pl-5 font-serif text-lg leading-7 text-black/80 sm:text-xl sm:leading-8">
               “Tumbuh menjadi pribadi yang mampu membawa
               nama fakultas dengan karakter, wawasan,
               dan tanggung jawab.”
@@ -881,309 +753,112 @@ export default function Home() {
       </section>
 
       {/* ========================================================= */}
-      {/* LENTERA */}
+      {/* LENTERA + ALUR */}
       {/* ========================================================= */}
 
       <section
         id="lentera"
-        className="
-          relative
-          overflow-hidden
-          bg-[#170401]
-          text-white
-        "
+        className="relative overflow-hidden bg-[#170401] text-white"
       >
 
-        <div className="
-          pointer-events-none
-          absolute inset-0
-          bg-[radial-gradient(circle_at_50%_28%,rgba(255,248,226,0.13),transparent_22%),radial-gradient(circle_at_15%_20%,rgba(245,217,138,0.12),transparent_28%),radial-gradient(circle_at_90%_65%,rgba(245,180,70,0.07),transparent_30%),linear-gradient(135deg,#170401_0%,#29100b_42%,#170401_100%)]
-        " />
+        {/* ===================================================== */}
+        {/* LIGHT BACKGROUND */}
+        {/* ===================================================== */}
 
-        <div className="
-          pointer-events-none
-          absolute
-          left-1/2
-          top-[12%]
-          h-[550px]
-          w-[550px]
-          -translate-x-1/2
-          rounded-full
-          bg-[#fff6df]/[0.045]
-          blur-[120px]
-        " />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_15%,rgba(245,217,138,0.18),transparent_24%),radial-gradient(circle_at_15%_42%,rgba(245,217,138,0.045),transparent_23%),radial-gradient(circle_at_85%_62%,rgba(245,217,138,0.045),transparent_24%),radial-gradient(circle_at_50%_72%,rgba(255,238,188,0.035),transparent_35%),linear-gradient(135deg,#170401_0%,#25100b_50%,#170401_100%)]" />
 
-        <div className="
-          pointer-events-none
-          absolute
-          left-[5%]
-          top-[35%]
-          h-[420px]
-          w-[420px]
-          rounded-full
-          bg-[#f5d98a]/[0.07]
-          blur-[130px]
-        " />
+        {/* SMALL LIGHTS */}
 
-        <div className="
-          pointer-events-none
-          absolute
-          right-[-10%]
-          top-[50%]
-          h-[420px]
-          w-[420px]
-          rounded-full
-          bg-[#f5b446]/[0.055]
-          blur-[130px]
-        " />
+        <div className="pointer-events-none absolute left-[12%] top-[28%] h-2 w-2 rounded-full bg-[#f5d98a]/30 shadow-[0_0_25px_rgba(245,217,138,0.55)] blur-[1px]" />
 
-        <div className="
-          pointer-events-none
-          absolute inset-0
-          bg-[radial-gradient(ellipse_at_center,transparent_25%,rgba(5,1,0,0.35)_62%,rgba(5,1,0,0.8)_100%)]
-        " />
+        <div className="pointer-events-none absolute right-[15%] top-[38%] h-1.5 w-1.5 rounded-full bg-[#f5d98a]/35 shadow-[0_0_22px_rgba(245,217,138,0.6)]" />
 
-        {/* FIREFLIES */}
+        <div className="pointer-events-none absolute left-[24%] top-[66%] h-1 w-1 rounded-full bg-white/35 shadow-[0_0_20px_rgba(255,255,255,0.55)]" />
 
-        <div className="pointer-events-none absolute inset-0">
+        <div className="pointer-events-none absolute right-[26%] top-[73%] h-1.5 w-1.5 rounded-full bg-[#f5d98a]/25 shadow-[0_0_22px_rgba(245,217,138,0.6)]" />
 
-          <span className="firefly-animation absolute left-[8%] top-[14%] h-1 w-1 rounded-full bg-[#fff6df]/35 blur-[1px]" />
-
-          <span className="firefly-animation absolute left-[18%] top-[34%] h-1.5 w-1.5 rounded-full bg-[#fff6df]/25 blur-[1px] [animation-delay:1.4s]" />
-
-          <span className="firefly-animation absolute left-[30%] top-[18%] h-1 w-1 rounded-full bg-[#f5d98a]/25 blur-[1px] [animation-delay:2.2s]" />
-
-          <span className="firefly-animation absolute left-[42%] top-[55%] h-1 w-1 rounded-full bg-[#fff6df]/30 blur-[1px] [animation-delay:0.8s]" />
-
-          <span className="firefly-animation absolute left-[55%] top-[30%] h-1.5 w-1.5 rounded-full bg-[#fff6df]/25 blur-[1px] [animation-delay:2.8s]" />
-
-          <span className="firefly-animation absolute left-[68%] top-[16%] h-1 w-1 rounded-full bg-[#f5b446]/25 blur-[1px] [animation-delay:1.8s]" />
-
-          <span className="firefly-animation absolute left-[78%] top-[45%] h-1.5 w-1.5 rounded-full bg-[#fff6df]/25 blur-[1px] [animation-delay:3.2s]" />
-
-          <span className="firefly-animation absolute left-[90%] top-[25%] h-1 w-1 rounded-full bg-[#fff6df]/20 blur-[1px] [animation-delay:1.1s]" />
-
-        </div>
-
+        {/* ===================================================== */}
         {/* LENTERA CONTENT */}
+        {/* ===================================================== */}
 
-        <div className="
-          relative z-10
-          mx-auto
-          max-w-7xl
-          px-5
-          py-12
-          md:px-8
-          md:py-24
-        ">
+        <div className="relative z-10 mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-24">
 
-          <div className="
-            lg:grid
-            lg:grid-cols-[0.8fr_1.2fr]
-            lg:items-center
-            lg:gap-12
-          ">
+          <div className="mx-auto max-w-3xl text-center">
 
-            {/* MOBILE HEADING */}
+            <p className="text-[10px] uppercase tracking-[0.3em] text-[#f5d98a]/70 sm:text-xs">
+              Filosofi
+            </p>
 
-            <div className="lg:hidden">
+            <h2 className="mt-3 font-serif text-4xl leading-tight tracking-tight text-white sm:text-5xl md:text-6xl">
+              LENTERA
+            </h2>
 
-              <p className="
-                text-[10px]
-                uppercase
-                tracking-[0.28em]
-                text-[#f5d98a]/70
-                sm:text-xs
-              ">
-                Filosofi
-              </p>
-
-              <h2 className="
-                mt-3
-                font-serif
-                text-4xl
-                leading-tight
-                tracking-tight
-                text-white
-                sm:text-5xl
-              ">
-                LENTERA
-              </h2>
-
-            </div>
-
-            {/* LOGO */}
-
-            <div className="
-              relative
-              mt-8
-              flex
-              items-center
-              justify-center
-              lg:mt-0
-            ">
-
-              <div className="
-                pointer-events-none
-                absolute
-                left-1/2
-                top-1/2
-                z-0
-                h-[58%]
-                w-[58%]
-                -translate-x-1/2
-                -translate-y-1/2
-                rounded-full
-                bg-[#fff8e8]/[0.18]
-                blur-[70px]
-              " />
-
-              <div className="
-                pointer-events-none
-                absolute
-                left-1/2
-                top-1/2
-                z-0
-                h-[42%]
-                w-[42%]
-                -translate-x-1/2
-                -translate-y-1/2
-                rounded-full
-                bg-[#fffdf4]/[0.16]
-                blur-[45px]
-              " />
-
-              <img
-                src="/LOGO PEMILIHAN.webp"
-                alt=""
-                aria-hidden="true"
-                className="
-                  absolute
-                  z-0
-                  w-[62%]
-                  max-w-[250px]
-                  scale-110
-                  opacity-45
-                  blur-2xl
-                  drop-shadow-[0_0_30px_rgba(255,248,226,0.5)]
-                  sm:w-[70%]
-                  sm:max-w-[280px]
-                "
-              />
-
-              <img
-                src="/LOGO PEMILIHAN.webp"
-                alt=""
-                aria-hidden="true"
-                className="
-                  absolute
-                  z-0
-                  w-[62%]
-                  max-w-[250px]
-                  opacity-60
-                  blur-lg
-                  drop-shadow-[0_0_22px_rgba(255,248,226,0.55)]
-                  sm:w-[70%]
-                  sm:max-w-[280px]
-                "
-              />
-
-              <img
-                src="/LOGO PEMILIHAN.webp"
-                alt="Logo Pemilihan Jegeg Bagus FEB Unmas 2027"
-                className="
-                  relative
-                  z-10
-                  mx-auto
-                  w-[62%]
-                  max-w-[250px]
-                  object-contain
-                  drop-shadow-[0_0_16px_rgba(255,248,226,0.45)]
-                  transition-transform
-                  duration-700
-                  hover:scale-[1.025]
-                  sm:w-[70%]
-                  sm:max-w-[280px]
-                  lg:w-full
-                "
-              />
-
-            </div>
-
-            {/* CONTENT */}
-
-            <div className="lg:col-start-2 lg:row-start-1">
-
-              <div className="hidden lg:block">
-
-                <p className="
-                  text-xs
-                  uppercase
-                  tracking-[0.28em]
-                  text-[#f5d98a]/70
-                ">
-                  Filosofi
-                </p>
-
-                <h2 className="
-                  mt-3
-                  font-serif
-                  text-6xl
-                  leading-tight
-                  tracking-tight
-                  text-white
-                ">
-                  LENTERA
-                </h2>
-
-              </div>
-
-              <p className="
-                mt-7
-                max-w-2xl
-                text-base
-                leading-7
-                text-white/60
-                sm:text-lg
-                sm:leading-8
-                lg:mt-5
-              ">
-                Lentera menjadi representasi cahaya yang
-                membantu seseorang menemukan arah.
-                Pemilihan kali ini, lentera menggambarkan
-                semangat, harapan, dan dedikasi generasi
-                muda FEB Unmas.
-              </p>
-
-              <div className="
-                mt-7
-                grid
-                grid-cols-3
-                gap-2
-                sm:mt-10
-                sm:gap-4
-              ">
-
-                <ConceptCard
-                  title="Anggakara"
-                  text="Berani melangkah"
-                />
-
-                <ConceptCard
-                  title="Baswara"
-                  text="Cahaya yang menginspirasi"
-                />
-
-                <ConceptCard
-                  title="Danirmala"
-                  text="Tulus dalam pengabdian"
-                />
-
-              </div>
-
-            </div>
+            <p className="mx-auto mt-5 max-w-2xl text-sm leading-6 text-white/55 sm:text-base sm:leading-7">
+              Sebuah cahaya yang membantu menemukan arah.
+              Lentera menjadi simbol semangat, harapan,
+              dan keberanian untuk mengambil peran.
+            </p>
 
           </div>
+
+          {/* =================================================== */}
+          {/* LENTERA LOGO - BRIGHTER GLOW */}
+          {/* =================================================== */}
+
+          <div className="relative mx-auto mt-10 flex max-w-sm items-center justify-center sm:mt-12">
+
+            {/* OUTER GLOW */}
+
+            <div className="pointer-events-none absolute h-[330px] w-[330px] rounded-full bg-[#f5d98a]/[0.08] blur-[100px] animate-pulse" />
+
+            {/* INNER GLOW */}
+
+            <div className="pointer-events-none absolute h-64 w-64 rounded-full bg-[#fff4c7]/[0.10] blur-[65px]" />
+
+            {/* LIGHT CORE */}
+
+            <div className="pointer-events-none absolute h-36 w-36 rounded-full bg-[#fff6df]/[0.08] blur-[40px]" />
+
+            <img
+              src="/LOGO PEMILIHAN.webp"
+              alt="Logo Pemilihan Jegeg Bagus FEB Unmas 2027"
+              className="lantern-logo-glow relative z-10 w-[65%] max-w-[250px] object-contain transition-transform duration-700 hover:scale-[1.025] sm:w-[60%]"
+            />
+
+          </div>
+
+          {/* =================================================== */}
+          {/* CONCEPT CARDS */}
+          {/* =================================================== */}
+
+          <div className="mx-auto mt-10 grid max-w-4xl gap-3 sm:mt-14 sm:grid-cols-3 sm:gap-4">
+
+            <SimpleConcept
+              title="Anggakara"
+              text="Berani melangkah."
+            />
+
+            <SimpleConcept
+              title="Baswara"
+              text="Menjadi cahaya."
+            />
+
+            <SimpleConcept
+              title="Danirmala"
+              text="Tulus dalam pengabdian."
+            />
+
+          </div>
+
+          <div className="mx-auto mt-10 max-w-xl border-t border-white/10 pt-8 text-center sm:mt-14">
+
+            <p className="font-serif text-lg leading-7 text-white/75 sm:text-xl">
+              “Berani melangkah, menjadi cahaya,
+              dan tumbuh dengan niat yang tulus.”
+            </p>
+
+          </div>
+
         </div>
 
         {/* ===================================================== */}
@@ -1196,55 +871,19 @@ export default function Home() {
           className="relative scroll-mt-24"
         >
 
-          <div className="
-            pointer-events-none
-            absolute
-            left-1/2
-            top-0
-            h-40
-            w-[60%]
-            -translate-x-1/2
-            rounded-full
-            bg-[#fff6df]/[0.025]
-            blur-[90px]
-          " />
-
-          <div className="
-            relative z-10
-            mx-auto
-            mt-10
-            max-w-7xl
-            px-5
-            pb-24
-            md:px-8
-            md:pb-32
-            md:pt-10
-          ">
+          <div className="relative z-10 mx-auto mt-2 max-w-7xl px-5 pb-24 md:px-8 md:pb-32 md:pt-10">
 
             <div className="max-w-2xl">
 
-              <h2 className="
-                mt-1
-                font-serif
-                text-3xl
-                leading-tight
-                tracking-tight
-                text-[#e8e2da]
-                sm:text-5xl
-                md:text-6xl
-              ">
+              <p className="text-[10px] uppercase tracking-[0.28em] text-[#f5d98a]/60">
+                Perjalanan
+              </p>
+
+              <h2 className="mt-2 font-serif text-3xl leading-tight tracking-tight text-[#e8e2da] sm:text-5xl md:text-6xl">
                 Rangkaian Pemilihan
               </h2>
 
-              <p className="
-                mt-4
-                max-w-lg
-                text-sm
-                leading-6
-                text-white/45
-                sm:text-base
-                sm:leading-7
-              ">
+              <p className="mt-4 max-w-lg text-sm leading-6 text-white/45 sm:text-base sm:leading-7">
                 Setiap tahapan menjadi bagian dari perjalanan
                 untuk mengenal diri dan berkembang.
               </p>
@@ -1255,15 +894,7 @@ export default function Home() {
 
             <div className="relative mt-14 sm:hidden">
 
-              <div className="
-                absolute
-                bottom-3
-                left-1/2
-                top-3
-                w-px
-                -translate-x-1/2
-                bg-[#f5d98a]/15
-              " />
+              <div className="absolute bottom-3 left-1/2 top-3 w-px -translate-x-1/2 bg-[#f5d98a]/15" />
 
               <div
                 className={`
@@ -1288,7 +919,7 @@ export default function Home() {
               <div className="relative flex flex-col gap-9">
 
                 <MobileTimelineItem
-                  date="21 SEP 2026"
+                  date="01-12 OKT 2026"
                   title="Pendaftaran"
                   visible={timelineVisible}
                   delay="0ms"
@@ -1296,7 +927,7 @@ export default function Home() {
                 />
 
                 <MobileTimelineItem
-                  date="12 OKT 2026"
+                  date="25 OKT 2026"
                   title="Seleksi"
                   visible={timelineVisible}
                   delay="180ms"
@@ -1304,7 +935,7 @@ export default function Home() {
                 />
 
                 <MobileTimelineItem
-                  date="24 OKT 2026"
+                  date="TBD"
                   title="Pra Karantina"
                   visible={timelineVisible}
                   delay="360ms"
@@ -1312,7 +943,7 @@ export default function Home() {
                 />
 
                 <MobileTimelineItem
-                  date="14–16 JAN 2027"
+                  date="TBD"
                   title="Karantina"
                   visible={timelineVisible}
                   delay="540ms"
@@ -1332,40 +963,21 @@ export default function Home() {
 
             {/* DESKTOP */}
 
-            <div className="
-              no-scrollbar
-              mt-16
-              hidden
-              overflow-x-auto
-              pb-8
-              sm:block
-              sm:mt-20
-            ">
+            <div className="no-scrollbar mt-16 hidden overflow-x-auto pb-8 sm:block sm:mt-20">
 
               <div className="relative min-w-[820px] px-4">
 
-                <div className="
-                  absolute
-                  left-4
-                  right-4
-                  top-3
-                  h-px
-                  bg-[#f5d98a]/15
-                " />
+                <div className="absolute left-4 right-4 top-3 h-px bg-[#f5d98a]/15" />
 
                 <div
                   className={`
-                    absolute
-                    left-4
-                    top-3
-                    h-px
+                    absolute left-4 top-3 h-px
                     bg-gradient-to-r
                     from-[#f5d98a]
                     via-[#f5d98a]
                     to-[#f5d98a]/20
                     shadow-[0_0_12px_rgba(245,217,138,0.8)]
-                    transition-all
-                    duration-[1800ms]
+                    transition-all duration-[1800ms]
                     ease-out
                     ${
                       timelineVisible
@@ -1378,28 +990,28 @@ export default function Home() {
                 <div className="relative grid grid-cols-5">
 
                   <TimelineItem
-                    date="21 SEP 2026"
+                    date="01-12 OKT 2026"
                     title="Pendaftaran"
                     visible={timelineVisible}
                     delay="0ms"
                   />
 
                   <TimelineItem
-                    date="12 OKT 2026"
+                    date="25 OKT 2026"
                     title="Seleksi"
                     visible={timelineVisible}
                     delay="180ms"
                   />
 
                   <TimelineItem
-                    date="24 OKT 2026"
+                    date="TBD"
                     title="Pra Karantina"
                     visible={timelineVisible}
                     delay="360ms"
                   />
 
                   <TimelineItem
-                    date="14–16 JAN 2027"
+                    date="TBD"
                     title="Karantina"
                     visible={timelineVisible}
                     delay="540ms"
@@ -1421,148 +1033,23 @@ export default function Home() {
       </section>
 
       {/* ========================================================= */}
-      {/* CTA */}
+      {/* CONTACT / NARAHUBUNG */}
       {/* ========================================================= */}
 
-      <section className="
-        relative
-        overflow-hidden
-        bg-[#170401]
-        py-20
-        text-white
-        sm:py-24
-        md:py-32
-      ">
+      <section
+        id="narahubung"
+        className="relative overflow-hidden bg-[#e9e1d2] py-20 sm:py-24 md:py-28"
+      >
 
-        <div className="
-          pointer-events-none
-          absolute inset-0
-          bg-[radial-gradient(circle_at_50%_15%,rgba(245,217,138,0.1),transparent_25%),radial-gradient(circle_at_85%_80%,rgba(245,180,70,0.06),transparent_30%),linear-gradient(135deg,#170401,#2a0d08,#170401)]
-        " />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_15%,rgba(255,255,255,0.55),transparent_28%),radial-gradient(circle_at_85%_85%,rgba(245,217,138,0.16),transparent_30%),linear-gradient(135deg,#eee7da,#e4d9c7,#dcd0bd)]" />
 
-        <div className="
-          pointer-events-none
-          absolute
-          left-1/2
-          top-[20%]
-          h-64
-          w-[70%]
-          -translate-x-1/2
-          rounded-full
-          bg-[#fff6df]/[0.025]
-          blur-[100px]
-        " />
+        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[60%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/20 blur-[110px]" />
 
-        <div className="
-          relative z-10
-          mx-auto
-          max-w-5xl
-          px-5
-          text-center
-          md:px-8
-        ">
+        <div className="relative z-10 mx-auto max-w-7xl px-5 md:px-8">
 
-          <p className="
-            text-[10px]
-            uppercase
-            tracking-[0.3em]
-            text-white/70
-            sm:text-xs
-            sm:tracking-[0.35em]
-          ">
-            Saatnya mengambil peran
-          </p>
+          <div className="grid gap-10 md:grid-cols-[0.75fr_1.25fr] md:items-center md:gap-14">
 
-          <h2 className="
-            mt-4
-            font-serif
-            text-4xl
-            leading-tight
-            sm:text-5xl
-            md:text-7xl
-          ">
-            Siap menjadi
-
-            <br />
-
-            bagian dari perjalanan?
-          </h2>
-
-          <p className="
-            mx-auto
-            mt-5
-            max-w-xl
-            text-sm
-            leading-6
-            text-white/75
-            sm:mt-6
-            sm:text-base
-            sm:leading-7
-          ">
-            Ikuti Pemilihan Jegeg Bagus FEB Unmas 2027
-            dan temukan potensi yang ada dalam dirimu.
-          </p>
-
-          <Link
-            href="/pendaftaran"
-            className="
-              mt-7
-              inline-flex
-              rounded-full
-              border border-white/20
-              bg-white/10
-              px-8 py-4
-              text-sm
-              font-semibold
-              text-white
-              shadow-xl
-              backdrop-blur-xl
-              transition-all duration-500
-              hover:-translate-y-1
-              hover:bg-white
-              hover:text-[#170401]
-              sm:mt-9
-            "
-          >
-            Mulai Pendaftaran
-          </Link>
-
-        </div>
-      </section>
-
-      {/* ========================================================= */}
-      {/* CONTACT */}
-      {/* ========================================================= */}
-
-      <section className="
-        relative
-        overflow-hidden
-        bg-[#e9e1d2]
-        py-20
-        sm:py-24
-        md:py-28
-      ">
-
-        <div className="
-          pointer-events-none
-          absolute inset-0
-          bg-[radial-gradient(circle_at_15%_15%,rgba(255,255,255,0.45),transparent_28%),radial-gradient(circle_at_85%_85%,rgba(245,217,138,0.13),transparent_30%),linear-gradient(135deg,#eee7da,#e4d9c7,#dcd0bd)]
-        " />
-
-        <div className="
-          relative z-10
-          mx-auto
-          max-w-7xl
-          px-5
-          md:px-8
-        ">
-
-          <div className="
-            grid
-            gap-8
-            md:grid-cols-2
-            md:gap-10
-          ">
+            {/* LEFT */}
 
             <div>
 
@@ -1570,7 +1057,7 @@ export default function Home() {
                 Narahubung
               </p>
 
-              <h2 className="section-title">
+              <h2 className="mt-3 font-serif text-4xl leading-[1] tracking-tight text-[#170401] sm:text-5xl md:text-6xl">
                 Ada yang ingin
 
                 <br />
@@ -1580,25 +1067,37 @@ export default function Home() {
                 </span>
               </h2>
 
+              <p className="mt-5 max-w-sm text-sm leading-6 text-black/50 sm:text-base sm:leading-7">
+                Hubungi kami untuk informasi seputar
+                pendaftaran, tahapan pemilihan, maupun
+                hal lainnya mengenai Jegeg Bagus FEB
+                Unmas 2027.
+              </p>
+
             </div>
 
-            <div className="
-              grid
-              gap-3
-              sm:grid-cols-2
-              sm:gap-4
-            ">
+            {/* CONTACT CARDS */}
+
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
 
               <ContactCard
-                number="Narahubung 01"
-                name="Bagus Diki"
-                role="Ketua Panitia"
+                name="Ayu"
+                role="Wakil Ketua"
+                image="/YUA.webp"
+                href={whatsappLink(
+                  WHATSAPP_AYU,
+                  "Halo Kak Ayu, saya ingin bertanya mengenai Pemilihan Jegeg Bagus FEB Unmas 2027"
+                )}
               />
 
               <ContactCard
-                number="Narahubung 02"
-                name="Jegeg Ayu"
-                role="Wakil Ketua"
+                name="Diki"
+                role="Ketua Panitia"
+                image="/DIKI.webp"
+                href={whatsappLink(
+                  WHATSAPP_DIKI,
+                  "Halo Kak Diki, saya ingin bertanya mengenai Pemilihan Jegeg Bagus FEB Unmas 2027"
+                )}
               />
 
             </div>
@@ -1611,32 +1110,14 @@ export default function Home() {
       {/* FOOTER */}
       {/* ========================================================= */}
 
-      <footer className="
-        border-t
-        border-white/10
-        bg-[#2a1616]
-        py-8
-        text-[#f5f1e8]
-        sm:py-10
-      ">
+      <footer className="border-t border-white/10 bg-[#2a1616] py-8 text-[#f5f1e8] sm:py-10">
 
-        <div className="
-          mx-auto
-          flex
-          max-w-7xl
-          flex-col
-          gap-6
-          px-5
-          sm:flex-row
-          sm:items-center
-          sm:justify-between
-          md:px-8
-        ">
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 sm:flex-row sm:items-center sm:justify-between md:px-8">
 
           <div className="flex items-center gap-3">
 
             <img
-              src="/Logo JEBAG FEB.png"
+              src="/Logo JEBAG FEB.webp"
               alt="Logo Jegeg Bagus FEB Unmas"
               className="h-10 w-10 object-contain sm:h-11 sm:w-11"
             />
@@ -1654,12 +1135,91 @@ export default function Home() {
             </div>
           </div>
 
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            <a
+              href="https://www.instagram.com/jegegbagusunmas/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram Jegeg Bagus Unmas"
+              className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-white/60 transition hover:border-white/20 hover:text-white"
+            >
+              Instagram
+            </a>
+
+            <a
+              href="https://www.tiktok.com/sejebagfebunmas/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="TikTok Jegeg Bagus FEB Unmas"
+              className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-white/60 transition hover:border-white/20 hover:text-white"
+            >
+              TikTok
+            </a>
+
+            <a
+              href="https://www.youtube.com/@JegegBagusFEBUnmas"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube Jegeg Bagus FEB Unmas"
+              className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-white/60 transition hover:border-white/20 hover:text-white"
+            >
+              YouTube
+            </a>
+          </div>
+
           <div className="text-xs text-white/40">
             © 2026 Jegeg Bagus FEB Unmas
           </div>
 
         </div>
       </footer>
+
+      {/* ========================================================= */}
+      {/* CUSTOM ANIMATIONS */}
+      {/* ========================================================= */}
+
+      <style jsx global>{`
+        @keyframes lanternGlow {
+          0%,
+          100% {
+            filter:
+              drop-shadow(
+                0 0 16px
+                rgba(255, 246, 223, 0.28)
+              )
+              drop-shadow(
+                0 0 38px
+                rgba(245, 217, 138, 0.20)
+              );
+          }
+
+          50% {
+            filter:
+              drop-shadow(
+                0 0 24px
+                rgba(255, 246, 223, 0.50)
+              )
+              drop-shadow(
+                0 0 60px
+                rgba(245, 217, 138, 0.34)
+              );
+          }
+        }
+
+        .lantern-logo-glow {
+          animation:
+            lanternGlow
+            4s
+            ease-in-out
+            infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .lantern-logo-glow {
+            animation: none;
+          }
+        }
+      `}</style>
 
     </main>
   );
@@ -1670,7 +1230,6 @@ export default function Home() {
 /* =============================================================== */
 
 function RegistrationCard({
-  type,
   badge,
   title,
   date,
@@ -1679,7 +1238,6 @@ function RegistrationCard({
   href,
   description,
 }: {
-  type: string;
   badge: string;
   title: string;
   date: string;
@@ -1689,154 +1247,56 @@ function RegistrationCard({
   description: string;
 }) {
   return (
-    <div
-      className="
-        relative
-        min-w-[86vw]
-        snap-center
-        overflow-hidden
-        rounded-[30px]
-        border
-        border-white/[0.13]
-        bg-black
-        shadow-[0_25px_70px_rgba(0,0,0,0.25)]
-        sm:min-w-[500px]
-        md:min-w-0
-      "
-    >
+    <div className="group relative aspect-[4/5] min-w-[86vw] snap-center overflow-hidden rounded-[30px] border border-white/[0.14] bg-white/[0.055] shadow-[0_25px_70px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.14)] backdrop-blur-2xl sm:min-w-[500px] md:min-w-0">
 
-      {/* PHOTO */}
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(145deg,rgba(255,255,255,0.12),rgba(255,255,255,0.025)_45%,rgba(0,0,0,0.20))]" />
 
-      <div className="absolute inset-0">
+      <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#f5d98a]/[0.10] blur-[90px]" />
 
-        <img
-          src={image}
-          alt={type}
-          className="
-            h-full
-            min-h-[430px]
-            w-full
-            object-cover
-          "
-        />
+      <div className="absolute left-5 right-5 top-5 h-[70%] overflow-hidden rounded-[24px] shadow-[0_20px_45px_rgba(0,0,0,0.28)] transition-transform duration-700 group-hover:-translate-y-1 sm:left-6 sm:right-6 sm:top-6">
 
-        {/* DARK GRADIENT */}
+        <div className="relative h-full w-full overflow-hidden rounded-[24px]">
 
-        <div
-          className="
-            absolute
-            inset-0
-            bg-[linear-gradient(180deg,rgba(0,0,0,0.12)_0%,rgba(15,3,1,0.18)_25%,rgba(15,3,1,0.70)_68%,rgba(10,2,1,0.96)_100%)]
-          "
-        />
+          <img
+            src={image}
+            alt="Jegeg Bagus FEB Unmas"
+            className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.025]"
+          />
 
-        {/* WARM LIGHT */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#170401]/30 via-transparent to-transparent" />
 
-        <div
-          className="
-            pointer-events-none
-            absolute
-            right-[-10%]
-            top-[-5%]
-            h-64
-            w-64
-            rounded-full
-            bg-[#f5d98a]/20
-            blur-[90px]
-          "
-        />
-
+        </div>
       </div>
 
-      {/* CONTENT */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[63%] bg-gradient-to-t from-[#100201] via-[#170401]/90 to-transparent" />
 
-      <div className="
-        relative
-        z-10
-        flex
-        min-h-[430px]
-        flex-col
-        justify-between
-        p-5
-        sm:p-6
-      ">
+      <div className="relative z-20 flex h-full flex-col p-5 sm:p-6">
 
-        {/* TOP */}
+        <div className="relative z-20">
 
-        <div>
+          <div className="inline-flex items-center rounded-full border border-[#f5d98a]/5 bg-[#E30000]/80 px-3 py-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.18)] backdrop-blur-xl">
 
-          <div className="
-            inline-flex
-            max-w-full
-            rounded-full
-            border
-            border-white/15
-            bg-black/25
-            px-3
-            py-2
-            backdrop-blur-xl
-          ">
+            <span className="mr-2 h-1.5 w-1.5 rounded-full bg-[#f5d98a] shadow-[0_0_8px_rgba(245,217,138,0.8)]" />
 
-            <p className="
-              max-w-[300px]
-              text-[8px]
-              font-semibold
-              uppercase
-              tracking-[0.14em]
-              text-[#f5d98a]
-              sm:text-[9px]
-            ">
+            <p className="text-[7px] font-semibold uppercase tracking-[0.12em] text-[#f5d98a] sm:text-[8px]">
               {badge}
             </p>
 
           </div>
 
-          <p className="
-            mt-5
-            text-[9px]
-            uppercase
-            tracking-[0.25em]
-            text-white/55
-          ">
-            {type}
-          </p>
-
         </div>
 
-        {/* BOTTOM */}
+        <div className="relative z-20 mt-auto pt-4">
 
-        <div>
-
-          <p className="
-            text-[10px]
-            uppercase
-            tracking-[0.22em]
-            text-[#f5d98a]
-          ">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#f5d98a]">
             {date}
           </p>
 
-          <h3 className="
-            mt-2
-            max-w-[330px]
-            font-serif
-            text-2xl
-            leading-tight
-            text-white
-            sm:text-3xl
-          ">
+          <h3 className="mt-2 max-w-[360px] font-serif text-[1.45rem] leading-[1.05] text-white sm:text-3xl">
             {title}
           </h3>
 
-          <p className="
-            mt-3
-            max-w-[390px]
-            text-xs
-            leading-5
-            text-white/55
-            sm:text-sm
-            sm:leading-6
-          ">
+          <p className="mt-2.5 max-w-[390px] text-[11px] leading-[1.45] text-white/55 sm:text-sm sm:leading-6">
             {description}
           </p>
 
@@ -1844,33 +1304,12 @@ function RegistrationCard({
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="
-              mt-5
-              inline-flex
-              items-center
-              justify-center
-              rounded-full
-              border
-              border-white/15
-              bg-white/10
-              px-5
-              py-3
-              text-xs
-              font-semibold
-              text-white
-              backdrop-blur-xl
-              transition-all
-              duration-500
-              hover:-translate-y-1
-              hover:bg-[#f5d98a]
-              hover:text-[#170401]
-            "
+            className="mt-4 inline-flex items-center justify-center rounded-full border border-white/15 bg-white/10 px-5 py-2.5 text-[10px] font-semibold text-white shadow-[0_8px_25px_rgba(0,0,0,0.15)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:bg-[#f5d98a] hover:text-[#170401] sm:text-xs"
           >
-            {buttonText} →
+            {buttonText}
           </a>
 
         </div>
-
       </div>
     </div>
   );
@@ -1882,222 +1321,100 @@ function RegistrationCard({
 
 function FinalistCard() {
   return (
-    <div
-      className="
-        relative
-        min-w-[86vw]
-        snap-center
-        overflow-hidden
-        rounded-[30px]
-        border
-        border-white/[0.13]
-        bg-[#120302]
-        shadow-[0_25px_70px_rgba(0,0,0,0.25)]
-        sm:min-w-[500px]
-        md:min-w-0
-      "
-    >
+    <div className="group relative aspect-[4/5] min-w-[86vw] snap-center overflow-hidden rounded-[30px] border border-white/[0.14] bg-white/[0.055] shadow-[0_25px_70px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.14)] backdrop-blur-2xl sm:min-w-[500px] md:min-w-0">
 
-      {/* BACKGROUND */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_12%,rgba(245,217,138,0.14),transparent_30%),linear-gradient(145deg,rgba(255,255,255,0.09),rgba(255,255,255,0.025)_45%,rgba(0,0,0,0.20))]" />
 
-      <div
-        className="
-          pointer-events-none
-          absolute
-          inset-0
-          bg-[radial-gradient(circle_at_50%_18%,rgba(245,217,138,0.16),transparent_28%),linear-gradient(145deg,#170401,#30100b,#110202)]
-        "
-      />
+      <div className="pointer-events-none absolute left-1/2 top-[-15%] h-60 w-60 -translate-x-1/2 rounded-full bg-[#f5d98a]/10 blur-[90px]" />
 
-      {/* ===================================================== */}
-      {/* LOCKSCREEN PHOTOS */}
-      {/* ===================================================== */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-[#100201] via-[#170401]/90 to-transparent" />
 
-      <div className="
-        relative
-        flex
-        min-h-[430px]
-        items-center
-        justify-center
-        overflow-hidden
-      ">
+      <div className="relative z-10 flex h-full flex-col p-5 sm:p-6">
 
-        {/* BAGUS */}
+        <div className="relative z-30">
 
-        <div
-          className="
-            absolute
-            left-[8%]
-            top-[12%]
-            h-[260px]
-            w-[43%]
-            rotate-[-7deg]
-            overflow-hidden
-            rounded-[24px]
-            border
-            border-white/15
-            bg-white/10
-            shadow-[0_25px_50px_rgba(0,0,0,0.35)]
-            backdrop-blur-xl
-            sm:left-[9%]
-            sm:h-[300px]
-          "
-        >
+          <div className="inline-flex items-center rounded-full border border-white/15 bg-[#008A6D]/50 px-3 py-1.5 backdrop-blur-xl">
 
-          <img
-            src="/Bagus.webp"
-            alt="Bagus"
-            className="
-              h-full
-              w-full
-              object-cover
-            "
-          />
+            <span className="mr-2 h-1.5 w-1.5 rounded-full bg-[#FFDC0F] shadow-[0_0_8px_rgba(245,217,138,0.8)]" />
 
-          <div className="
-            absolute
-            inset-0
-            bg-gradient-to-b
-            from-transparent
-            via-transparent
-            to-black/60
-          " />
+            <p className="text-[7px] font-semibold uppercase tracking-[0.14em] text-[#f5d98a] sm:text-[8px]">
+              SEGERA HADIR
+            </p>
+
+          </div>
 
         </div>
 
-        {/* JEGEG */}
+        <div className="relative mx-auto mt-4 h-[41%] w-full max-w-[310px] shrink-0">
 
-        <div
-          className="
-            absolute
-            right-[8%]
-            top-[18%]
-            h-[260px]
-            w-[43%]
-            rotate-[7deg]
-            overflow-hidden
-            rounded-[24px]
-            border
-            border-white/15
-            bg-white/10
-            shadow-[0_25px_50px_rgba(0,0,0,0.35)]
-            backdrop-blur-xl
-            sm:right-[9%]
-            sm:h-[300px]
-          "
-        >
+          {/* BAGUS */}
 
-          <img
-            src="/Jegeg.webp"
-            alt="Jegeg"
-            className="
-              h-full
-              w-full
-              object-cover
-            "
-          />
+          <div className="absolute left-[4%] top-2 h-[92%] w-[46%] rotate-[-7deg] overflow-hidden rounded-[25px] shadow-[0_20px_45px_rgba(0,0,0,0.35)] transition-transform duration-700 group-hover:-translate-x-1">
 
-          <div className="
-            absolute
-            inset-0
-            bg-gradient-to-b
-            from-transparent
-            via-transparent
-            to-black/60
-          " />
+            <div className="relative h-full w-full overflow-hidden rounded-[25px]">
+
+              <img
+                src="/Bagus.webp"
+                alt="Bagus"
+                className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.025]"
+              />
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent" />
+
+              <p className="absolute bottom-3 left-3 text-[7px] uppercase tracking-[0.2em] text-white/75">
+                BAGUS ARIPTA
+              </p>
+
+            </div>
+          </div>
+
+          {/* JEGEG */}
+
+          <div className="absolute right-[4%] top-7 h-[92%] w-[46%] rotate-[7deg] overflow-hidden rounded-[25px] shadow-[0_20px_45px_rgba(0,0,0,0.35)] transition-transform duration-700 group-hover:translate-x-1">
+
+            <div className="relative h-full w-full overflow-hidden rounded-[25px]">
+
+              <img
+                src="/Jegeg.webp"
+                alt="Jegeg"
+                className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.025]"
+              />
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent" />
+
+              <p className="absolute bottom-3 left-3 text-[7px] uppercase tracking-[0.2em] text-white/75">
+                JEGEG DIAN
+              </p>
+
+            </div>
+          </div>
+
+          <div className="pointer-events-none absolute left-1/2 top-1/2 h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f5d98a]/10 blur-[70px]" />
 
         </div>
 
-        {/* SOFT LIGHT */}
+        <div className="relative z-30 mt-auto pt-3">
 
-        <div
-          className="
-            pointer-events-none
-            absolute
-            left-1/2
-            top-1/2
-            h-52
-            w-52
-            -translate-x-1/2
-            -translate-y-1/2
-            rounded-full
-            bg-[#f5d98a]/10
-            blur-[80px]
-          "
-        />
-
-        {/* CONTENT OVERLAY */}
-
-        <div className="
-          absolute
-          inset-x-5
-          bottom-5
-          z-20
-          sm:inset-x-6
-          sm:bottom-6
-        ">
-
-          <p className="
-            text-[9px]
-            uppercase
-            tracking-[0.25em]
-            text-[#f5d98a]
-          ">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#f5d98a]">
             01–12 Oktober 2026
           </p>
 
-          <h3 className="
-            mt-2
-            font-serif
-            text-2xl
-            leading-tight
-            text-white
-            sm:text-3xl
-          ">
-            Pendaftaran Finalis
+          <h3 className="mt-2 font-serif text-[1.45rem] leading-[1.05] text-white sm:text-3xl">
+            Tunjukkan Potensi dan Persiapkan Dirimu!
           </h3>
 
-          <p className="
-            mt-2
-            max-w-[350px]
-            text-xs
-            leading-5
-            text-white/55
-            sm:text-sm
-          ">
-            Saatnya mengambil langkah dan menjadi bagian
-            dari perjalanan Jegeg Bagus FEB Unmas 2027.
+          <p className="mt-2.5 max-w-[390px] text-[11px] leading-[1.45] text-white/55 sm:text-sm sm:leading-6">
+            Terbuka bagi mahasiswa FEB Unmas Semester 1–3.
           </p>
 
           <Link
             href="/pendaftaran-finalis"
-            className="
-              mt-5
-              inline-flex
-              items-center
-              justify-center
-              rounded-full
-              border
-              border-white/15
-              bg-white/10
-              px-5
-              py-3
-              text-xs
-              font-semibold
-              text-white
-              backdrop-blur-xl
-              transition-all
-              duration-500
-              hover:-translate-y-1
-              hover:bg-[#f5d98a]
-              hover:text-[#170401]
-            "
+            className="mt-4 inline-flex items-center justify-center rounded-full border border-white/15 bg-white/10 px-5 py-2.5 text-[10px] font-semibold text-white shadow-[0_8px_25px_rgba(0,0,0,0.15)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:bg-[#f5d98a] hover:text-[#170401] sm:text-xs"
           >
-            Daftar Finalis →
+            Daftar Finalis
           </Link>
 
         </div>
-
       </div>
     </div>
   );
@@ -2117,198 +1434,95 @@ function CountdownCard({
   countdown: CountdownValue;
 }) {
   return (
-    <div
-      className="
-        relative
-        min-w-[86vw]
-        snap-center
-        overflow-hidden
-        rounded-[30px]
-        border
-        border-white/[0.12]
-        bg-white/[0.075]
-        p-5
-        shadow-[0_20px_60px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.1)]
-        backdrop-blur-2xl
-        sm:min-w-[500px]
-        sm:p-6
-        md:min-w-0
-        md:p-6
-      "
-    >
+    <div className="relative aspect-[4/5] min-w-[86vw] snap-center overflow-hidden rounded-[30px] border border-white/[0.12] bg-white/[0.075] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-2xl sm:min-w-[500px] sm:p-6 md:min-w-0 md:p-6">
 
-      {/* CARD LIGHT */}
+      <div className="pointer-events-none absolute -right-20 -top-20 h-48 w-48 rounded-full bg-[#fff6df]/10 blur-[70px]" />
 
-      <div
-        className="
-          pointer-events-none
-          absolute
-          -right-20
-          -top-20
-          h-48
-          w-48
-          rounded-full
-          bg-[#fff6df]/10
-          blur-[70px]
-        "
-      />
+      <div className="pointer-events-none absolute -bottom-20 -left-20 h-48 w-48 rounded-full bg-[#f5b446]/[0.07] blur-[70px]" />
 
-      <div
-        className="
-          pointer-events-none
-          absolute
-          -bottom-20
-          -left-20
-          h-48
-          w-48
-          rounded-full
-          bg-[#f5b446]/[0.07]
-          blur-[70px]
-        "
-      />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-[#100201]/80 via-transparent to-transparent" />
 
-      <div className="relative z-10">
+      <div className="relative z-10 flex h-full flex-col">
 
-        {/* TOP */}
-
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start justify-between gap-3">
 
           <div>
 
-            <p className="
-              text-[9px]
-              uppercase
-              tracking-[0.25em]
-              text-[#f5d98a]/65
-            ">
+            <p className="text-[8px] uppercase tracking-[0.25em] text-[#f5d98a]/65 sm:text-[9px]">
               Puncak Acara
             </p>
 
-            <h3 className="
-              mt-2
-              font-serif
-              text-2xl
-              leading-tight
-              text-white
-              sm:text-3xl
-            ">
+            <h3 className="mt-1.5 font-serif text-[1.45rem] leading-tight text-white sm:text-3xl">
               {title}
             </h3>
 
           </div>
 
-          <div className="
-            shrink-0
-            rounded-full
-            border
-            border-white/10
-            bg-white/[0.06]
-            px-3
-            py-1.5
-            text-[9px]
-            uppercase
-            tracking-[0.12em]
-            text-white/45
-          ">
+          <div className="shrink-0 rounded-full border border-white/10 bg-white/[0.06] px-2.5 py-1.5 text-[7px] uppercase tracking-[0.1em] text-white/45 sm:px-3 sm:text-[9px]">
             {dateLabel}
           </div>
 
         </div>
 
-        {/* COUNTDOWN */}
+        <div className="mt-5 grid grid-cols-4 gap-1.5 sm:gap-2">
 
-        <div className="
-          mt-6
-          grid
-          grid-cols-4
-          gap-2
-        ">
-
-          <LockscreenTime
+          <CountdownUnit
             value={countdown.days}
             label="Hari"
           />
 
-          <LockscreenTime
+          <CountdownUnit
             value={countdown.hours}
             label="Jam"
           />
 
-          <LockscreenTime
+          <CountdownUnit
             value={countdown.minutes}
             label="Menit"
           />
 
-          <LockscreenTime
+          <CountdownUnit
             value={countdown.seconds}
             label="Detik"
           />
 
         </div>
 
-        {/* BOTTOM */}
-
-        <div className="
-          mt-5
-          flex
-          flex-col
-          gap-4
-          border-t
-          border-white/[0.08]
-          pt-4
-          sm:flex-row
-          sm:items-center
-          sm:justify-between
-        ">
-
-          <p className="
-            text-[9px]
-            uppercase
-            tracking-[0.2em]
-            text-white/30
-          ">
-            Menuju malam puncak
-          </p>
+        <div className="mt-auto border-t border-white/[0.08] pt-4">
 
           <Link
             href="/grand-final"
-            className="
-              inline-flex
-              items-center
-              justify-center
-              rounded-full
-              border
-              border-white/10
-              bg-white/[0.06]
-              px-4
-              py-2.5
-              text-[10px]
-              font-semibold
-              uppercase
-              tracking-[0.14em]
-              text-white/70
-              transition-all
-              duration-500
-              hover:-translate-y-0.5
-              hover:bg-[#f5d98a]
-              hover:text-[#170401]
-            "
+            className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.06] px-4 py-2.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-white/70 transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#f5d98a] hover:text-[#170401]"
           >
-            Selengkapnya →
+            Selengkapnya
           </Link>
 
-        </div>
+          <div className="relative mt-4 overflow-hidden rounded-[20px] border border-white/10 bg-black/20 p-1 shadow-[0_20px_45px_rgba(0,0,0,0.22)]">
 
+            <div className="relative overflow-hidden rounded-[16px]">
+
+              <img
+                src="/Grand Final.webp"
+                alt="Grand Final Jegeg Bagus FEB Unmas 2027"
+                className="h-[165px] w-full object-cover transition-transform duration-700 hover:scale-[1.025] sm:h-[180px]"
+              />
+
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#170401]/60 via-transparent to-transparent" />
+
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   );
 }
 
 /* =============================================================== */
-/* LOCKSCREEN TIME */
+/* COUNTDOWN UNIT */
 /* =============================================================== */
 
-function LockscreenTime({
+function CountdownUnit({
   value,
   label,
 }: {
@@ -2316,38 +1530,13 @@ function LockscreenTime({
   label: string;
 }) {
   return (
-    <div className="
-      rounded-[18px]
-      border
-      border-white/[0.09]
-      bg-black/[0.12]
-      px-2
-      py-3
-      text-center
-      shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]
-      sm:px-3
-      sm:py-4
-    ">
+    <div className="rounded-[15px] border border-white/[0.09] bg-black/[0.12] px-1.5 py-2.5 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] sm:rounded-[18px] sm:px-3 sm:py-4">
 
-      <p className="
-        font-serif
-        text-2xl
-        leading-none
-        tracking-tight
-        text-white
-        sm:text-3xl
-      ">
+      <p className="font-serif text-xl leading-none tracking-tight text-white sm:text-3xl">
         {value}
       </p>
 
-      <p className="
-        mt-2
-        text-[7px]
-        uppercase
-        tracking-[0.18em]
-        text-white/30
-        sm:text-[8px]
-      ">
+      <p className="mt-1.5 text-[6px] uppercase tracking-[0.16em] text-white/30 sm:mt-2 sm:text-[8px]">
         {label}
       </p>
 
@@ -2356,10 +1545,10 @@ function LockscreenTime({
 }
 
 /* =============================================================== */
-/* CONCEPT CARD */
+/* SIMPLE CONCEPT */
 /* =============================================================== */
 
-function ConceptCard({
+function SimpleConcept({
   title,
   text,
 }: {
@@ -2367,38 +1556,15 @@ function ConceptCard({
   text: string;
 }) {
   return (
-    <div className="
-      rounded-2xl
-      border border-white/10
-      bg-white/[0.045]
-      p-4
-      shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]
-      backdrop-blur-xl
-      transition-all
-      duration-500
-      hover:-translate-y-1
-      hover:bg-white/[0.07]
-      sm:p-5
-    ">
+    <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-5 backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:border-[#f5d98a]/20 hover:bg-white/[0.06] sm:p-6">
 
-      <h3 className="
-        mt-2
-        font-serif
-        text-base
-        text-white
-        sm:text-xl
-      ">
+      {/* NUMBER DIHAPUS */}
+
+      <h3 className="font-serif text-xl text-white sm:text-2xl">
         {title}
       </h3>
 
-      <p className="
-        mt-2
-        text-[11px]
-        leading-4
-        text-white/45
-        sm:text-xs
-        sm:leading-5
-      ">
+      <p className="mt-2 text-xs leading-5 text-white/45 sm:text-sm">
         {text}
       </p>
 
@@ -2424,10 +1590,8 @@ function TimelineItem({
   return (
     <div
       className={`
-        relative
-        px-1
-        transition-all
-        duration-700
+        relative px-1
+        transition-all duration-700
         ease-[cubic-bezier(0.22,1,0.36,1)]
         ${
           visible
@@ -2440,59 +1604,23 @@ function TimelineItem({
       }}
     >
 
-      <div className="
-        relative
-        z-10
-        flex
-        h-6
-        w-6
-        items-center
-        justify-center
-        rounded-full
-        border
-        border-[#f5d98a]/50
-        bg-[#170401]
-        shadow-[0_0_0_5px_#170401,0_0_18px_rgba(245,217,138,0.15)]
-      ">
+      <div className="relative z-10 flex h-6 w-6 items-center justify-center rounded-full border border-[#f5d98a]/50 bg-[#170401] shadow-[0_0_0_5px_#170401,0_0_18px_rgba(245,217,138,0.15)]">
 
-        <div className="
-          firefly-animation
-          h-2
-          w-2
-          rounded-full
-          bg-[#f5d98a]
-          shadow-[0_0_12px_rgba(245,217,138,0.8)]
-        " />
+        <div className="firefly-animation h-2 w-2 rounded-full bg-[#f5d98a] shadow-[0_0_12px_rgba(245,217,138,0.8)]" />
 
       </div>
 
       <div className="mt-7 pr-6 sm:pr-10">
 
-        <p className="
-          text-[10px]
-          font-medium
-          tracking-[0.25em]
-          text-[#f5d98a]/70
-          sm:text-xs
-        ">
+        <p className="text-[10px] font-medium tracking-[0.25em] text-[#f5d98a]/70 sm:text-xs">
           {date}
         </p>
 
-        <h3 className="
-          mt-2
-          max-w-[150px]
-          font-serif
-          text-base
-          leading-tight
-          text-white
-          sm:text-lg
-          md:text-xl
-        ">
+        <h3 className="mt-2 max-w-[150px] font-serif text-base leading-tight text-white sm:text-lg md:text-xl">
           {title}
         </h3>
 
       </div>
-
     </div>
   );
 }
@@ -2521,8 +1649,7 @@ function MobileTimelineItem({
       className={`
         relative
         min-h-[92px]
-        transition-all
-        duration-700
+        transition-all duration-700
         ease-[cubic-bezier(0.22,1,0.36,1)]
         ${
           visible
@@ -2549,32 +1676,9 @@ function MobileTimelineItem({
         `}
       />
 
-      <div className="
-        absolute
-        left-1/2
-        top-0
-        z-10
-        flex
-        h-6
-        w-6
-        -translate-x-1/2
-        items-center
-        justify-center
-        rounded-full
-        border
-        border-[#f5d98a]/50
-        bg-[#170401]
-        shadow-[0_0_0_5px_#170401,0_0_18px_rgba(245,217,138,0.15)]
-      ">
+      <div className="absolute left-1/2 top-0 z-10 flex h-6 w-6 -translate-x-1/2 items-center justify-center rounded-full border border-[#f5d98a]/50 bg-[#170401] shadow-[0_0_0_5px_#170401,0_0_18px_rgba(245,217,138,0.15)]">
 
-        <div className="
-          firefly-animation
-          h-2
-          w-2
-          rounded-full
-          bg-[#f5d98a]
-          shadow-[0_0_12px_rgba(245,217,138,0.8)]
-        " />
+        <div className="firefly-animation h-2 w-2 rounded-full bg-[#f5d98a] shadow-[0_0_12px_rgba(245,217,138,0.8)]" />
 
       </div>
 
@@ -2589,27 +1693,15 @@ function MobileTimelineItem({
         `}
       >
 
-        <p className="
-          text-[9px]
-          font-medium
-          tracking-[0.22em]
-          text-[#f5d98a]/60
-        ">
+        <p className="text-[9px] font-medium tracking-[0.22em] text-[#f5d98a]/60">
           {date}
         </p>
 
-        <h3 className="
-          mt-1
-          font-serif
-          text-lg
-          leading-tight
-          text-white
-        ">
+        <h3 className="mt-1 font-serif text-lg leading-tight text-white">
           {title}
         </h3>
 
       </div>
-
     </div>
   );
 }
@@ -2619,70 +1711,45 @@ function MobileTimelineItem({
 /* =============================================================== */
 
 function ContactCard({
-  number,
   name,
   role,
+  image,
+  href,
 }: {
-  number: string;
   name: string;
   role: string;
+  image: string;
+  href: string;
 }) {
   return (
-    <div className="
-      group
-      rounded-[24px]
-      border border-black/[0.08]
-      bg-white/20
-      p-5
-      shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]
-      backdrop-blur-xl
-      transition-all
-      duration-500
-      hover:-translate-y-1
-      hover:bg-white/30
-      sm:p-6
-    ">
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group relative block min-w-0 overflow-hidden rounded-[24px] shadow-[0_18px_45px_rgba(23,4,1,0.18)] transition-transform duration-500 hover:-translate-y-1"
+    >
+      <div className="absolute inset-0 bg-white/10 backdrop-blur-xl" />
 
-      <p className="
-        text-[10px]
-        uppercase
-        tracking-widest
-        text-black/40
-      ">
-        {number}
-      </p>
+      <img
+        src={image}
+        alt={name}
+        className="relative h-full min-h-[180px] w-full object-contain object-center ..."
+      />
 
-      <h3 className="
-        mt-3
-        font-serif
-        text-2xl
-      ">
-        {name}
-      </h3>
+      {/* iOS-style glass highlight + shadow */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#170401]/80 via-[#170401]/10 to-white/10" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#2a1616]/20 to-transparent blur-[2px]" />
 
-      <p className="
-        mt-2
-        text-sm
-        text-black/50
-      ">
-        {role}
-      </p>
+      <div className="absolute inset-x-0 bottom-0 p-3.5 text-white sm:p-5">
 
-      <a
-        href="#"
-        className="
-          mt-5
-          inline-block
-          text-sm
-          font-semibold
-          transition-transform
-          duration-300
-          group-hover:translate-x-1
-        "
-      >
-        Hubungi →
-      </a>
+        <h3 className="mt-1 font-serif text-xl leading-none sm:text-2xl">
+          {name}
+        </h3>
 
-    </div>
+        <p className="mt-1 text-[9px] text-white/65 sm:text-xs">
+          {role}
+        </p>
+      </div>
+    </a>
   );
 }

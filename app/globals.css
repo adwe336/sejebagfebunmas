@@ -444,3 +444,83 @@ a {
     transition-duration: 0.01ms !important;
   }
 }
+@keyframes lotusAxisSpin {
+  0% {
+    transform: perspective(500px) rotateY(0deg) rotateZ(-3deg);
+  }
+
+  50% {
+    transform: perspective(500px) rotateY(180deg) rotateZ(3deg);
+  }
+
+  100% {
+    transform: perspective(500px) rotateY(360deg) rotateZ(-3deg);
+  }
+}
+
+@keyframes lotusAxisSpinReverse {
+  0% {
+    transform: perspective(500px) rotateY(360deg) rotateZ(3deg);
+  }
+
+  50% {
+    transform: perspective(500px) rotateY(180deg) rotateZ(-3deg);
+  }
+
+  100% {
+    transform: perspective(500px) rotateY(0deg) rotateZ(3deg);
+  }
+}
+
+@keyframes lanternGlow {
+  0%,
+  100% {
+    filter:
+      drop-shadow(0 0 16px rgba(255, 246, 223, 0.28))
+      drop-shadow(0 0 38px rgba(245, 217, 138, 0.2));
+  }
+
+  50% {
+    filter:
+      drop-shadow(0 0 24px rgba(255, 246, 223, 0.5))
+      drop-shadow(0 0 60px rgba(245, 217, 138, 0.34));
+  }
+}
+
+.lotus-spin {
+  animation: lotusAxisSpin 24s linear infinite;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+}
+
+.lotus-spin-reverse {
+  animation: lotusAxisSpinReverse 30s linear infinite;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+}
+
+.lotus-spin-slow {
+  animation: lotusAxisSpin 34s linear infinite;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+}
+
+.lotus-spin-reverse-slow {
+  animation: lotusAxisSpinReverse 38s linear infinite;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+}
+
+.lantern-logo-glow {
+  animation: lanternGlow 4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lotus-spin,
+  .lotus-spin-reverse,
+  .lotus-spin-slow,
+  .lotus-spin-reverse-slow,
+  .lantern-logo-glow {
+    animation: none;
+  }
+}

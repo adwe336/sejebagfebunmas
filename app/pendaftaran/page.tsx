@@ -842,7 +842,7 @@ export default function Home() {
       {/* FOOTER */}
       {/* ========================================================= */}
 
-      <footer className="border-t border-white/10 !bg-[#2a1616] py-8 text-[#f5f1e8] sm:py-10">
+      <footer className="border-t border-white/10 bg-[#2a1616] py-8 text-[#f5f1e8] sm:py-10">
 
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 sm:flex-row sm:items-center sm:justify-between md:px-8">
 
