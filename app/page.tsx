@@ -331,7 +331,7 @@ export default function Home() {
 
       <nav
         ref={navRef}
-        className="fixed left-1/2 top-3 z-50 w-[calc(100%-24px)] max-w-5xl -translate-x-1/2 rounded-full border border-black/[0.08] bg-[#f5f1e8]/60 shadow-[0_8px_30px_rgba(23,4,1,0.08)] backdrop-blur-2xl backdrop-saturate-150"
+        className="fixed left-1/2 top-3 z-50 w-[calc(100%-24px)] max-w-7xl -translate-x-1/2 rounded-full border border-black/[0.08] bg-[#f5f1e8]/60 shadow-[0_8px_30px_rgba(23,4,1,0.08)] backdrop-blur-2xl backdrop-saturate-150"
       >
         <div className="flex h-12 items-center justify-between px-3 sm:h-14 sm:px-4">
 
@@ -679,7 +679,7 @@ export default function Home() {
               image="/Purnama.webp"
               buttonText="Daftar Panitia"
               href={PANITIA_FORM_URL}
-              description="Terbuka bagi mahasiswa FEB Unmas."
+              description="Terbuka bagi mahasiswa FEB Unmas"
             />
 
             <FinalistCard />
@@ -856,7 +856,7 @@ export default function Home() {
             <img
               src="/LOGO PEMILIHAN.webp"
               alt="Logo Pemilihan Jegeg Bagus FEB Unmas 2027"
-              className="lantern-logo-glow relative z-10 w-[65%] max-w-[250px] object-contain transition-transform duration-700 hover:scale-[1.025] sm:w-[60%]"
+              className="lantern-logo-glow relative z-10 w-[75%] max-w-[350px] object-contain transition-transform duration-700 hover:scale-[1.025] sm:w-[60%] md:w-[90%]"
             />
 
           </div>
@@ -869,17 +869,17 @@ export default function Home() {
 
             <SimpleConcept
               title="Anggakara"
-              text="Berani melangkah."
+              text="Berani melangkah"
             />
 
             <SimpleConcept
               title="Baswara"
-              text="Menjadi cahaya."
+              text="Menjadi cahaya"
             />
 
             <SimpleConcept
               title="Danirmala"
-              text="Tulus dalam pengabdian."
+              text="Tulus dalam pengabdian"
             />
 
           </div>
@@ -1105,7 +1105,7 @@ export default function Home() {
                 Hubungi kami untuk informasi seputar
                 pendaftaran, tahapan pemilihan, maupun
                 hal lainnya mengenai Jegeg Bagus FEB
-                Unmas 2027.
+                Unmas 2027
               </p>
 
             </div>
@@ -1252,7 +1252,7 @@ export default function Home() {
                   Pendaftaran diperpanjang!
                 </div>
 
-                <h2 id="panitia-popup-title" className="mt-3 font-serif text-[1.7rem] leading-[0.95] tracking-tight text-[#2a1616] sm:mt-4 sm:text-4xl md:text-[3.2rem]">
+                <h2 id="panitia-popup-title" className="mt-3 font-serif  text-[1.7rem] leading-[0.95] tracking-tight text-[#2a1616] sm:mt-4 sm:text-4xl md:text-[3.2rem]">
                   Kabar Baik!!
                 </h2>
 
@@ -1260,7 +1260,7 @@ export default function Home() {
                   <p className="text-[7px] font-medium uppercase tracking-[0.2em] text-[#9a742f] sm:text-[9px] sm:tracking-[0.24em]">
                     Periode pendaftaran
                   </p>
-                  <p className="mt-1 font-serif text-base text-[#2a1616] sm:mt-1.5 sm:text-xl">
+                  <p className="mt-1 font-times font-medium text-base text-[#2a1616] sm:mt-1.5 sm:text-xl">
                     12–26 September 2026
                   </p>
                 </div>
@@ -1365,23 +1365,18 @@ function RegistrationCard({
   return (
     <div className="group relative aspect-[4/5] min-w-[86vw] snap-center overflow-hidden rounded-[30px] border border-white/[0.14] bg-white/[0.055] shadow-[0_25px_70px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.14)] backdrop-blur-2xl sm:min-w-[500px] md:min-w-0">
 
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(145deg,rgba(255,255,255,0.12),rgba(255,255,255,0.025)_45%,rgba(0,0,0,0.20))]" />
-
       <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#f5d98a]/[0.10] blur-[90px]" />
 
-      <div className="absolute left-5 right-5 top-5 h-[70%] overflow-hidden rounded-[24px] shadow-[0_20px_45px_rgba(0,0,0,0.28)] transition-transform duration-700 group-hover:-translate-y-1 sm:left-6 sm:right-6 sm:top-6">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[72%] overflow-hidden">
 
-        <div className="relative h-full w-full overflow-hidden rounded-[24px]">
 
           <img
             src={image}
             alt="Jegeg Bagus FEB Unmas"
-            className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.025]"
+            className="h-[130%] w-9/10 object-cover object-[center_70%] transition-transform duration-700 group-hover:scale-[1.025]"
           />
 
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#170401]/30 via-transparent to-transparent" />
 
-        </div>
       </div>
 
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[63%] bg-gradient-to-t from-[#100201] via-[#170401]/90 to-transparent" />
@@ -1520,7 +1515,7 @@ function FinalistCard() {
           </h3>
 
           <p className="mt-2.5 max-w-[390px] text-[11px] leading-[1.45] text-white/55 sm:text-sm sm:leading-6">
-            Terbuka bagi mahasiswa FEB Unmas Semester 1–3.
+            Terbuka bagi mahasiswa FEB Unmas Semester 1–3
           </p>
 
           <Link

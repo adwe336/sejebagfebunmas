@@ -446,6 +446,7 @@ export default function ProgramPage() {
         <div className="mx-auto max-w-7xl px-5 md:px-8">
           <div className="grid gap-4 lg:grid-cols-[0.75fr_1.25fr] lg:items-center lg:gap-12">
             <div>
+              <p className="section-label !text-[#315e50]">Ruang Bertumbuh</p>
               <h2 className="mt-2 font-serif text-3xl leading-[0.98] tracking-tight text-[#170401] sm:text-4xl md:text-5xl">
                 Tumbuh bukan hanya <span className="text-[#315e50]">untuk diri sendiri.</span>
               </h2>
@@ -458,6 +459,156 @@ export default function ProgramPage() {
       </section>
 
       {/* ========================================================= */}
+      {/* TRI LOKA HARMONI */}
+      {/* ========================================================= */}
+
+      <section className="relative overflow-hidden bg-[#f5f1e8] py-11 sm:py-14 md:py-16">
+        <div className="pointer-events-none absolute -right-36 top-0 h-96 w-96 rounded-full bg-[#315e50]/10 blur-[120px]" />
+        <div className="relative z-10 mx-auto max-w-7xl px-5 md:px-8">
+          <div className="grid gap-5 lg:grid-cols-[0.7fr_1.3fr] lg:items-end lg:gap-12">
+            <div>
+              <div className="flex items-center gap-3">
+                <span className="font-serif text-2xl text-[#315e50]/60">01</span>
+                <span className="h-px w-8 bg-[#315e50]/30" />
+                <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[#315e50]">Program Utama</p>
+              </div>
+              <h2 className="mt-3 font-serif text-4xl leading-[0.9] tracking-tight text-[#170401] sm:text-5xl md:text-6xl">
+                Tri Loka <span className="text-[#315e50]">Harmoni</span>
+              </h2>
+            </div>
+            <div className="max-w-2xl">
+              <p className="font-serif text-xl leading-7 text-[#2a1616]/80 sm:text-2xl">Trikarmadhikarit Sukha</p>
+              <p className="mt-1 text-sm font-medium text-[#315e50]">Kebahagiaan atas tiga perbuatan.</p>
+              <p className="mt-2 text-sm leading-6 text-black/50 sm:text-base sm:leading-7">
+                Tiga ruang untuk menjaga keseimbangan hubungan dengan Tuhan, sesama, dan lingkungan.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-6 sm:mt-8">
+            <ProgramImage images={triLokaImages} />
+          </div>
+
+          <div className="mt-7 grid gap-3 md:grid-cols-3">
+            {[
+              { n: "01", loka: "Swah Loka · Parhyangan", title: "Satya Jiwa", desc: "Membangun kesadaran spiritual melalui kegiatan yang mendekatkan diri pada nilai-nilai keagamaan.", examples: "Sembahyang bersama · Membersihkan area tempat suci" },
+              { n: "02", loka: "Bwah Loka · Pawongan", title: "Sahaja Rasa", desc: "Menumbuhkan kepedulian, kehangatan, dan solidaritas melalui hubungan dengan sesama.", examples: "Kegiatan sosial · Berbagi bersama panti asuhan atau panti jompo" },
+              { n: "03", loka: "Bhur Loka · Palemahan", title: "Bhumi Raksa", desc: "Menumbuhkan kepedulian terhadap lingkungan melalui aksi yang dilakukan secara berkelanjutan.", examples: "Aksi kebersihan · Kolaborasi volunteer · Kegiatan peduli lingkungan" },
+            ].map((item) => (
+              <article key={item.n} className="rounded-[20px] border border-black/[0.07] bg-white/35 p-5 backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:bg-white/55">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="font-serif text-2xl text-[#315e50]/55">{item.n}</span>
+                  <span className="text-right text-[8px] font-semibold uppercase tracking-[0.14em] text-[#315e50]">{item.loka}</span>
+                </div>
+                <h3 className="mt-4 font-serif text-2xl text-[#170401]">{item.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-black/50">{item.desc}</p>
+                <div className="mt-4 border-t border-black/[0.07] pt-3">
+                  <p className="text-[8px] font-semibold uppercase tracking-[0.16em] text-[#315e50]">Contoh kegiatan</p>
+                  <p className="mt-1.5 text-xs leading-5 text-black/50">{item.examples}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================= */}
+      {/* KREAPRO */}
+      {/* ========================================================= */}
+
+      <section className="relative overflow-hidden bg-[#12352e] py-11 text-white sm:py-14 md:py-16">
+        <div className="pointer-events-none absolute -left-32 top-1/3 h-96 w-96 rounded-full bg-[#b9d0c4]/10 blur-[120px]" />
+        <div className="relative z-10 mx-auto max-w-7xl px-5 md:px-8">
+          <div className="grid gap-7 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-12">
+            <div className="order-2 lg:order-1"><ProgramImage images={kreaproImages} dark /></div>
+            <div className="order-1 lg:order-2">
+              <div className="flex items-center gap-3">
+                <span className="font-serif text-2xl text-[#d9e4dc]/50">02</span>
+                <span className="h-px w-8 bg-white/20" />
+                <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[#b9d0c4]/80">Kreatif Promosi</p>
+              </div>
+              <h2 className="mt-3 font-serif text-4xl leading-[0.9] sm:text-5xl md:text-6xl">KREAPRO</h2>
+              <p className="mt-3 font-serif text-xl leading-7 text-white/80 sm:text-2xl">Membantu UMKM lokal dikenal lebih luas.</p>
+              <p className="mt-3 max-w-xl text-sm leading-6 text-white/50 sm:text-base sm:leading-7">
+                Ruang kolaborasi untuk membantu UMKM memperkenalkan produk dan cerita di balik usahanya melalui pendekatan promosi yang kreatif.
+              </p>
+
+              <div className="mt-5 border-t border-white/10">
+                <p className="py-3 text-[9px] font-semibold uppercase tracking-[0.2em] text-[#b9d0c4]/75">Yang dilakukan</p>
+                <div className="grid sm:grid-cols-2">
+                  {[
+                    "Membuat konten promosi",
+                    "Memperkenalkan produk UMKM",
+                    "Mengangkat cerita pelaku usaha",
+                    "Memanfaatkan media sosial",
+                    "Membuka peluang kolaborasi",
+                  ].map((item, index) => (
+                    <div key={item} className={`border-t border-white/10 py-2.5 ${index === 4 ? "sm:col-span-2" : ""}`}>
+                      <div className="flex items-center gap-3">
+                        <span className="text-[9px] text-[#b9d0c4]/45">0{index + 1}</span>
+                        <p className="text-xs leading-5 text-white/60 sm:text-sm">{item}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <p className="mt-5 font-serif text-lg leading-6 text-white/75 sm:text-xl">Fokusnya sederhana: memberi ruang agar usaha lokal dapat dikenal lebih luas.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================= */}
+      {/* O BEYOND CAMPUS */}
+      {/* ========================================================= */}
+
+      <section className="relative overflow-hidden bg-[#e9e1d2] py-11 sm:py-14 md:py-16">
+        <div className="pointer-events-none absolute -right-32 top-1/3 h-96 w-96 rounded-full bg-[#315e50]/10 blur-[120px]" />
+        <div className="relative z-10 mx-auto max-w-7xl px-5 md:px-8">
+          <div className="grid gap-7 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-12">
+            <div>
+              <div className="flex items-center gap-3">
+                <span className="font-serif text-2xl text-[#315e50]/55">03</span>
+                <span className="h-px w-8 bg-[#315e50]/30" />
+                <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[#315e50]">O Beyond Campus</p>
+              </div>
+              <h2 className="mt-3 font-serif text-4xl leading-[0.9] tracking-tight text-[#170401] sm:text-5xl md:text-6xl">
+                Kesempatan <span className="text-[#315e50]">tidak berhenti</span> di kampus.
+              </h2>
+              <p className="mt-3 max-w-xl text-sm leading-6 text-black/50 sm:text-base sm:leading-7">Anggota didukung untuk membawa kemampuan mereka ke berbagai ruang di luar FEB Unmas.</p>
+
+              <div className="mt-5">
+                <p className="mb-2 text-[9px] font-semibold uppercase tracking-[0.2em] text-[#315e50]">Dukungan yang tersedia</p>
+                <div className="overflow-hidden rounded-[20px] border border-black/[0.07] bg-white/25">
+                  {[
+                    "Informasi ajang dan kompetisi",
+                    "Pendampingan persiapan",
+                    "Coaching sebelum mengikuti ajang",
+                    "Dukungan publikasi dan dokumentasi",
+                    "Networking dan kolaborasi",
+                    "Dukungan mengikuti pemilihan duta atau kompetisi eksternal",
+                  ].map((item, index) => (
+                    <div key={item} className="flex items-start gap-3 border-b border-black/[0.07] px-4 py-2.5 last:border-b-0">
+                      <span className="pt-0.5 text-[9px] font-semibold tracking-[0.15em] text-[#315e50]">0{index + 1}</span>
+                      <p className="text-xs leading-5 text-black/55 sm:text-sm">{item}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <ProgramImage images={beyondCampusImages} />
+              <div className="mt-3 rounded-[20px] border border-black/[0.07] bg-white/35 px-5 py-4 backdrop-blur-xl">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-[#315e50]">Tujuan</p>
+                <p className="mt-1.5 font-serif text-xl leading-6 text-[#2a1616] sm:text-2xl">Dari potensi menjadi prestasi.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================= */}
       {/* CLOSING */}
       {/* ========================================================= */}
 
@@ -465,8 +616,8 @@ export default function ProgramPage() {
         <div className="pointer-events-none absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#315e50]/20 blur-[120px]" />
         <div className="relative z-10 mx-auto max-w-4xl px-5 text-center md:px-8">
           <p className="text-[9px] uppercase tracking-[0.28em] text-[#b9d0c4]/65 sm:text-xs">Raksa Bhuana Jagadhita</p>
-          <h2 className="mt-3 font-serif text-4xl leading-[0.95] tracking-tight sm:text-5xl md:text-6xl">Bukan hanya menjadi<br /><span className="text-[#b9d0c4]">Jegeg Bagus</span></h2>
-          <p className="mx-auto mt-3 max-w-2xl font-serif text-lg leading-7 text-white/65 sm:text-2xl">Tetapi terus berkembang dan memberikan dampak setelahnya</p>
+          <h2 className="mt-3 font-serif text-4xl leading-[0.95] tracking-tight sm:text-5xl md:text-6xl">Bukan hanya menjadi<br /><span className="text-[#b9d0c4]">Jegeg Bagus.</span></h2>
+          <p className="mx-auto mt-3 max-w-2xl font-serif text-lg leading-7 text-white/65 sm:text-2xl">Tetapi terus berkembang setelahnya.</p>
           <div className="mx-auto mt-6 flex max-w-3xl flex-col items-center justify-center gap-2 sm:flex-row sm:gap-0">
             {["Kenali potensi", "Kembangkan", "Berani tampil", "Ambil kesempatan"].map((item, index) => (
               <div key={item} className="flex items-center gap-2">
