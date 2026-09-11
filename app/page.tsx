@@ -1213,7 +1213,7 @@ export default function Home() {
       {/* ========================================================= */}
       {showPanitiaPopup && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-[#170401]/45 px-4 py-5 backdrop-blur-md sm:px-6 sm:py-8"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-[#170401]/45 px-4 py-5 backdrop-blur-sm sm:px-6 sm:py-15"
           role="dialog"
           aria-modal="true"
           aria-labelledby="panitia-popup-title"
@@ -1242,7 +1242,7 @@ export default function Home() {
                 <img
                   src="/Purnama.webp"
                   alt="Panitia Pelaksana Jegeg Bagus FEB Unmas 2027"
-                  className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.025]"
+                  className="h-full w-full object-contain object-center transition-transform duration-700 group-hover:scale-[1.025]"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#170401]/45 via-transparent to-white/10" />
               </div>
