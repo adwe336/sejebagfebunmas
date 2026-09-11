@@ -456,28 +456,7 @@ export default function ProgramPage() {
           </div>
         </div>
       </section>
-
-      {/* ========================================================= */}
-      {/* CLOSING */}
-      {/* ========================================================= */}
-
-      <section className="relative overflow-hidden bg-[#170401] py-14 text-white sm:py-18 md:py-20">
-        <div className="pointer-events-none absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#315e50]/20 blur-[120px]" />
-        <div className="relative z-10 mx-auto max-w-4xl px-5 text-center md:px-8">
-          <p className="text-[9px] uppercase tracking-[0.28em] text-[#b9d0c4]/65 sm:text-xs">Raksa Bhuana Jagadhita</p>
-          <h2 className="mt-3 font-serif text-4xl leading-[0.95] tracking-tight sm:text-5xl md:text-6xl">Bukan hanya menjadi<br /><span className="text-[#b9d0c4]">Jegeg Bagus</span></h2>
-          <p className="mx-auto mt-3 max-w-2xl font-serif text-lg leading-7 text-white/65 sm:text-2xl">Tetapi terus berkembang dan memberikan dampak setelahnya</p>
-          <div className="mx-auto mt-6 flex max-w-3xl flex-col items-center justify-center gap-2 sm:flex-row sm:gap-0">
-            {["Kenali potensi", "Kembangkan", "Berani tampil", "Ambil kesempatan"].map((item, index) => (
-              <div key={item} className="flex items-center gap-2">
-                <div className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2.5 backdrop-blur-xl"><p className="text-[9px] font-semibold uppercase tracking-[0.1em] text-white/60 sm:text-[10px]">{item}</p></div>
-                {index < 3 && <span className="hidden text-[#b9d0c4]/45 sm:block">→</span>}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      
       {/* ========================================================= */}
       {/* CTA */}
       {/* ========================================================= */}
@@ -487,7 +466,7 @@ export default function ProgramPage() {
           <p className="section-label !text-[#315e50]">Pemilihan Jegeg Bagus FEB Unmas 2027</p>
           <h2 className="mt-2 font-serif text-3xl leading-[0.98] tracking-tight text-[#170401] sm:text-4xl md:text-5xl">Siap mengambil <span className="text-[#315e50]">peranmu?</span></h2>
           <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-black/50">Kenali potensimu, kembangkan kemampuanmu, dan temukan ruang untuk terus bertumbuh.</p>
-          <Link href="/pendaftaran" className="mt-5 inline-flex items-center justify-center rounded-full bg-[#12352e] px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition-all duration-500 hover:-translate-y-1 hover:bg-[#f5b446] hover:text-[#170401]">Daftar Sekarang</Link>
+          <Link href="/pendaftaran" className="mt-5 inline-flex items-center justify-center rounded-full bg-[#12352e] px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition-all duration-500 hover:-translate-y-1 hover:bg-[#f5b446] hover:text-[#170401]">Daftar Menjadi Finalis</Link>
         </div>
       </section>
 
