@@ -1213,7 +1213,7 @@ export default function Home() {
       {/* ========================================================= */}
       {showPanitiaPopup && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-[#170401]/45 px-4 py-5 backdrop-blur-sm sm:px-6 sm:py-15"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-[#170401]/45 px-4 py-5 backdrop-blur-md sm:px-6 sm:py-8"
           role="dialog"
           aria-modal="true"
           aria-labelledby="panitia-popup-title"
@@ -1238,11 +1238,11 @@ export default function Home() {
             </button>
 
             <div className="relative z-10 grid md:grid-cols-[0.9fr_1.1fr]">
-              <div className="relative m-2.5 h-[150px] overflow-hidden rounded-[18px] sm:m-4 sm:h-[320px] sm:rounded-[24px] md:m-5 md:h-[520px]">
+              <div className="relative m-2.5 h-[300px] overflow-hidden rounded-[18px] sm:m-4 sm:h-[320px] sm:rounded-[24px] md:m-5 md:h-[520px]">
                 <img
                   src="/Purnama.webp"
                   alt="Panitia Pelaksana Jegeg Bagus FEB Unmas 2027"
-                  className="h-full w-full object-contain object-center transition-transform duration-700 group-hover:scale-[1.025]"
+                  className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.025]"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#170401]/45 via-transparent to-white/10" />
               </div>
