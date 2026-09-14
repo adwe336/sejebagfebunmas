@@ -485,7 +485,7 @@ export default function PendaftaranFinalisPage() {
               <div className="overflow-hidden rounded-[22px] border border-black/[0.07] bg-white/50 shadow-sm">
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
-                    src="/Full body_Bagus.webp"
+                    src="/Full Body_Bagus.webp"
                     alt="Contoh foto full body Bagus"
                     className="h-full w-full object-contain object-center"
                   />
@@ -497,7 +497,7 @@ export default function PendaftaranFinalisPage() {
                   </p>
 
                   <p className="mt-1 text-[9px] text-black/40">
-                    Full body_Bagus_[Nama Peserta]
+                    Full Body_Bagus_[Nama Peserta]
                   </p>
                 </div>
               </div>
@@ -515,7 +515,7 @@ export default function PendaftaranFinalisPage() {
               <div className="overflow-hidden rounded-[22px] border border-black/[0.07] bg-white/50 shadow-sm">
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
-                    src="/Close up_Jegeg.webp"
+                    src="/Close Up_Jegeg.webp"
                     alt="Contoh foto close up Jegeg"
                     className="h-full w-full object-contain object-center"
                   />
@@ -527,7 +527,7 @@ export default function PendaftaranFinalisPage() {
                   </p>
 
                   <p className="mt-1 text-[9px] text-black/40">
-                    Close up_Jegeg_[Nama Peserta]
+                    Close Up_Jegeg_[Nama Peserta]
                   </p>
                 </div>
               </div>
@@ -535,7 +535,7 @@ export default function PendaftaranFinalisPage() {
               <div className="overflow-hidden rounded-[22px] border border-black/[0.07] bg-white/50 shadow-sm">
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
-                    src="/Full body_Jegeg.webp"
+                    src="/Full Body_Jegeg.webp"
                     alt="Contoh foto full body Jegeg"
                     className="h-full w-full object-contain object-center"
                   />
@@ -547,7 +547,7 @@ export default function PendaftaranFinalisPage() {
                   </p>
 
                   <p className="mt-1 text-[9px] text-black/40">
-                    Full body_Jegeg_[Nama Peserta]
+                    Full Body_Jegeg_[Nama Peserta]
                   </p>
                 </div>
               </div>
