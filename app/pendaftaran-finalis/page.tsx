@@ -465,7 +465,7 @@ export default function PendaftaranFinalisPage() {
               <div className="overflow-hidden rounded-[22px] border border-black/[0.07] bg-white/50 shadow-sm">
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
-                    src="/Close Up_Bagus.webp"
+                    src="/Close up_Bagus.webp"
                     alt="Contoh foto close up Bagus"
                     className="h-full w-full object-contain object-center"
                   />
@@ -485,7 +485,7 @@ export default function PendaftaranFinalisPage() {
               <div className="overflow-hidden rounded-[22px] border border-black/[0.07] bg-white/50 shadow-sm">
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
-                    src="/Full Body_Bagus.webp"
+                    src="/Full body_Bagus.webp"
                     alt="Contoh foto full body Bagus"
                     className="h-full w-full object-contain object-center"
                   />
@@ -676,9 +676,6 @@ export default function PendaftaranFinalisPage() {
         <div className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f5b446]/10 blur-[100px]" />
 
         <div className="relative mx-auto max-w-3xl px-5 text-center md:px-8">
-          <p className="text-[9px] uppercase tracking-[0.28em] text-[#9a742f] sm:text-xs">
-            Final Step
-          </p>
 
           <h2 className="mt-3 font-serif text-4xl leading-none text-[#2a1616] sm:text-6xl">
             Siap menjadi
