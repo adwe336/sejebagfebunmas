@@ -465,7 +465,7 @@ export default function PendaftaranFinalisPage() {
               <div className="overflow-hidden rounded-[22px] border border-black/[0.07] bg-white/50 shadow-sm">
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
-                    src="/Close up_Bagus.webp"
+                    src="/Closeup_Bagus.webp"
                     alt="Contoh foto close up Bagus"
                     className="h-full w-full object-contain object-center"
                   />
@@ -485,7 +485,7 @@ export default function PendaftaranFinalisPage() {
               <div className="overflow-hidden rounded-[22px] border border-black/[0.07] bg-white/50 shadow-sm">
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
-                    src="/Full body_Bagus.webp"
+                    src="/Fullbody_Bagus.webp"
                     alt="Contoh foto full body Bagus"
                     className="h-full w-full object-contain object-center"
                   />
