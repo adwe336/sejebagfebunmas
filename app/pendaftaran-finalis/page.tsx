@@ -48,6 +48,9 @@ export default function PendaftaranFinalisPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
 
+  const bookRef = useRef<HTMLDivElement>(null);
+  const [activePage, setActivePage] = useState(0);
+
   /* ========================================================= */
   /* MOBILE MENU */
   /* ========================================================= */
@@ -83,6 +86,45 @@ export default function PendaftaranFinalisPage() {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [menuOpen]);
+
+  /* ========================================================= */
+  /* BOOK SCROLL */
+  /* ========================================================= */
+
+  const handleBookScroll = () => {
+    const container = bookRef.current;
+
+    if (!container) return;
+
+    const pageWidth = container.clientWidth;
+
+    if (!pageWidth) return;
+
+    const index = Math.round(container.scrollLeft / pageWidth);
+
+    setActivePage(index);
+  };
+
+  const goToPage = (index: number) => {
+    const container = bookRef.current;
+
+    if (!container) return;
+
+    container.scrollTo({
+      left: index * container.clientWidth,
+      behavior: "smooth",
+    });
+
+    setActivePage(index);
+  };
+
+  const pages = [
+    "Berkas",
+    "Foto",
+    "Seleksi",
+    "Larangan",
+    "Daftar",
+  ];
 
   return (
     <main className="min-h-screen w-full overflow-x-hidden bg-[#e9e1d2] text-[#191814]">
@@ -245,458 +287,450 @@ export default function PendaftaranFinalisPage() {
       </nav>
 
       {/* ========================================================= */}
-      {/* HERO */}
+      {/* HERO / BOOK INTRO */}
       {/* ========================================================= */}
 
-      <section className="relative overflow-hidden bg-[#f5f1e8] pb-10 pt-24 sm:pb-14 sm:pt-28">
-        {/* ambient glass glow */}
-
+      <section className="relative overflow-hidden bg-[#f5f1e8] pb-8 pt-24 sm:pb-10 sm:pt-28">
         <div className="pointer-events-none absolute -right-32 top-10 h-72 w-72 rounded-full bg-[#f5b446]/15 blur-[100px] sm:h-96 sm:w-96" />
 
         <div className="pointer-events-none absolute -left-32 bottom-0 h-72 w-72 rounded-full bg-[#315e50]/10 blur-[100px]" />
 
-        <div className="relative mx-auto max-w-7xl px-5 md:px-8">
-          <div className="grid items-center gap-8 md:grid-cols-[1fr_0.9fr] md:gap-12">
-            {/* TEXT */}
+        <div className="relative mx-auto max-w-6xl px-5 md:px-8">
+          <div className="flex flex-col items-center text-center">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#9a742f] sm:text-xs">
+              Panduan Finalis
+            </p>
 
-            <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#9a742f] sm:text-xs">
-                Pemilihan Jegeg Bagus FEB Unmas 2027
-              </p>
+            <h1 className="mt-3 max-w-3xl font-serif text-[3rem] leading-[0.9] tracking-tight text-[#2a1616] sm:text-6xl md:text-7xl">
+              Buku Panduan
+              <br />
+              <span className="text-[#9a742f]">Finalis 2027</span>
+            </h1>
 
-              <h1 className="mt-3 max-w-xl font-serif text-[3.2rem] leading-[0.9] tracking-tight text-[#2a1616] sm:text-6xl md:text-7xl">
-                Panduan
-                <br />
-                Pendaftaran
-                <br />
-                <span className="text-[#9a742f]">Finalis</span>
-              </h1>
+            <p className="mt-4 max-w-lg text-sm leading-6 text-black/50 sm:text-base">
+              Geser ke samping untuk membaca panduan pendaftaran,
+              kelengkapan berkas, ketentuan foto, hingga persiapan seleksi.
+            </p>
 
-              <p className="mt-5 max-w-lg text-sm leading-6 text-black/55 sm:text-base">
-                Siapkan berkas, lengkapi data diri, dan ikuti seluruh
-                ketentuan sebelum melakukan pendaftaran
-              </p>
-
-              <a
-                href={REGISTRATION_FORM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-6 inline-flex items-center justify-center rounded-full bg-[#2a1616] px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition-all duration-500 hover:-translate-y-1 hover:bg-[#f5b446] hover:text-[#170401]"
-              >
-                Daftar Sekarang
-              </a>
-            </div>
-
-            {/* HERO PHOTO */}
-
-            <div className="relative mx-auto w-full max-w-md">
-              <div className="absolute -inset-3 rounded-[34px] bg-white/40 blur-xl" />
-
-              <div className="relative overflow-hidden rounded-[30px] border border-white/70 bg-white/20 p-2 shadow-[0_25px_70px_rgba(23,4,1,0.13)] backdrop-blur-xl">
-                <div className="overflow-hidden rounded-[23px]">
-                  <img
-                    src="/Panduan.webp"
-                    alt="Panduan Pendaftaran Finalis Jegeg Bagus FEB Unmas"
-                    className="block aspect-[4/5] h-full w-full object-cover object-center"
-                  />
-                </div>
-              </div>
+            <div className="mt-6 flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.18em] text-black/35">
+              <span className="text-base">←</span>
+              Geser halaman
+              <span className="text-base">→</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* ========================================================= */}
-      {/* KELENGKAPAN BERKAS */}
+      {/* BOOK NAVIGATION */}
       {/* ========================================================= */}
 
-      <section id="tentang" className="bg-[#e9e1d2] py-12 sm:py-16">
+      <section className="sticky top-[60px] z-30 bg-[#e9e1d2]/80 py-3 backdrop-blur-xl sm:top-[68px]">
         <div className="mx-auto max-w-6xl px-5 md:px-8">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#9a742f] sm:text-xs">
-                Kelengkapan Berkas
-              </p>
-
-              <h2 className="mt-2 font-serif text-4xl leading-none text-[#2a1616] sm:text-5xl">
-                Siapkan sebelum daftar
-              </h2>
+          <div className="overflow-hidden rounded-full border border-white/60 bg-white/35 p-1 shadow-[0_8px_30px_rgba(23,4,1,0.05)] backdrop-blur-xl">
+            <div className="flex gap-1 overflow-x-auto scrollbar-none">
+              {pages.map((page, index) => (
+                <button
+                  key={page}
+                  type="button"
+                  onClick={() => goToPage(index)}
+                  className={`shrink-0 rounded-full px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] transition-all duration-300 sm:px-5 ${
+                    activePage === index
+                      ? "bg-[#2a1616] text-white shadow-sm"
+                      : "text-black/45 hover:bg-white/50 hover:text-[#2a1616]"
+                  }`}
+                >
+                  {String(index + 1).padStart(2, "0")} {page}
+                </button>
+              ))}
             </div>
-
-            <a
-              href={DOCUMENT_FOLDER_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-fit rounded-full border border-black/10 bg-white/40 px-4 py-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#2a1616] backdrop-blur-xl transition hover:bg-[#2a1616] hover:text-white"
-            >
-              Google Drive Berkas
-            </a>
           </div>
+        </div>
+      </section>
 
-          {/* STEPS */}
+      {/* ========================================================= */}
+      {/* BOOK */}
+      {/* ========================================================= */}
 
-          <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {/* STEP 1 */}
+      <section className="relative overflow-hidden bg-[#e9e1d2] py-5 sm:py-8">
+        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f5b446]/5 blur-[120px]" />
 
-            <div className="rounded-[24px] border border-white/60 bg-white/40 p-5 shadow-[0_12px_35px_rgba(23,4,1,0.05)] backdrop-blur-xl">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2a1616] text-[9px] font-semibold text-white">
-                01
-              </span>
+        <div
+          ref={bookRef}
+          onScroll={handleBookScroll}
+          className="no-scrollbar relative flex snap-x snap-mandatory overflow-x-auto scroll-smooth"
+        >
+          {/* ===================================================== */}
+          {/* PAGE 01 — BERKAS */}
+          {/* ===================================================== */}
 
-              <h3 className="mt-4 font-serif text-xl text-[#2a1616]">
-                Persiapkan
-              </h3>
+          <article className="w-full shrink-0 snap-center px-5 sm:px-8">
+            <div className="mx-auto max-w-5xl">
+              <div className="relative overflow-hidden rounded-[32px] border border-white/70 bg-white/45 p-5 shadow-[0_25px_80px_rgba(23,4,1,0.08)] backdrop-blur-2xl sm:p-8 md:p-10">
+                <div className="absolute right-0 top-0 h-56 w-56 rounded-full bg-[#f5b446]/10 blur-[80px]" />
 
-              <p className="mt-1.5 text-xs leading-5 text-black/50">
-                Siapkan semua kelengkapan yang dibutuhkan.
-              </p>
+                <div className="relative">
+                  <div className="flex items-start justify-between gap-5">
+                    <div>
+                      <p className="text-[9px] font-semibold uppercase tracking-[0.25em] text-[#9a742f]">
+                        01 / Kelengkapan
+                      </p>
 
-              <a
-                href={DOCUMENT_FOLDER_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 inline-block text-[10px] font-semibold uppercase tracking-[0.12em] text-[#9a742f]"
-              >
-                Lihat berkas 
-              </a>
-            </div>
+                      <h2 className="mt-2 font-serif text-4xl leading-none text-[#2a1616] sm:text-5xl">
+                        Siapkan sebelum daftar
+                      </h2>
 
-            {/* STEP 2 */}
+                      <p className="mt-3 max-w-xl text-sm leading-6 text-black/45">
+                        Pastikan seluruh kelengkapan sudah tersedia sebelum
+                        mengisi formulir pendaftaran.
+                      </p>
+                    </div>
 
-            <div className="rounded-[24px] border border-white/60 bg-white/40 p-5 shadow-[0_12px_35px_rgba(23,4,1,0.05)] backdrop-blur-xl">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2a1616] text-[9px] font-semibold text-white">
-                02
-              </span>
-
-              <h3 className="mt-4 font-serif text-xl text-[#2a1616]">
-                Checklist
-              </h3>
-
-              <div className="mt-3 space-y-2">
-                {documents.map((item) => (
-                  <div
-                    key={item}
-                    className="flex items-start gap-2 text-xs leading-5 text-black/55"
-                  >
-                    <span className="mt-1 flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-[#315e50] text-[8px] text-white">
-                      ✓
+                    <span className="hidden rounded-full border border-black/10 bg-white/40 px-3 py-1.5 text-[9px] font-semibold text-black/40 sm:block">
+                      01 / 05
                     </span>
-                    <span>{item}</span>
                   </div>
-                ))}
-              </div>
-            </div>
 
-            {/* STEP 3 */}
+                  <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                    <BookStep
+                      number="01"
+                      title="Persiapkan"
+                      text="Siapkan semua kelengkapan yang dibutuhkan."
+                    />
 
-            <div className="rounded-[24px] border border-white/60 bg-white/40 p-5 shadow-[0_12px_35px_rgba(23,4,1,0.05)] backdrop-blur-xl">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2a1616] text-[9px] font-semibold text-white">
-                03
-              </span>
+                    <BookStep
+                      number="02"
+                      title="Checklist"
+                      text="CV, foto 4R Full Body & Close Up, serta Formulir Kesiapan."
+                    />
 
-              <h3 className="mt-4 font-serif text-xl text-[#2a1616]">
-                Upload
-              </h3>
+                    <BookStep
+                      number="03"
+                      title="Upload"
+                      text="Upload berkas dan isi data diri melalui Google Form."
+                    />
 
-              <p className="mt-1.5 text-xs leading-5 text-black/50">
-                Upload berkas dan isi data diri melalui Google Form.
-              </p>
-
-              <a
-                href={REGISTRATION_FORM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 inline-block text-[10px] font-semibold uppercase tracking-[0.12em] text-[#9a742f]"
-              >
-                Link Formulir
-              </a>
-            </div>
-
-            {/* STEP 4 */}
-
-            <div className="rounded-[24px] border border-white/60 bg-white/40 p-5 shadow-[0_12px_35px_rgba(23,4,1,0.05)] backdrop-blur-xl">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2a1616] text-[9px] font-semibold text-white">
-                04
-              </span>
-
-              <h3 className="mt-4 font-serif text-xl text-[#2a1616]">
-                Group WhatsApp
-              </h3>
-
-              <p className="mt-1.5 text-xs leading-5 text-black/50">
-                Pastikan kamu sudah masuk ke group WhatsApp peserta.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================= */}
-      {/* KETENTUAN FOTO */}
-      {/* ========================================================= */}
-
-      <section className="bg-[#f5f1e8] py-12 sm:py-16">
-        <div className="mx-auto max-w-6xl px-5 md:px-8">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-[15px] font-semibold uppercase tracking-[0.25em] text-[#9a742f] sm:text-xs">
-                Foto 4R
-              </p>
-
-              <h2 className="mt-2 font-serif text-4xl leading-none text-[#2a1616] sm:text-5xl">
-                Close Up & Full Body
-              </h2>
-            </div>
-
-            <p className="max-w-sm text-xs leading-5 text-black/45 sm:text-right">
-              Gunakan foto sesuai ketentuan dan pastikan file diberi nama
-              dengan benar
-            </p>
-          </div>
-
-          {/* BAGUS */}
-
-          <div className="mt-7">
-            <p className="mb-3 text-[9px] font-semibold uppercase tracking-[0.2em] text-[#315e50]">
-              Contoh Bagus
-            </p>
-
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-2">
-              <div className="overflow-hidden rounded-[22px] border border-black/[0.07] bg-white/50 shadow-sm">
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img
-                    src="/Closeup_Bagus.webp"
-                    alt="Contoh foto close up Bagus"
-                    className="h-full w-full object-contain object-center"
-                  />
-                </div>
-
-                <div className="p-3 sm:p-4">
-                  <p className="text-[10px] font-semibold text-[#2a1616]">
-                    Close Up
-                  </p>
-
-                  <p className="mt-1 text-[9px] text-black/40">
-                    Close Up_Bagus_[Nama Peserta]
-                  </p>
-                </div>
-              </div>
-
-              <div className="overflow-hidden rounded-[22px] border border-black/[0.07] bg-white/50 shadow-sm">
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img
-                    src="/Fullbody_Bagus.webp"
-                    alt="Contoh foto full body Bagus"
-                    className="h-full w-full object-contain object-center"
-                  />
-                </div>
-
-                <div className="p-3 sm:p-4">
-                  <p className="text-[10px] font-semibold text-[#2a1616]">
-                    Full Body
-                  </p>
-
-                  <p className="mt-1 text-[9px] text-black/40">
-                    Full Body_Bagus_[Nama Peserta]
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* JEGEG */}
-
-          <div className="mt-7">
-            <p className="mb-3 text-[9px] font-semibold uppercase tracking-[0.2em] text-[#315e50]">
-              Contoh Jegeg
-            </p>
-
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-2">
-              <div className="overflow-hidden rounded-[22px] border border-black/[0.07] bg-white/50 shadow-sm">
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img
-                    src="/Close Up_Jegeg.webp"
-                    alt="Contoh foto close up Jegeg"
-                    className="h-full w-full object-contain object-center"
-                  />
-                </div>
-
-                <div className="p-3 sm:p-4">
-                  <p className="text-[10px] font-semibold text-[#2a1616]">
-                    Close Up
-                  </p>
-
-                  <p className="mt-1 text-[9px] text-black/40">
-                    Close Up_Jegeg_[Nama Peserta]
-                  </p>
-                </div>
-              </div>
-
-              <div className="overflow-hidden rounded-[22px] border border-black/[0.07] bg-white/50 shadow-sm">
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img
-                    src="/Full Body_Jegeg.webp"
-                    alt="Contoh foto full body Jegeg"
-                    className="h-full w-full object-contain object-center"
-                  />
-                </div>
-
-                <div className="p-3 sm:p-4">
-                  <p className="text-[10px] font-semibold text-[#2a1616]">
-                    Full Body
-                  </p>
-
-                  <p className="mt-1 text-[9px] text-black/40">
-                    Full Body_Jegeg_[Nama Peserta]
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================= */}
-      {/* PERSIAPAN SELEKSI */}
-      {/* ========================================================= */}
-
-      <section id="alur" className="bg-[#2a1616] py-12 text-white sm:py-16">
-        <div className="mx-auto max-w-6xl px-5 md:px-8">
-          <div className="max-w-2xl">
-
-            <h2 className="mt-2 font-serif text-4xl leading-none sm:text-5xl">
-              Datang siap dan ikuti seluruh ketentuan
-            </h2>
-          </div>
-
-          {/* PELAKSANAAN */}
-
-          <div className="mt-7 grid gap-3 lg:grid-cols-[0.7fr_1.3fr]">
-            <div className="rounded-[26px] border border-white/10 bg-white/[0.06] p-6 shadow-[0_18px_50px_rgba(0,0,0,0.15)] backdrop-blur-xl sm:p-7">
-              <p className="text-[9px] uppercase tracking-[0.2em] text-[#b9d0c4]/55">
-                Pelaksanaan Seleksi
-              </p>
-
-              <div className="mt-5 space-y-4">
-                <div>
-                  <p className="text-[9px] uppercase tracking-[0.15em] text-white/35">
-                    Hari, Tanggal
-                  </p>
-
-                  <p className="mt-1 font-serif text-xl">
-                    Minggu, 25 Oktober 2026
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-[9px] uppercase tracking-[0.15em] text-white/35">
-                    Waktu
-                  </p>
-
-                  <p className="mt-1 text-sm text-white/70">
-                    08.00 – Selesai
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-[9px] uppercase tracking-[0.15em] text-white/35">
-                    Tempat
-                  </p>
-
-                  <p className="mt-1 text-sm text-white/70">
-                    Ruangan Widya Sabha
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* MEKANISME */}
-
-            <div className="rounded-[26px] border border-white/10 bg-white/[0.06] p-6 backdrop-blur-xl sm:p-7">
-              <p className="text-[9px] uppercase tracking-[0.2em] text-[#b9d0c4]/55">
-                Mekanisme Kegiatan
-              </p>
-
-              <div className="mt-5 grid gap-x-6 gap-y-3 sm:grid-cols-2">
-                {mechanism.map((item, index) => (
-                  <div key={item} className="flex gap-3">
-                    <span className="mt-1 text-[9px] font-semibold text-[#b9d0c4]/45">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-
-                    <p className="text-xs leading-5 text-white/55">
-                      {item}
-                    </p>
+                    <BookStep
+                      number="04"
+                      title="WhatsApp"
+                      text="Pastikan kamu sudah masuk ke group WhatsApp peserta."
+                    />
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
 
-          {/* LARANGAN */}
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    {documents.map((item) => (
+                      <span
+                        key={item}
+                        className="rounded-full border border-white/70 bg-white/45 px-3 py-2 text-[9px] text-black/50"
+                      >
+                        ✓ {item}
+                      </span>
+                    ))}
+                  </div>
 
-          <div className="mt-3 rounded-[26px] border border-white/10 bg-[#170401]/60 p-6 backdrop-blur-xl sm:p-7">
-            <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-              <div className="shrink-0">
-                <p className="text-[9px] uppercase tracking-[0.2em] text-[#b9d0c4]/55">
-                  Larangan-Larangan
-                </p>
-
-                <h3 className="mt-2 font-serif text-2xl">
-                  Mari jaga suasana seleksi bersama
-                </h3>
-              </div>
-
-              <div className="grid gap-3 sm:max-w-3xl sm:grid-cols-3">
-                {prohibitions.map((item, index) => (
-                  <div
-                    key={item}
-                    className="rounded-[18px] border border-white/10 bg-white/[0.04] p-4"
+                  <a
+                    href={DOCUMENT_FOLDER_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-6 inline-flex rounded-full border border-black/10 bg-white/45 px-5 py-2.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#2a1616] backdrop-blur-xl transition hover:bg-[#2a1616] hover:text-white"
                   >
-                  <p className="text-xs leading-5 text-white/60">
-                   <span className="mr-2 text-[#b9d0c4]">*</span>
-                     {item}
-                 </p>
+                    Lihat Google Drive Berkas
+                  </a>
                 </div>
-               ))}
               </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </article>
 
-      {/* ========================================================= */}
-      {/* FINAL CTA */}
-      {/* ========================================================= */}
+          {/* ===================================================== */}
+          {/* PAGE 02 — FOTO */}
+          {/* ===================================================== */}
 
-      <section
-        id="registration"
-        className="relative overflow-hidden bg-[#f5f1e8] py-14 sm:py-20"
-      >
-        <div className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f5b446]/10 blur-[100px]" />
+          <article className="w-full shrink-0 snap-center px-5 sm:px-8">
+            <div className="mx-auto max-w-5xl">
+              <div className="relative overflow-hidden rounded-[32px] border border-white/70 bg-white/45 p-5 shadow-[0_25px_80px_rgba(23,4,1,0.08)] backdrop-blur-2xl sm:p-8 md:p-10">
+                <div className="relative">
+                  <div className="flex items-start justify-between gap-5">
+                    <div>
+                      <p className="text-[9px] font-semibold uppercase tracking-[0.25em] text-[#9a742f]">
+                        02 / Foto 4R
+                      </p>
 
-        <div className="relative mx-auto max-w-3xl px-5 text-center md:px-8">
+                      <h2 className="mt-2 font-serif text-4xl leading-none text-[#2a1616] sm:text-5xl">
+                        Close Up & Full Body
+                      </h2>
 
-          <h2 className="mt-3 font-serif text-4xl leading-none text-[#2a1616] sm:text-6xl">
-            Siap menjadi
-            <br />
-            bagian dari perjalanan?
-          </h2>
+                      <p className="mt-3 max-w-xl text-sm leading-6 text-black/45">
+                        Gunakan foto sesuai ketentuan dan pastikan file diberi
+                        nama dengan benar.
+                      </p>
+                    </div>
 
-          <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-black/50">
-            Pastikan semua berkas sudah lengkap sebelum mengirimkan
-            pendaftaran
-          </p>
+                    <span className="hidden rounded-full border border-black/10 bg-white/40 px-3 py-1.5 text-[9px] font-semibold text-black/40 sm:block">
+                      02 / 05
+                    </span>
+                  </div>
 
-          <a
-            href={REGISTRATION_FORM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-6 inline-flex rounded-full bg-[#2a1616] px-8 py-4 text-sm font-semibold text-white shadow-lg transition-all duration-500 hover:-translate-y-1 hover:bg-[#f5b446] hover:text-[#170401]"
+                  <div className="mt-7 grid gap-5 md:grid-cols-2">
+                    {/* BAGUS */}
+
+                    <div>
+                      <p className="mb-3 text-[9px] font-semibold uppercase tracking-[0.2em] text-[#315e50]">
+                        Contoh Bagus
+                      </p>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <PhotoCard
+                          src="/Closeup_Bagus.webp"
+                          alt="Contoh foto close up Bagus"
+                          title="Close Up"
+                          filename="Close Up_Bagus_[Nama Peserta]"
+                        />
+
+                        <PhotoCard
+                          src="/Fullbody_Bagus.webp"
+                          alt="Contoh foto full body Bagus"
+                          title="Full Body"
+                          filename="Full Body_Bagus_[Nama Peserta]"
+                        />
+                      </div>
+                    </div>
+
+                    {/* JEGEG */}
+
+                    <div>
+                      <p className="mb-3 text-[9px] font-semibold uppercase tracking-[0.2em] text-[#315e50]">
+                        Contoh Jegeg
+                      </p>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <PhotoCard
+                          src="/Close Up_Jegeg.webp"
+                          alt="Contoh foto close up Jegeg"
+                          title="Close Up"
+                          filename="Close Up_Jegeg_[Nama Peserta]"
+                        />
+
+                        <PhotoCard
+                          src="/Full Body_Jegeg.webp"
+                          alt="Contoh foto full body Jegeg"
+                          title="Full Body"
+                          filename="Full Body_Jegeg_[Nama Peserta]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          {/* ===================================================== */}
+          {/* PAGE 03 — SELEKSI */}
+          {/* ===================================================== */}
+
+          <article className="w-full shrink-0 snap-center px-5 sm:px-8">
+            <div className="mx-auto max-w-5xl">
+              <div className="relative overflow-hidden rounded-[32px] border border-white/70 bg-[#2a1616] p-5 text-white shadow-[0_25px_80px_rgba(23,4,1,0.16)] sm:p-8 md:p-10">
+                <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-[#f5b446]/10 blur-[90px]" />
+
+                <div className="relative">
+                  <div className="flex items-start justify-between gap-5">
+                    <div>
+                      <p className="text-[9px] font-semibold uppercase tracking-[0.25em] text-[#b9d0c4]/55">
+                        03 / Seleksi
+                      </p>
+
+                      <h2 className="mt-2 max-w-3xl font-serif text-4xl leading-none sm:text-5xl">
+                        Datang siap dan ikuti seluruh ketentuan
+                      </h2>
+                    </div>
+
+                    <span className="hidden rounded-full border border-white/10 bg-white/[0.06] px-3 py-1.5 text-[9px] font-semibold text-white/40 sm:block">
+                      03 / 05
+                    </span>
+                  </div>
+
+                  <div className="mt-7 grid gap-3 lg:grid-cols-[0.7fr_1.3fr]">
+                    {/* PELAKSANAAN */}
+
+                    <div className="rounded-[26px] border border-white/10 bg-white/[0.06] p-6 backdrop-blur-xl sm:p-7">
+                      <p className="text-[9px] uppercase tracking-[0.2em] text-[#b9d0c4]/55">
+                        Pelaksanaan Seleksi
+                      </p>
+
+                      <div className="mt-5 space-y-4">
+                        <InfoItem
+                          label="Hari, Tanggal"
+                          value="Minggu, 25 Oktober 2026"
+                          serif
+                        />
+
+                        <InfoItem
+                          label="Waktu"
+                          value="08.00 – Selesai"
+                        />
+
+                        <InfoItem
+                          label="Tempat"
+                          value="Ruangan Widya Sabha"
+                        />
+                      </div>
+                    </div>
+
+                    {/* MEKANISME */}
+
+                    <div className="rounded-[26px] border border-white/10 bg-white/[0.06] p-6 backdrop-blur-xl sm:p-7">
+                      <p className="text-[9px] uppercase tracking-[0.2em] text-[#b9d0c4]/55">
+                        Mekanisme Kegiatan
+                      </p>
+
+                      <div className="mt-5 grid gap-x-6 gap-y-4 sm:grid-cols-2">
+                        {mechanism.map((item, index) => (
+                          <div key={item} className="flex gap-3">
+                            <span className="mt-0.5 text-[9px] font-semibold text-[#b9d0c4]/45">
+                              {String(index + 1).padStart(2, "0")}
+                            </span>
+
+                            <p className="text-xs leading-5 text-white/55">
+                              {item}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          {/* ===================================================== */}
+          {/* PAGE 04 — LARANGAN */}
+          {/* ===================================================== */}
+
+          <article className="w-full shrink-0 snap-center px-5 sm:px-8">
+            <div className="mx-auto max-w-5xl">
+              <div className="relative overflow-hidden rounded-[32px] border border-white/70 bg-[#2a1616] p-5 text-white shadow-[0_25px_80px_rgba(23,4,1,0.16)] sm:p-8 md:p-10">
+                <div className="absolute -left-20 bottom-0 h-72 w-72 rounded-full bg-[#315e50]/15 blur-[90px]" />
+
+                <div className="relative">
+                  <div className="flex items-start justify-between gap-5">
+                    <div>
+                      <p className="text-[9px] font-semibold uppercase tracking-[0.25em] text-[#b9d0c4]/55">
+                        04 / Larangan
+                      </p>
+
+                      <h2 className="mt-2 max-w-3xl font-serif text-4xl leading-none sm:text-5xl">
+                        Jaga suasana seleksi bersama
+                      </h2>
+
+                      <p className="mt-4 max-w-xl text-sm leading-6 text-white/45">
+                        Seluruh peserta diharapkan menjaga ketertiban dan
+                        menghargai proses seleksi bersama.
+                      </p>
+                    </div>
+
+                    <span className="hidden rounded-full border border-white/10 bg-white/[0.06] px-3 py-1.5 text-[9px] font-semibold text-white/40 sm:block">
+                      04 / 05
+                    </span>
+                  </div>
+
+                  <div className="mt-8 grid gap-3 md:grid-cols-3">
+                    {prohibitions.map((item, index) => (
+                      <div
+                        key={item}
+                        className="rounded-[24px] border border-white/10 bg-white/[0.06] p-5 backdrop-blur-xl"
+                      >
+                        <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-[9px] font-semibold text-[#b9d0c4]">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+
+                        <p className="mt-5 text-sm leading-6 text-white/60">
+                          {item}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          {/* ===================================================== */}
+          {/* PAGE 05 — FINAL CTA */}
+          {/* ===================================================== */}
+
+          <article
+            id="registration"
+            className="w-full shrink-0 snap-center px-5 sm:px-8"
           >
-            Daftar Finalis 2027 
-          </a>
+            <div className="mx-auto max-w-5xl">
+              <div className="relative overflow-hidden rounded-[32px] border border-white/70 bg-white/45 p-7 text-center shadow-[0_25px_80px_rgba(23,4,1,0.08)] backdrop-blur-2xl sm:p-12 md:p-16">
+                <div className="pointer-events-none absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f5b446]/10 blur-[100px]" />
+
+                <div className="relative">
+                  <span className="mx-auto flex h-9 w-9 items-center justify-center rounded-full bg-[#2a1616] text-[9px] font-semibold text-white">
+                    05
+                  </span>
+
+                  <p className="mt-5 text-[9px] font-semibold uppercase tracking-[0.25em] text-[#9a742f]">
+                    Langkah terakhir
+                  </p>
+
+                  <h2 className="mt-3 font-serif text-4xl leading-none text-[#2a1616] sm:text-6xl">
+                    Siap menjadi
+                    <br />
+                    <span className="text-[#9a742f]">
+                      bagian dari perjalanan?
+                    </span>
+                  </h2>
+
+                  <p className="mx-auto mt-5 max-w-xl text-sm leading-6 text-black/50">
+                    Pastikan semua berkas sudah lengkap sebelum mengirimkan
+                    pendaftaran.
+                  </p>
+
+                  <a
+                    href={REGISTRATION_FORM_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-7 inline-flex rounded-full bg-[#2a1616] px-8 py-4 text-sm font-semibold text-white shadow-lg transition-all duration-500 hover:-translate-y-1 hover:bg-[#f5b446] hover:text-[#170401]"
+                  >
+                    Daftar Finalis 2027
+                  </a>
+
+                  <p className="mt-5 text-[9px] uppercase tracking-[0.18em] text-black/30">
+                    Jegeg Bagus FEB Unmas 2027
+                  </p>
+                </div>
+              </div>
+            </div>
+          </article>
         </div>
+
+        {/* ========================================================= */}
+        {/* PAGE INDICATOR */}
+        {/* ========================================================= */}
+
+        <div className="mx-auto mt-6 flex max-w-5xl items-center justify-center gap-2 px-5">
+          {pages.map((page, index) => (
+            <button
+              key={page}
+              type="button"
+              onClick={() => goToPage(index)}
+              aria-label={`Buka halaman ${index + 1}`}
+              className={`h-1.5 rounded-full transition-all duration-500 ${
+                activePage === index
+                  ? "w-8 bg-[#2a1616]"
+                  : "w-1.5 bg-black/15"
+              }`}
+            />
+          ))}
+        </div>
+
+        <p className="mt-4 text-center text-[9px] uppercase tracking-[0.18em] text-black/25">
+          Geser untuk membuka halaman
+        </p>
       </section>
 
       {/* ========================================================= */}
@@ -760,6 +794,150 @@ export default function PendaftaranFinalisPage() {
           </div>
         </div>
       </footer>
+
+      {/* ========================================================= */}
+      {/* GLOBAL STYLE */}
+      {/* ========================================================= */}
+
+      <style jsx global>{`
+        html {
+          scroll-behavior: smooth;
+        }
+
+        .nav-link {
+          position: relative;
+          color: rgba(25, 24, 20, 0.65);
+          transition:
+            color 300ms ease,
+            transform 300ms ease;
+        }
+
+        .nav-link:hover {
+          color: #2a1616;
+          transform: translateY(-1px);
+        }
+
+        .scrollbar-none {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+
+        .scrollbar-none::-webkit-scrollbar {
+          display: none;
+        }
+
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+
+        body {
+          overflow-x: hidden;
+        }
+      `}</style>
     </main>
+  );
+}
+
+/* ========================================================= */
+/* BOOK STEP */
+/* ========================================================= */
+
+function BookStep({
+  number,
+  title,
+  text,
+}: {
+  number: string;
+  title: string;
+  text: string;
+}) {
+  return (
+    <div className="rounded-[24px] border border-white/65 bg-white/35 p-5 shadow-[0_12px_35px_rgba(23,4,1,0.05)] backdrop-blur-xl">
+      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2a1616] text-[9px] font-semibold text-white">
+        {number}
+      </span>
+
+      <h3 className="mt-4 font-serif text-xl text-[#2a1616]">
+        {title}
+      </h3>
+
+      <p className="mt-2 text-xs leading-5 text-black/50">
+        {text}
+      </p>
+    </div>
+  );
+}
+
+/* ========================================================= */
+/* PHOTO CARD */
+/* ========================================================= */
+
+function PhotoCard({
+  src,
+  alt,
+  title,
+  filename,
+}: {
+  src: string;
+  alt: string;
+  title: string;
+  filename: string;
+}) {
+  return (
+    <div className="overflow-hidden rounded-[22px] border border-white/70 bg-white/45 shadow-sm backdrop-blur-xl">
+      <div className="aspect-[4/3] overflow-hidden bg-white/25">
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          className="h-full w-full object-contain object-center"
+        />
+      </div>
+
+      <div className="p-3 sm:p-4">
+        <p className="text-[10px] font-semibold text-[#2a1616]">
+          {title}
+        </p>
+
+        <p className="mt-1 text-[8px] leading-4 text-black/40">
+          {filename}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ========================================================= */
+/* INFO ITEM */
+/* ========================================================= */
+
+function InfoItem({
+  label,
+  value,
+  serif = false,
+}: {
+  label: string;
+  value: string;
+  serif?: boolean;
+}) {
+  return (
+    <div>
+      <p className="text-[9px] uppercase tracking-[0.15em] text-white/35">
+        {label}
+      </p>
+
+      <p
+        className={`mt-1 text-white/70 ${
+          serif ? "font-serif text-xl text-white" : "text-sm"
+        }`}
+      >
+        {value}
+      </p>
+    </div>
   );
 }
