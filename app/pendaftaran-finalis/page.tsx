@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
-
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSquareUpRight } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 /* ========================================================= */
 /* LINKS */
@@ -43,121 +44,297 @@ const prohibitions = [
 ];
 
 /* ========================================================= */
-/* COMPONENT */
+/* PAGE */
 /* ========================================================= */
 
 export default function PendaftaranFinalisPage() {
-  const bookRef = useRef<HTMLDivElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [activePage, setActivePage] = useState(0);
 
+  const navRef = useRef<HTMLElement>(null);
+  const bookRef = useRef<HTMLDivElement>(null);
+
   /* ========================================================= */
-  /* BOOK SCROLL */
-/* ========================================================= */
+  /* MOBILE MENU */
+  /* ========================================================= */
 
-  const handleBookScroll = () => {
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        menuOpen &&
+        navRef.current &&
+        !navRef.current.contains(event.target as Node)
+      ) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [menuOpen]);
+
+  /* ========================================================= */
+  /* BOOK TRACKING */
+  /* ========================================================= */
+
+  useEffect(() => {
     const container = bookRef.current;
 
     if (!container) return;
 
-    const pageWidth = container.clientWidth;
+    const handleScroll = () => {
+      const width = container.clientWidth;
 
-    if (!pageWidth) return;
+      if (!width) return;
 
-    const index = Math.round(container.scrollLeft / pageWidth);
+      const index = Math.round(container.scrollLeft / width);
 
-    setActivePage(index);
-  };
+      setActivePage(Math.max(0, Math.min(index, 5)));
+    };
 
-  const goToPage = (index: number) => {
-    const container = bookRef.current;
-
-    if (!container) return;
-
-    container.scrollTo({
-      left: index * container.clientWidth,
-      behavior: "smooth",
+    container.addEventListener("scroll", handleScroll, {
+      passive: true,
     });
 
-    setActivePage(index);
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  /* ========================================================= */
+  /* BOOK NAVIGATION */
+  /* ========================================================= */
+
+  const goToPage = (page: number) => {
+    const container = bookRef.current;
+
+    if (!container) return;
+
+    const target = Math.max(0, Math.min(page, 5));
+
+    container.scrollTo({
+      left: container.clientWidth * target,
+      behavior: "smooth",
+    });
   };
 
-  const pages = [
-    "Berkas",
-    "Foto",
-    "Seleksi",
-    "Larangan",
-    "Daftar",
-  ];
-
   return (
-    <main className="min-h-screen w-full overflow-x-hidden bg-[#e9e1d2] text-[#191814]">
-
+    <main className="min-h-screen w-full bg-[#e9e1d2] text-[#191814]">
       {/* ========================================================= */}
       {/* NAVBAR */}
       {/* ========================================================= */}
 
-      <Navbar />
+      <nav
+        ref={navRef}
+        className="fixed left-1/2 top-3 z-50 w-[calc(100%-20px)] max-w-7xl -translate-x-1/2 rounded-full border border-black/[0.08] bg-[#f5f1e8]/70 shadow-[0_8px_30px_rgba(23,4,1,0.08)] backdrop-blur-2xl backdrop-saturate-150 sm:w-[calc(100%-24px)]"
+      >
+        <div className="flex h-12 items-center justify-between px-3 sm:h-14 sm:px-4">
+          {/* LOGO */}
 
-      {/* ========================================================= */}
-      {/* HERO / BOOK INTRO */}
-      {/* ========================================================= */}
+          <Link
+            href="/"
+            onClick={() => setMenuOpen(false)}
+            className="flex items-center gap-2.5 transition-transform duration-300 active:scale-[0.97]"
+          >
+            <img
+              src="/Logo JEBAG FEB.webp"
+              alt="Logo Jegeg Bagus FEB Unmas"
+              className="h-8 w-8 object-contain sm:h-9 sm:w-9"
+            />
 
-      <section className="relative overflow-hidden bg-[#f5f1e8] pb-8 pt-24 sm:pb-10 sm:pt-28">
-        <div className="pointer-events-none absolute -right-32 top-10 h-72 w-72 rounded-full bg-[#f5b446]/15 blur-[100px] sm:h-96 sm:w-96" />
+            <div className="leading-tight">
+              <p className="text-[10px] font-semibold tracking-[0.08em] sm:text-[11px]">
+                JEGEG BAGUS
+              </p>
 
-        <div className="pointer-events-none absolute -left-32 bottom-0 h-72 w-72 rounded-full bg-[#315e50]/10 blur-[100px]" />
-
-        <div className="relative mx-auto max-w-6xl px-5 md:px-8">
-          <div className="flex flex-col items-center text-center">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#9a742f] sm:text-xs">
-              Panduan Finalis
-            </p>
-
-            <h1 className="mt-3 max-w-3xl font-serif text-[3rem] leading-[0.9] tracking-tight text-[#2a1616] sm:text-6xl md:text-7xl">
-              Buku Panduan
-              <br />
-              <span className="text-[#9a742f]">
-                Finalis 2027
-              </span>
-            </h1>
-
-            <p className="mt-4 max-w-lg text-sm leading-6 text-black/50 sm:text-base">
-              Geser ke samping untuk membaca panduan pendaftaran,
-              kelengkapan berkas, ketentuan foto, hingga persiapan seleksi.
-            </p>
-
-            <div className="mt-6 flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.18em] text-black/35">
-              <span className="text-base">←</span>
-              Geser halaman
-              <span className="text-base">→</span>
+              <p className="text-[7px] uppercase tracking-[0.18em] text-black/50 sm:text-[8px]">
+                FEB UNMAS
+              </p>
             </div>
+          </Link>
+
+          {/* DESKTOP MENU */}
+
+          <div className="hidden items-center gap-6 text-xs font-medium lg:flex">
+            <Link href="/#tentang" className="nav-link">
+              Tentang
+            </Link>
+
+            <Link href="/#lentera" className="nav-link">
+              Lentera
+            </Link>
+
+            <Link href="/#alur" className="nav-link">
+              Alur
+            </Link>
+
+            <Link href="/program" className="nav-link">
+              Program
+            </Link>
+          </div>
+
+          {/* RIGHT */}
+
+          <div className="flex items-center gap-2">
+            <a
+              href={REGISTRATION_FORM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden rounded-full bg-[#170401] px-4 py-2 text-[10px] font-semibold uppercase tracking-wider text-white shadow-sm transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#f5b446] hover:text-[#170401] sm:block"
+            >
+              Daftar Sekarang
+            </a>
+
+            {/* HAMBURGER */}
+
+            <button
+              type="button"
+              onClick={() => setMenuOpen((prev) => !prev)}
+              aria-label={menuOpen ? "Tutup menu" : "Buka menu"}
+              aria-expanded={menuOpen}
+              className="group relative flex h-9 w-9 items-center justify-center rounded-full bg-white/30 transition-all duration-300 active:scale-[0.88] lg:hidden"
+            >
+              <div className="relative h-[14px] w-[16px]">
+                <span
+                  className={`absolute left-0 h-[1.5px] w-4 rounded-full bg-[#170401] transition-all duration-500 ${
+                    menuOpen ? "top-[6px] rotate-45" : "top-[2px]"
+                  }`}
+                />
+
+                <span
+                  className={`absolute left-0 top-[6px] h-[1.5px] w-4 rounded-full bg-[#170401] transition-all duration-300 ${
+                    menuOpen
+                      ? "scale-x-0 opacity-0"
+                      : "scale-x-100 opacity-100"
+                  }`}
+                />
+
+                <span
+                  className={`absolute left-0 h-[1.5px] w-4 rounded-full bg-[#170401] transition-all duration-500 ${
+                    menuOpen ? "top-[6px] -rotate-45" : "top-[10px]"
+                  }`}
+                />
+              </div>
+            </button>
           </div>
         </div>
-      </section>
+
+        {/* MOBILE MENU */}
+
+        <div
+          className={`absolute left-0 right-0 top-full mt-2 overflow-hidden rounded-[24px] border border-white/40 bg-[#f5f1e8]/95 shadow-[0_20px_50px_rgba(23,4,1,0.12)] backdrop-blur-2xl transition-all duration-500 lg:hidden ${
+            menuOpen
+              ? "pointer-events-auto translate-y-0 opacity-100"
+              : "pointer-events-none -translate-y-2 opacity-0"
+          }`}
+        >
+          <div className="p-2">
+            <Link
+              href="/#tentang"
+              onClick={() => setMenuOpen(false)}
+              className="flex rounded-[18px] px-4 py-3.5 text-sm"
+            >
+              Tentang
+            </Link>
+
+            <Link
+              href="/#lentera"
+              onClick={() => setMenuOpen(false)}
+              className="flex rounded-[18px] px-4 py-3.5 text-sm"
+            >
+              Lentera
+            </Link>
+
+            <Link
+              href="/#alur"
+              onClick={() => setMenuOpen(false)}
+              className="flex rounded-[18px] px-4 py-3.5 text-sm"
+            >
+              Alur
+            </Link>
+
+            <Link
+              href="/program"
+              onClick={() => setMenuOpen(false)}
+              className="flex rounded-[18px] px-4 py-3.5 text-sm"
+            >
+              Program
+            </Link>
+
+            <div className="my-1 h-px bg-black/[0.06]" />
+
+            <a
+              href={REGISTRATION_FORM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center justify-center rounded-[18px] bg-[#2a1616] px-5 py-3.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white"
+            >
+              Daftar Sekarang
+            </a>
+          </div>
+        </div>
+      </nav>
 
       {/* ========================================================= */}
-      {/* BOOK NAVIGATION */}
+      {/* HEADER */}
       {/* ========================================================= */}
 
-      <section className="sticky top-[60px] z-30 bg-[#e9e1d2]/80 py-3 backdrop-blur-xl sm:top-[68px]">
-        <div className="mx-auto max-w-6xl px-5 md:px-8">
-          <div className="overflow-hidden rounded-full border border-white/60 bg-white/35 p-1 shadow-[0_8px_30px_rgba(23,4,1,0.05)] backdrop-blur-xl">
-            <div className="flex gap-1 overflow-x-auto scrollbar-none">
-              {pages.map((page, index) => (
+      <section className="bg-[#f5f1e8] px-5 pb-3 pt-[78px] sm:px-8 sm:pb-4 sm:pt-28">
+        <div className="mx-auto flex max-w-7xl items-center justify-between">
+          <div>
+            <p className="text-[8px] font-semibold uppercase tracking-[0.25em] text-[#9a742f] sm:text-[9px]">
+              Finalis 2027
+            </p>
+
+            <p className="mt-1 text-[11px] text-black/45 sm:text-xs">
+              Panduan Pendaftaran
+            </p>
+          </div>
+
+          {/* PAGE INDICATOR */}
+
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <span className="font-mono text-[8px] text-black/35 sm:text-[9px]">
+              {String(activePage + 1).padStart(2, "0")}
+            </span>
+
+            <div className="flex items-center gap-1">
+              {Array.from({ length: 6 }).map((_, index) => (
                 <button
-                  key={page}
+                  key={index}
                   type="button"
                   onClick={() => goToPage(index)}
-                  className={`shrink-0 rounded-full px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] transition-all duration-300 sm:px-5 ${
+                  aria-label={`Halaman ${index + 1}`}
+                  className={`h-1 rounded-full transition-all duration-500 ${
                     activePage === index
-                      ? "bg-[#2a1616] text-white shadow-sm"
-                      : "text-black/45 hover:bg-white/50 hover:text-[#2a1616]"
+                      ? "w-4 bg-[#2a1616] sm:w-5"
+                      : "w-1.5 bg-black/15"
                   }`}
-                >
-                  {String(index + 1).padStart(2, "0")} {page}
-                </button>
+                />
               ))}
             </div>
+
+            <span className="font-mono text-[8px] text-black/25 sm:text-[9px]">
+              06
+            </span>
           </div>
         </div>
       </section>
@@ -166,585 +343,739 @@ export default function PendaftaranFinalisPage() {
       {/* BOOK */}
       {/* ========================================================= */}
 
-      <section className="relative overflow-hidden bg-[#e9e1d2] py-5 sm:py-8">
-        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f5b446]/5 blur-[120px]" />
+      <div
+        ref={bookRef}
+        className="flex h-[calc(100dvh-106px)] w-full snap-x snap-mandatory overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:h-[calc(100dvh-118px)]"
+      >
+        {/* ======================================================= */}
+        {/* PAGE 01 — COVER */}
+        {/* ======================================================= */}
 
-        <div
-          ref={bookRef}
-          onScroll={handleBookScroll}
-          className="no-scrollbar relative flex snap-x snap-mandatory overflow-x-auto scroll-smooth"
-        >
+        <section className="relative h-full min-w-full snap-start bg-[#f5f1e8] px-5 pb-6 sm:px-8 sm:pb-8">
+          <div className="mx-auto flex h-full max-w-7xl items-center">
+            <div className="grid w-full items-center gap-5 md:grid-cols-[0.95fr_1.05fr] md:gap-12">
+              {/* LEFT */}
 
-          {/* ===================================================== */}
-          {/* PAGE 01 — BERKAS */}
-          {/* ===================================================== */}
+              <div>
+                <div className="mb-4 flex items-center gap-3 sm:mb-5">
+                  <span className="h-px w-7 bg-[#9a742f] sm:w-8" />
 
-          <article className="w-full shrink-0 snap-center px-5 sm:px-8">
-            <div className="mx-auto max-w-5xl">
-              <div className="relative overflow-hidden rounded-[32px] border border-white/70 bg-white/45 p-5 shadow-[0_25px_80px_rgba(23,4,1,0.08)] backdrop-blur-2xl sm:p-8 md:p-10">
+                  <p className="text-[8px] font-semibold uppercase tracking-[0.22em] text-[#9a742f] sm:text-[9px]">
+                    01 / Cover
+                  </p>
+                </div>
 
-                <div className="absolute right-0 top-0 h-56 w-56 rounded-full bg-[#f5b446]/10 blur-[80px]" />
+                <h1 className="max-w-xl font-serif text-[3rem] leading-[0.88] tracking-[-0.04em] text-[#2a1616] sm:text-6xl md:text-7xl">
+                  Panduan
+                  <br />
+                  Pendaftaran
+                  <br />
+                  <span className="text-[#9a742f]">Finalis</span>
+                </h1>
 
-                <div className="relative">
+                <p className="mt-5 max-w-md text-[12px] leading-5 text-black/50 sm:mt-6 sm:text-base sm:leading-6">
+                  Siapkan berkas, lengkapi data diri, dan pahami seluruh
+                  ketentuan sebelum mengikuti proses seleksi.
+                </p>
 
-                  <div className="flex items-start justify-between gap-5">
-                    <div>
-                      <p className="text-[9px] font-semibold uppercase tracking-[0.25em] text-[#9a742f]">
-                        01 / Kelengkapan
-                      </p>
+                <div className="mt-5 flex flex-wrap gap-2 sm:mt-7">
+                  <a
+                    href={REGISTRATION_FORM_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-full bg-[#2a1616] px-5 py-3 text-[10px] font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-[#f5b446] hover:text-[#170401] sm:px-6 sm:py-3.5 sm:text-xs"
+                  >
+                    Daftar Sekarang
+                  </a>
 
-                      <h2 className="mt-2 font-serif text-4xl leading-none text-[#2a1616] sm:text-5xl">
-                        Siapkan sebelum daftar
-                      </h2>
+                  <button
+                    type="button"
+                    onClick={() => goToPage(1)}
+                    className="inline-flex items-center gap-2"
+>
+  Mulai Panduan
+  <FontAwesomeIcon icon={faArrowRight} />
 
-                      <p className="mt-3 max-w-xl text-sm leading-6 text-black/45">
-                        Pastikan seluruh kelengkapan sudah tersedia sebelum
-                        mengisi formulir pendaftaran.
-                      </p>
-                    </div>
+                  </button>
+                </div>
+              </div>
 
-                    <span className="hidden rounded-full border border-black/10 bg-white/40 px-3 py-1.5 text-[9px] font-semibold text-black/40 sm:block">
-                      01 / 05
-                    </span>
+              {/* IMAGE */}
+
+              <div className="relative mx-auto w-full max-w-[430px]">
+                <div className="absolute -inset-3 rounded-[30px] bg-[#f5b446]/10 blur-2xl sm:-inset-4 sm:rounded-[38px]" />
+
+                <div className="relative rounded-[25px] border border-white/70 bg-white/35 p-1.5 shadow-[0_20px_60px_rgba(23,4,1,0.12)] backdrop-blur-2xl sm:rounded-[32px] sm:p-2">
+                  <div className="overflow-hidden rounded-[20px] sm:rounded-[25px]">
+                    <img
+                      src="/HEROFINALIS.webp"
+                      alt="Panduan Pendaftaran Finalis Jegeg Bagus FEB Unmas"
+                      className="aspect-[4/3] h-full w-full object-cover object-center"
+                    />
                   </div>
 
-                  <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                  <div className="flex items-center justify-between px-2.5 py-2.5 sm:px-3 sm:py-3">
+                    <p className="text-[8px] uppercase tracking-[0.14em] text-black/35 sm:text-[9px] sm:tracking-[0.18em]">
+                      Jegeg Bagus FEB Unmas
+                    </p>
 
-                    <BookStep
-                      number="01"
-                      title="Persiapkan"
-                      text="Siapkan semua kelengkapan yang dibutuhkan."
-                    />
-
-                    <BookStep
-                      number="02"
-                      title="Checklist"
-                      text="CV, foto 4R Full Body & Close Up, serta Formulir Kesiapan."
-                    />
-
-                    <BookStep
-                      number="03"
-                      title="Upload"
-                      text="Upload berkas dan isi data diri melalui Google Form."
-                    />
-
-                    <BookStep
-                      number="04"
-                      title="WhatsApp"
-                      text="Pastikan kamu sudah masuk ke group WhatsApp peserta."
-                    />
-
+                    <p className="font-mono text-[8px] text-black/25 sm:text-[9px]">
+                      2027
+                    </p>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    {documents.map((item) => (
-                      <span
-                        key={item}
-                        className="rounded-full border border-white/70 bg-white/45 px-3 py-2 text-[9px] text-black/50"
-                      >
-                        ✓ {item}
-                      </span>
-                    ))}
-                  </div>
+        {/* ======================================================= */}
+        {/* PAGE 02 — BERKAS */}
+        {/* ======================================================= */}
+
+        <section className="h-full min-w-full snap-start bg-[#e9e1d2] px-5 pb-6 sm:px-8 sm:pb-8">
+          <div className="mx-auto flex h-full max-w-7xl items-center">
+            <div className="w-full">
+              <div className="mb-4 flex items-end justify-between gap-3 sm:mb-6">
+                <div>
+                  <p className="text-[8px] font-semibold uppercase tracking-[0.22em] text-[#9a742f] sm:text-[9px]">
+                    02 / Preparation
+                  </p>
+
+                  <h2 className="mt-1.5 font-serif text-3xl leading-none text-[#2a1616] sm:mt-2 sm:text-5xl">
+                    Kelengkapan
+                    <br />
+                    Berkas
+                  </h2>
+                </div>
+
+                <a
+                  href={DOCUMENT_FOLDER_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-black/10 bg-white/40 px-3 py-2 text-[8px] font-semibold uppercase tracking-[0.1em] text-[#2a1616] backdrop-blur-xl transition hover:bg-[#2a1616] hover:text-white sm:px-4 sm:py-2.5 sm:text-[9px]"
+                >
+                  Drive
+                  <FontAwesomeIcon icon={faSquareUpRight} /> 
+                </a>
+              </div>
+
+              {/* 2 x 2 ON MOBILE */}
+
+              <div className="grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-4">
+                {/* CARD 1 */}
+
+                <div className="rounded-[20px] border border-white/60 bg-white/40 p-3.5 shadow-[0_12px_30px_rgba(23,4,1,0.05)] backdrop-blur-xl sm:rounded-[25px] sm:p-5">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#2a1616] text-[8px] font-semibold text-white sm:h-8 sm:w-8 sm:text-[9px]">
+                    01
+                  </span>
+
+                  <h3 className="mt-3 font-serif text-lg text-[#2a1616] sm:mt-5 sm:text-xl">
+                    Persiapkan
+                  </h3>
+
+                  <p className="mt-1.5 text-[10px] leading-4 text-black/50 sm:mt-2 sm:text-xs sm:leading-5">
+                    Persiapkan seluruh kelengkapan yang dibutuhkan.
+                  </p>
 
                   <a
                     href={DOCUMENT_FOLDER_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-6 inline-flex rounded-full border border-black/10 bg-white/45 px-5 py-2.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#2a1616] backdrop-blur-xl transition hover:bg-[#2a1616] hover:text-white"
+                    className="mt-3 inline-block text-[8px] font-semibold uppercase tracking-[0.12em] text-[#9a742f] sm:mt-5 sm:text-[9px]"
                   >
-                    Lihat Google Drive Berkas
+                    Lihat berkas
+                    <FontAwesomeIcon icon={faSquareUpRight} /> 
                   </a>
-
                 </div>
-              </div>
-            </div>
-          </article>
 
-          {/* ===================================================== */}
-          {/* PAGE 02 — FOTO */}
-          {/* ===================================================== */}
+                {/* CARD 2 */}
 
-          <article className="w-full shrink-0 snap-center px-5 sm:px-8">
-            <div className="mx-auto max-w-5xl">
-              <div className="relative overflow-hidden rounded-[32px] border border-white/70 bg-white/45 p-5 shadow-[0_25px_80px_rgba(23,4,1,0.08)] backdrop-blur-2xl sm:p-8 md:p-10">
-
-                <div className="relative">
-
-                  <div className="flex items-start justify-between gap-5">
-                    <div>
-                      <p className="text-[9px] font-semibold uppercase tracking-[0.25em] text-[#9a742f]">
-                        02 / Foto 4R
-                      </p>
-
-                      <h2 className="mt-2 font-serif text-4xl leading-none text-[#2a1616] sm:text-5xl">
-                        Close Up & Full Body
-                      </h2>
-
-                      <p className="mt-3 max-w-xl text-sm leading-6 text-black/45">
-                        Gunakan foto sesuai ketentuan dan pastikan file diberi
-                        nama dengan benar.
-                      </p>
-                    </div>
-
-                    <span className="hidden rounded-full border border-black/10 bg-white/40 px-3 py-1.5 text-[9px] font-semibold text-black/40 sm:block">
-                      02 / 05
-                    </span>
-                  </div>
-
-                  <div className="mt-7 grid gap-5 md:grid-cols-2">
-
-                    {/* BAGUS */}
-
-                    <div>
-                      <p className="mb-3 text-[9px] font-semibold uppercase tracking-[0.2em] text-[#315e50]">
-                        Contoh Bagus
-                      </p>
-
-                      <div className="grid grid-cols-2 gap-3">
-
-                        <PhotoCard
-                          src="/Closeup_Bagus.webp"
-                          alt="Contoh foto close up Bagus"
-                          title="Close Up"
-                          filename="Close Up_Bagus_[Nama Peserta]"
-                        />
-
-                        <PhotoCard
-                          src="/Fullbody_Bagus.webp"
-                          alt="Contoh foto full body Bagus"
-                          title="Full Body"
-                          filename="Full Body_Bagus_[Nama Peserta]"
-                        />
-
-                      </div>
-                    </div>
-
-                    {/* JEGEG */}
-
-                    <div>
-                      <p className="mb-3 text-[9px] font-semibold uppercase tracking-[0.2em] text-[#315e50]">
-                        Contoh Jegeg
-                      </p>
-
-                      <div className="grid grid-cols-2 gap-3">
-
-                        <PhotoCard
-                          src="/Close Up_Jegeg.webp"
-                          alt="Contoh foto close up Jegeg"
-                          title="Close Up"
-                          filename="Close Up_Jegeg_[Nama Peserta]"
-                        />
-
-                        <PhotoCard
-                          src="/Full Body_Jegeg.webp"
-                          alt="Contoh foto full body Jegeg"
-                          title="Full Body"
-                          filename="Full Body_Jegeg_[Nama Peserta]"
-                        />
-
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          {/* ===================================================== */}
-          {/* PAGE 03 — SELEKSI */}
-          {/* ===================================================== */}
-
-          <article className="w-full shrink-0 snap-center px-5 sm:px-8">
-            <div className="mx-auto max-w-5xl">
-
-              <div className="relative overflow-hidden rounded-[32px] border border-white/70 bg-[#2a1616] p-5 text-white shadow-[0_25px_80px_rgba(23,4,1,0.16)] sm:p-8 md:p-10">
-
-                <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-[#f5b446]/10 blur-[90px]" />
-
-                <div className="relative">
-
-                  <div className="flex items-start justify-between gap-5">
-                    <div>
-
-                      <p className="text-[9px] font-semibold uppercase tracking-[0.25em] text-[#b9d0c4]/55">
-                        03 / Seleksi
-                      </p>
-
-                      <h2 className="mt-2 max-w-3xl font-serif text-4xl leading-none sm:text-5xl">
-                        Datang siap dan ikuti seluruh ketentuan
-                      </h2>
-
-                    </div>
-
-                    <span className="hidden rounded-full border border-white/10 bg-white/[0.06] px-3 py-1.5 text-[9px] font-semibold text-white/40 sm:block">
-                      03 / 05
-                    </span>
-                  </div>
-
-                  <div className="mt-7 grid gap-3 lg:grid-cols-[0.7fr_1.3fr]">
-
-                    {/* PELAKSANAAN */}
-
-                    <div className="rounded-[26px] border border-white/10 bg-white/[0.06] p-6 backdrop-blur-xl sm:p-7">
-
-                      <p className="text-[9px] uppercase tracking-[0.2em] text-[#b9d0c4]/55">
-                        Pelaksanaan Seleksi
-                      </p>
-
-                      <div className="mt-5 space-y-4">
-
-                        <InfoItem
-                          label="Hari, Tanggal"
-                          value="Minggu, 25 Oktober 2026"
-                          serif
-                        />
-
-                        <InfoItem
-                          label="Waktu"
-                          value="08.00 – Selesai"
-                        />
-
-                        <InfoItem
-                          label="Tempat"
-                          value="Ruangan Widya Sabha"
-                        />
-
-                      </div>
-                    </div>
-
-                    {/* MEKANISME */}
-
-                    <div className="rounded-[26px] border border-white/10 bg-white/[0.06] p-6 backdrop-blur-xl sm:p-7">
-
-                      <p className="text-[9px] uppercase tracking-[0.2em] text-[#b9d0c4]/55">
-                        Mekanisme Kegiatan
-                      </p>
-
-                      <div className="mt-5 grid gap-x-6 gap-y-4 sm:grid-cols-2">
-
-                        {mechanism.map((item, index) => (
-                          <div
-                            key={item}
-                            className="flex gap-3"
-                          >
-                            <span className="mt-0.5 text-[9px] font-semibold text-[#b9d0c4]/45">
-                              {String(index + 1).padStart(2, "0")}
-                            </span>
-
-                            <p className="text-xs leading-5 text-white/55">
-                              {item}
-                            </p>
-                          </div>
-                        ))}
-
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </article>
-
-          {/* ===================================================== */}
-          {/* PAGE 04 — LARANGAN */}
-          {/* ===================================================== */}
-
-          <article className="w-full shrink-0 snap-center px-5 sm:px-8">
-            <div className="mx-auto max-w-5xl">
-
-              <div className="relative overflow-hidden rounded-[32px] border border-white/70 bg-[#2a1616] p-5 text-white shadow-[0_25px_80px_rgba(23,4,1,0.16)] sm:p-8 md:p-10">
-
-                <div className="absolute -left-20 bottom-0 h-72 w-72 rounded-full bg-[#315e50]/15 blur-[90px]" />
-
-                <div className="relative">
-
-                  <div className="flex items-start justify-between gap-5">
-
-                    <div>
-
-                      <p className="text-[9px] font-semibold uppercase tracking-[0.25em] text-[#b9d0c4]/55">
-                        04 / Larangan
-                      </p>
-
-                      <h2 className="mt-2 max-w-3xl font-serif text-4xl leading-none sm:text-5xl">
-                        Jaga suasana seleksi bersama
-                      </h2>
-
-                      <p className="mt-4 max-w-xl text-sm leading-6 text-white/45">
-                        Seluruh peserta diharapkan menjaga ketertiban dan
-                        menghargai proses seleksi bersama.
-                      </p>
-
-                    </div>
-
-                    <span className="hidden rounded-full border border-white/10 bg-white/[0.06] px-3 py-1.5 text-[9px] font-semibold text-white/40 sm:block">
-                      04 / 05
-                    </span>
-
-                  </div>
-
-                  <div className="mt-8 grid gap-3 md:grid-cols-3">
-
-                    {prohibitions.map((item, index) => (
-                      <div
-                        key={item}
-                        className="rounded-[24px] border border-white/10 bg-white/[0.06] p-5 backdrop-blur-xl"
-                      >
-
-                        <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-[9px] font-semibold text-[#b9d0c4]">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-
-                        <p className="mt-5 text-sm leading-6 text-white/60">
-                          {item}
-                        </p>
-
-                      </div>
-                    ))}
-
-                  </div>
-
-                </div>
-              </div>
-
-            </div>
-          </article>
-
-          {/* ===================================================== */}
-          {/* PAGE 05 — FINAL CTA */}
-          {/* ===================================================== */}
-
-          <article
-            id="registration"
-            className="w-full shrink-0 snap-center px-5 sm:px-8"
-          >
-            <div className="mx-auto max-w-5xl">
-
-              <div className="relative overflow-hidden rounded-[32px] border border-white/70 bg-white/45 p-7 text-center shadow-[0_25px_80px_rgba(23,4,1,0.08)] backdrop-blur-2xl sm:p-12 md:p-16">
-
-                <div className="pointer-events-none absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f5b446]/10 blur-[100px]" />
-
-                <div className="relative">
-
-                  <span className="mx-auto flex h-9 w-9 items-center justify-center rounded-full bg-[#2a1616] text-[9px] font-semibold text-white">
-                    05
+                <div className="rounded-[20px] border border-white/60 bg-white/40 p-3.5 shadow-[0_12px_30px_rgba(23,4,1,0.05)] backdrop-blur-xl sm:rounded-[25px] sm:p-5">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#2a1616] text-[8px] font-semibold text-white sm:h-8 sm:w-8 sm:text-[9px]">
+                    02
                   </span>
 
-                  <p className="mt-5 text-[9px] font-semibold uppercase tracking-[0.25em] text-[#9a742f]">
-                    Langkah terakhir
-                  </p>
+                  <h3 className="mt-3 font-serif text-lg text-[#2a1616] sm:mt-5 sm:text-xl">
+                    Checklist
+                  </h3>
 
-                  <h2 className="mt-3 font-serif text-4xl leading-none text-[#2a1616] sm:text-6xl">
-                    Siap menjadi
-                    <br />
-                    <span className="text-[#9a742f]">
-                      bagian dari perjalanan?
-                    </span>
-                  </h2>
+                  <div className="mt-3 space-y-2 sm:mt-4 sm:space-y-2.5">
+                    {documents.map((item) => (
+                      <div
+                        key={item}
+                        className="flex items-start gap-1.5 text-[9px] leading-4 text-black/55 sm:gap-2 sm:text-xs sm:leading-5"
+                      >
+                        <span className="mt-0.5 flex h-3 w-3 shrink-0 items-center justify-center rounded-full bg-[#315e50] text-[7px] text-white sm:h-3.5 sm:w-3.5 sm:text-[8px]">
+                          ✓
+                        </span>
 
-                  <p className="mx-auto mt-5 max-w-xl text-sm leading-6 text-black/50">
-                    Pastikan semua berkas sudah lengkap sebelum mengirimkan
-                    pendaftaran.
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* CARD 3 */}
+
+                <div className="rounded-[20px] border border-white/60 bg-white/40 p-3.5 shadow-[0_12px_30px_rgba(23,4,1,0.05)] backdrop-blur-xl sm:rounded-[25px] sm:p-5">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#2a1616] text-[8px] font-semibold text-white sm:h-8 sm:w-8 sm:text-[9px]">
+                    03
+                  </span>
+
+                  <h3 className="mt-3 font-serif text-lg text-[#2a1616] sm:mt-5 sm:text-xl">
+                    Upload
+                  </h3>
+
+                  <p className="mt-1.5 text-[10px] leading-4 text-black/50 sm:mt-2 sm:text-xs sm:leading-5">
+                    Upload berkas dan isi data diri melalui Google Form.
                   </p>
 
                   <a
                     href={REGISTRATION_FORM_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-7 inline-flex rounded-full bg-[#2a1616] px-8 py-4 text-sm font-semibold text-white shadow-lg transition-all duration-500 hover:-translate-y-1 hover:bg-[#f5b446] hover:text-[#170401]"
+                    className="mt-3 inline-block text-[8px] font-semibold uppercase tracking-[0.12em] text-[#9a742f] sm:mt-5 sm:text-[9px]"
                   >
-                    Daftar Finalis 2027
+                    Link formulir
+                    <FontAwesomeIcon icon={faSquareUpRight} /> 
                   </a>
+                </div>
 
-                  <p className="mt-5 text-[9px] uppercase tracking-[0.18em] text-black/30">
-                    Jegeg Bagus FEB Unmas 2027
+                {/* CARD 4 */}
+
+                <div className="rounded-[20px] border border-white/60 bg-white/40 p-3.5 shadow-[0_12px_30px_rgba(23,4,1,0.05)] backdrop-blur-xl sm:rounded-[25px] sm:p-5">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#2a1616] text-[8px] font-semibold text-white sm:h-8 sm:w-8 sm:text-[9px]">
+                    04
+                  </span>
+
+                  <h3 className="mt-3 font-serif text-lg text-[#2a1616] sm:mt-5 sm:text-xl">
+                    WhatsApp
+                  </h3>
+
+                  <p className="mt-1.5 text-[10px] leading-4 text-black/50 sm:mt-2 sm:text-xs sm:leading-5">
+                    Pastikan kamu sudah masuk ke group WhatsApp peserta.
                   </p>
-
                 </div>
               </div>
 
+              <div className="mt-3 flex justify-between sm:mt-4">
+                <button
+                  type="button"
+                  onClick={() => goToPage(0)}
+                  className="text-[8px] font-semibold uppercase tracking-[0.13em] text-black/35 sm:text-[9px]"
+                >
+                  ← Cover
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => goToPage(2)}
+                  className="text-[8px] font-semibold uppercase tracking-[0.13em] text-[#9a742f] sm:text-[9px]"
+                >
+                  Foto →
+                </button>
+              </div>
             </div>
-          </article>
+          </div>
+        </section>
 
+        {/* ======================================================= */}
+        {/* PAGE 03 — FOTO */}
+        {/* ======================================================= */}
+
+        <section className="h-full min-w-full snap-start bg-[#f5f1e8] px-5 pb-6 sm:px-8 sm:pb-8">
+          <div className="mx-auto flex h-full max-w-7xl items-center">
+            <div className="w-full">
+              <div className="mb-3.5 sm:mb-5">
+                <p className="text-[8px] font-semibold uppercase tracking-[0.22em] text-[#9a742f] sm:text-[9px]">
+                  03 / Photo Guide
+                </p>
+
+                <div className="mt-1.5 flex flex-col justify-between gap-1.5 sm:mt-2 sm:flex-row sm:items-end sm:gap-2">
+                  <h2 className="font-serif text-3xl leading-none text-[#2a1616] sm:text-5xl">
+                    Foto 4R
+                  </h2>
+
+                  <p className="max-w-sm text-[10px] leading-4 text-black/45 sm:text-right sm:text-xs sm:leading-5">
+                    Full Body & Close Up. Pastikan penamaan file sesuai
+                    ketentuan.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid gap-2.5 lg:grid-cols-2 lg:gap-4">
+                {/* BAGUS */}
+
+                <div className="rounded-[20px] border border-black/[0.07] bg-white/45 p-2.5 shadow-[0_14px_35px_rgba(23,4,1,0.06)] backdrop-blur-xl sm:rounded-[26px] sm:p-4">
+                  <div className="mb-2 flex items-center justify-between px-1 sm:mb-3">
+                    <p className="text-[8px] font-semibold uppercase tracking-[0.16em] text-[#315e50] sm:text-[9px] sm:tracking-[0.18em]">
+                      Bagus
+                    </p>
+
+                    <span className="text-[8px] text-black/25 sm:text-[9px]">
+                      01 — 02
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
+                    {/* CLOSE UP */}
+
+                    <div className="overflow-hidden rounded-[15px] bg-white/60 sm:rounded-[19px]">
+                      <div className="aspect-[4/3]">
+                        <img
+                          src="/Closeup_Bagus.webp"
+                          alt="Contoh foto close up Bagus"
+                          className="h-full w-full object-contain object-center"
+                        />
+                      </div>
+
+                      <div className="border-t border-black/[0.05] p-2 sm:p-3">
+                        <p className="text-[9px] font-semibold text-[#2a1616] sm:text-[10px]">
+                          Close Up
+                        </p>
+
+                        <p className="mt-0.5 break-words font-mono text-[7px] leading-3 text-black/40 sm:mt-1 sm:text-[8px] sm:leading-4">
+                          Close Up_Bagus_[Nama Peserta]
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* FULL BODY */}
+
+                    <div className="overflow-hidden rounded-[15px] bg-white/60 sm:rounded-[19px]">
+                      <div className="aspect-[4/3]">
+                        <img
+                          src="/Fullbody_Bagus.webp"
+                          alt="Contoh foto full body Bagus"
+                          className="h-full w-full object-contain object-center"
+                        />
+                      </div>
+
+                      <div className="border-t border-black/[0.05] p-2 sm:p-3">
+                        <p className="text-[9px] font-semibold text-[#2a1616] sm:text-[10px]">
+                          Full Body
+                        </p>
+
+                        <p className="mt-0.5 break-words font-mono text-[7px] leading-3 text-black/40 sm:mt-1 sm:text-[8px] sm:leading-4">
+                          Full Body_Bagus_[Nama Peserta]
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* JEGEG */}
+
+                <div className="rounded-[20px] border border-black/[0.07] bg-white/45 p-2.5 shadow-[0_14px_35px_rgba(23,4,1,0.06)] backdrop-blur-xl sm:rounded-[26px] sm:p-4">
+                  <div className="mb-2 flex items-center justify-between px-1 sm:mb-3">
+                    <p className="text-[8px] font-semibold uppercase tracking-[0.16em] text-[#315e50] sm:text-[9px] sm:tracking-[0.18em]">
+                      Jegeg
+                    </p>
+
+                    <span className="text-[8px] text-black/25 sm:text-[9px]">
+                      03 — 04
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
+                    {/* CLOSE UP */}
+
+                    <div className="overflow-hidden rounded-[15px] bg-white/60 sm:rounded-[19px]">
+                      <div className="aspect-[4/3]">
+                        <img
+                          src="/Close Up_Jegeg.webp"
+                          alt="Contoh foto close up Jegeg"
+                          className="h-full w-full object-contain object-center"
+                        />
+                      </div>
+
+                      <div className="border-t border-black/[0.05] p-2 sm:p-3">
+                        <p className="text-[9px] font-semibold text-[#2a1616] sm:text-[10px]">
+                          Close Up
+                        </p>
+
+                        <p className="mt-0.5 break-words font-mono text-[7px] leading-3 text-black/40 sm:mt-1 sm:text-[8px] sm:leading-4">
+                          Close Up_Jegeg_[Nama Peserta]
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* FULL BODY */}
+
+                    <div className="overflow-hidden rounded-[15px] bg-white/60 sm:rounded-[19px]">
+                      <div className="aspect-[4/3]">
+                        <img
+                          src="/Full Body_Jegeg.webp"
+                          alt="Contoh foto full body Jegeg"
+                          className="h-full w-full object-contain object-center"
+                        />
+                      </div>
+
+                      <div className="border-t border-black/[0.05] p-2 sm:p-3">
+                        <p className="text-[9px] font-semibold text-[#2a1616] sm:text-[10px]">
+                          Full Body
+                        </p>
+
+                        <p className="mt-0.5 break-words font-mono text-[7px] leading-3 text-black/40 sm:mt-1 sm:text-[8px] sm:leading-4">
+                          Full Body_Jegeg_[Nama Peserta]
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-3 flex justify-between sm:mt-4">
+                <button
+                  type="button"
+                  onClick={() => goToPage(1)}
+                  className="text-[8px] font-semibold uppercase tracking-[0.13em] text-black/35 sm:text-[9px]"
+                >
+                  ← Berkas
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => goToPage(3)}
+                  className="text-[8px] font-semibold uppercase tracking-[0.13em] text-[#9a742f] sm:text-[9px]"
+                >
+                  Seleksi →
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ======================================================= */}
+        {/* PAGE 04 — SELEKSI */}
+        {/* ======================================================= */}
+
+        <section className="h-full min-w-full snap-start bg-[#2a1616] px-5 pb-6 text-white sm:px-8 sm:pb-8">
+          <div className="mx-auto flex h-full max-w-7xl items-center">
+            <div className="w-full">
+              <div className="mb-3.5 sm:mb-5">
+                <p className="text-[8px] font-semibold uppercase tracking-[0.22em] text-[#b9d0c4]/60 sm:text-[9px]">
+                  04 / Selection
+                </p>
+
+                <h2 className="mt-1.5 max-w-2xl font-serif text-3xl leading-[0.95] sm:mt-2 sm:text-5xl">
+                  Persiapan
+                  <br />
+                  Seleksi
+                </h2>
+              </div>
+
+              <div className="grid gap-2.5 lg:grid-cols-[0.7fr_1.3fr] lg:gap-3">
+                {/* INFO */}
+
+                <div className="rounded-[22px] border border-white/10 bg-white/[0.06] p-4 shadow-[0_15px_45px_rgba(0,0,0,0.2)] backdrop-blur-xl sm:rounded-[27px] sm:p-7">
+                  <p className="text-[8px] uppercase tracking-[0.18em] text-[#b9d0c4]/50 sm:text-[9px] sm:tracking-[0.2em]">
+                    Pelaksanaan Seleksi
+                  </p>
+
+                  {/* MOBILE 3 COLUMNS */}
+
+                  <div className="mt-4 grid grid-cols-3 gap-2 sm:mt-6 sm:block sm:space-y-5">
+                    <div>
+                      <p className="text-[7px] uppercase tracking-[0.1em] text-white/30 sm:text-[8px] sm:tracking-[0.15em]">
+                        Hari, Tanggal
+                      </p>
+
+                      <p className="mt-1 text-[10px] leading-4 text-white sm:mt-1.5 sm:font-serif sm:text-xl">
+                        Minggu,
+                        <br className="sm:hidden" /> 25 Oktober 2026
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-[7px] uppercase tracking-[0.1em] text-white/30 sm:text-[8px] sm:tracking-[0.15em]">
+                        Waktu
+                      </p>
+
+                      <p className="mt-1 text-[10px] text-white/70 sm:mt-1.5 sm:text-sm">
+                        08.00 –
+                        <br className="sm:hidden" /> Selesai
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-[7px] uppercase tracking-[0.1em] text-white/30 sm:text-[8px] sm:tracking-[0.15em]">
+                        Tempat
+                      </p>
+
+                      <p className="mt-1 text-[10px] leading-4 text-white/70 sm:mt-1.5 sm:text-sm">
+                        Ruangan
+                        <br className="sm:hidden" /> Widya Sabha
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* MEKANISME */}
+
+                <div className="rounded-[22px] border border-white/10 bg-white/[0.06] p-4 backdrop-blur-xl sm:rounded-[27px] sm:p-7">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="text-[8px] uppercase tracking-[0.18em] text-[#b9d0c4]/50 sm:text-[9px] sm:tracking-[0.2em]">
+                        Mekanisme Kegiatan
+                      </p>
+
+                      <h3 className="mt-1 font-serif text-base sm:text-xl">
+                        Yang perlu diperhatikan
+                      </h3>
+                    </div>
+
+                    <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-1 font-mono text-[7px] text-white/30 sm:px-3 sm:py-1.5 sm:text-[8px]">
+                      08:00 — 16:00
+                    </span>
+                  </div>
+
+                  <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2 sm:mt-5 sm:gap-x-7 sm:gap-y-4">
+                    {mechanism.map((item, index) => (
+                      <div
+                        key={item}
+                        className="flex gap-1.5 border-b border-white/[0.06] pb-2 sm:gap-3 sm:pb-3"
+                      >
+                        <span className="shrink-0 font-mono text-[7px] text-[#b9d0c4]/45 sm:text-[8px]">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+
+                        <p className="text-[8px] leading-4 text-white/55 sm:text-[11px] sm:leading-5">
+                          {item}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-3 flex justify-between sm:mt-4">
+                <button
+                  type="button"
+                  onClick={() => goToPage(2)}
+                  className="text-[8px] font-semibold uppercase tracking-[0.13em] text-white/30 sm:text-[9px]"
+                >
+                  ← Foto
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => goToPage(4)}
+                  className="text-[8px] font-semibold uppercase tracking-[0.13em] text-[#b9d0c4] sm:text-[9px]"
+                >
+                  Larangan →
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ======================================================= */}
+        {/* PAGE 05 — LARANGAN */}
+        {/* ======================================================= */}
+
+        <section className="h-full min-w-full snap-start bg-[#170401] px-5 pb-6 text-white sm:px-8 sm:pb-8">
+          <div className="mx-auto flex h-full max-w-7xl items-center">
+            <div className="w-full">
+              <div className="grid items-center gap-5 lg:grid-cols-[0.7fr_1.3fr] lg:gap-8">
+                {/* TITLE */}
+
+                <div>
+                  <p className="text-[8px] font-semibold uppercase tracking-[0.22em] text-[#b9d0c4]/60 sm:text-[9px]">
+                    05 / Reminder
+                  </p>
+
+                  <h2 className="mt-2 font-serif text-4xl leading-[0.92] sm:mt-3 sm:text-5xl md:text-6xl">
+                    Larangan-
+                    <br />
+                    larangan
+                  </h2>
+
+                  <p className="mt-4 max-w-sm text-[11px] leading-5 text-white/40 sm:mt-5 sm:text-xs sm:leading-6">
+                    Mari menjaga suasana seleksi agar tetap tertib,
+                    nyaman, dan kondusif bagi seluruh peserta.
+                  </p>
+                </div>
+
+                {/* PROHIBITIONS */}
+
+                <div className="grid gap-2.5 sm:gap-3">
+                  {prohibitions.map((item) => (
+                    <div
+                      key={item}
+                      className="rounded-[20px] border border-white/10 bg-white/[0.055] p-4 shadow-[0_14px_40px_rgba(0,0,0,0.18)] backdrop-blur-xl transition hover:bg-white/[0.08] sm:rounded-[25px] sm:p-5"
+                    >
+                      <p className="flex text-[11px] leading-5 text-white/65 sm:text-sm sm:leading-6">
+                        <span className="mr-2.5 shrink-0 text-base leading-5 text-[#b9d0c4] sm:mr-3 sm:text-lg">
+                          *
+                        </span>
+
+                        <span>{item}</span>
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-5 flex justify-between sm:mt-7">
+                <button
+                  type="button"
+                  onClick={() => goToPage(3)}
+                  className="text-[8px] font-semibold uppercase tracking-[0.13em] text-white/30 sm:text-[9px]"
+                >
+                  ← Seleksi
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => goToPage(5)}
+                  className="text-[8px] font-semibold uppercase tracking-[0.13em] text-[#b9d0c4] sm:text-[9px]"
+                >
+                  Selesai →
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ======================================================= */}
+        {/* PAGE 06 — CLOSING */}
+        {/* ======================================================= */}
+
+        <section className="relative h-full min-w-full snap-start overflow-hidden bg-[#f5f1e8] px-5 pb-6 sm:px-8 sm:pb-8">
+          <div className="pointer-events-none absolute left-1/2 top-1/2 h-60 w-60 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f5b446]/10 blur-[80px] sm:h-80 sm:w-80 sm:blur-[100px]" />
+
+          <div className="relative mx-auto flex h-full max-w-5xl items-center justify-center text-center">
+            <div>
+              <p className="text-[8px] font-semibold uppercase tracking-[0.25em] text-[#9a742f] sm:text-[9px] sm:tracking-[0.3em]">
+                06 / End
+              </p>
+
+              <h2 className="mt-3 font-serif text-[2.8rem] leading-[0.9] tracking-[-0.04em] text-[#2a1616] sm:mt-4 sm:text-6xl md:text-7xl">
+                Siap menjadi
+                <br />
+                bagian dari
+                <br />
+                <span className="text-[#9a742f]">perjalanan?</span>
+              </h2>
+
+              <p className="mx-auto mt-5 max-w-lg text-[11px] leading-5 text-black/45 sm:mt-6 sm:text-sm sm:leading-6">
+                Pastikan semua berkas sudah lengkap sebelum mengirimkan
+                pendaftaran.
+              </p>
+
+              <a
+                href={REGISTRATION_FORM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-flex items-center gap-2.5 rounded-full bg-[#2a1616] px-6 py-3.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-white shadow-xl transition-all duration-500 hover:-translate-y-1 hover:bg-[#f5b446] hover:text-[#170401] sm:mt-7 sm:gap-3 sm:px-7 sm:py-4 sm:text-xs sm:tracking-[0.12em]"
+              >
+                Daftar Finalis 2027
+                <span className="text-xs sm:text-sm"><FontAwesomeIcon icon={faSquareUpRight} /></span>
+              </a>
+
+              <div className="mt-6 flex items-center justify-center gap-2 sm:mt-8 sm:gap-3">
+                <button
+                  type="button"
+                  onClick={() => goToPage(4)}
+                  className="rounded-full border border-black/10 bg-white/50 px-3.5 py-2 text-[8px] font-semibold uppercase tracking-[0.1em] text-black/40 backdrop-blur-xl transition hover:bg-white sm:px-4 sm:text-[9px] sm:tracking-[0.12em]"
+                >
+                  ← Kembali
+                </button>
+
+                <a
+                  href={DOCUMENT_FOLDER_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-black/10 bg-white/50 px-3.5 py-2 text-[8px] font-semibold uppercase tracking-[0.1em] text-black/40 backdrop-blur-xl transition hover:bg-white sm:px-4 sm:text-[9px] sm:tracking-[0.12em]"
+                >
+                  Google Drive
+                  <FontAwesomeIcon icon={faSquareUpRight} /> 
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* ========================================================= */}
+      {/* SWIPE HINT */}
+      {/* ========================================================= */}
+
+      <div className="pointer-events-none fixed bottom-3 left-1/2 z-30 -translate-x-1/2 sm:bottom-4">
+        <div className="flex items-center gap-1.5 rounded-full border border-black/[0.07] bg-[#f5f1e8]/75 px-2.5 py-1.5 shadow-lg backdrop-blur-xl sm:gap-2 sm:px-3">
+          <span className="text-[7px] text-black/35 sm:text-[8px]">
+            Geser untuk membuka halaman
+          </span>
+
+          <span className="text-[9px] text-[#9a742f] sm:text-[10px]">
+            →
+          </span>
         </div>
-
-        {/* ========================================================= */}
-        {/* PAGE INDICATOR */}
-        {/* ========================================================= */}
-
-        <div className="mx-auto mt-6 flex max-w-5xl items-center justify-center gap-2 px-5">
-
-          {pages.map((page, index) => (
-            <button
-              key={page}
-              type="button"
-              onClick={() => goToPage(index)}
-              aria-label={`Buka halaman ${index + 1}`}
-              className={`h-1.5 rounded-full transition-all duration-500 ${
-                activePage === index
-                  ? "w-8 bg-[#2a1616]"
-                  : "w-1.5 bg-black/15"
-              }`}
-            />
-          ))}
-
-        </div>
-
-        <p className="mt-4 text-center text-[9px] uppercase tracking-[0.18em] text-black/25">
-          Geser untuk membuka halaman
-        </p>
-      </section>
+      </div>
 
       {/* ========================================================= */}
       {/* FOOTER */}
       {/* ========================================================= */}
 
-      <Footer />
+      <footer className="border-t border-white/10 bg-[#2a1616] py-8 text-[#f5f1e8] sm:py-10">
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 sm:flex-row sm:items-center sm:justify-between md:px-8">
+          <div className="flex items-center gap-3">
+            <img
+              src="/Logo JEBAG FEB.webp"
+              alt="Logo Jegeg Bagus FEB Unmas"
+              className="h-10 w-10 object-contain sm:h-11 sm:w-11"
+            />
 
-      {/* ========================================================= */}
-      {/* GLOBAL STYLE */}
-      {/* ========================================================= */}
+            <div>
+              <p className="text-sm font-semibold">
+                Jegeg Bagus FEB Unmas
+              </p>
 
-      <style jsx global>{`
-        html {
-          scroll-behavior: smooth;
-        }
+              <p className="text-xs text-white/40">
+                Pemilihan 2027
+              </p>
+            </div>
+          </div>
 
-        .scrollbar-none {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            <a
+              href="https://www.instagram.com/sejebagfebunmas/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram Jegeg Bagus FEB Unmas"
+              className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-white/60 transition hover:border-white/20 hover:text-white"
+            >
+              Instagram
+            </a>
 
-        .scrollbar-none::-webkit-scrollbar {
-          display: none;
-        }
+            <a
+              href="https://www.tiktok.com/@sejebagfebunmas?is_from_webapp=1&sender_device=pc"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="TikTok Jegeg Bagus FEB Unmas"
+              className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-white/60 transition hover:border-white/20 hover:text-white"
+            >
+              TikTok
+            </a>
 
-        .no-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
+            <a
+              href="https://www.youtube.com/@JegegBagusFEBUnmas"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube Jegeg Bagus FEB Unmas"
+              className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-white/60 transition hover:border-white/20 hover:text-white"
+            >
+              YouTube
+            </a>
+          </div>
 
-        .no-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-
-        body {
-          overflow-x: hidden;
-        }
-      `}</style>
-
+          <div className="text-xs text-white/40">
+            © 2026 Jegeg Bagus FEB Unmas
+          </div>
+        </div>
+      </footer>
     </main>
-  );
-}
-
-/* ========================================================= */
-/* BOOK STEP */
-/* ========================================================= */
-
-function BookStep({
-  number,
-  title,
-  text,
-}: {
-  number: string;
-  title: string;
-  text: string;
-}) {
-  return (
-    <div className="rounded-[24px] border border-white/65 bg-white/35 p-5 shadow-[0_12px_35px_rgba(23,4,1,0.05)] backdrop-blur-xl">
-
-      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2a1616] text-[9px] font-semibold text-white">
-        {number}
-      </span>
-
-      <h3 className="mt-4 font-serif text-xl text-[#2a1616]">
-        {title}
-      </h3>
-
-      <p className="mt-2 text-xs leading-5 text-black/50">
-        {text}
-      </p>
-
-    </div>
-  );
-}
-
-/* ========================================================= */
-/* PHOTO CARD */
-/* ========================================================= */
-
-function PhotoCard({
-  src,
-  alt,
-  title,
-  filename,
-}: {
-  src: string;
-  alt: string;
-  title: string;
-  filename: string;
-}) {
-  return (
-    <div className="overflow-hidden rounded-[22px] border border-white/70 bg-white/45 shadow-sm backdrop-blur-xl">
-
-      <div className="aspect-[4/3] overflow-hidden bg-white/25">
-        <img
-          src={src}
-          alt={alt}
-          loading="lazy"
-          className="h-full w-full object-contain object-center"
-        />
-      </div>
-
-      <div className="p-3 sm:p-4">
-
-        <p className="text-[10px] font-semibold text-[#2a1616]">
-          {title}
-        </p>
-
-        <p className="mt-1 text-[8px] leading-4 text-black/40">
-          {filename}
-        </p>
-
-      </div>
-    </div>
-  );
-}
-
-/* ========================================================= */
-/* INFO ITEM */
-/* ========================================================= */
-
-function InfoItem({
-  label,
-  value,
-  serif = false,
-}: {
-  label: string;
-  value: string;
-  serif?: boolean;
-}) {
-  return (
-    <div>
-
-      <p className="text-[9px] uppercase tracking-[0.15em] text-white/35">
-        {label}
-      </p>
-
-      <p
-        className={`mt-1 text-white/70 ${
-          serif
-            ? "font-serif text-xl text-white"
-            : "text-sm"
-        }`}
-      >
-        {value}
-      </p>
-
-    </div>
   );
 }
