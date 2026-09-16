@@ -10,11 +10,14 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 /* LINKS */
 /* ========================================================= */
 
-const REGISTRATION_FORM_URL =
-  "https://docs.google.com/forms/d/155kimHzV3kAFZIVXgF_V0CMqdcdjy7u59bTYTU9e1Rw/preview?edit_requested=true";
+const DAFTAR1_FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSf34sc2CrbGSgDq8cGrUe7JyucxC5oOI172ZqIWgv_ZMrXbMA/viewform?usp=preview";
 
 const DOCUMENT_FOLDER_URL =
   "https://drive.google.com/drive/folders/1fxDRsS7WMNIXHUxk5UZP_NjPQVLxQncg";
+
+  const DAFTAR2_FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSdHJTYMzn5AWWzkvKjyDwPvUadwnrFUwo7LEI3qNu6dUh9MfQ/viewform?usp=preview";
 
 /* ========================================================= */
 /* DATA */
@@ -194,7 +197,7 @@ export default function PendaftaranFinalisPage() {
 
           <div className="flex items-center gap-2">
             <a
-              href={REGISTRATION_FORM_URL}
+              href={DAFTAR1_FORM_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="hidden rounded-full bg-[#170401] px-4 py-2 text-[10px] font-semibold uppercase tracking-wider text-white shadow-sm transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#f5b446] hover:text-[#170401] sm:block"
@@ -281,7 +284,7 @@ export default function PendaftaranFinalisPage() {
             <div className="my-1 h-px bg-black/[0.06]" />
 
             <a
-              href={REGISTRATION_FORM_URL}
+              href={DAFTAR1_FORM_URL}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setMenuOpen(false)}
@@ -380,7 +383,7 @@ export default function PendaftaranFinalisPage() {
 
                 <div className="mt-5 flex flex-wrap gap-2 sm:mt-7">
                   <a
-                    href={REGISTRATION_FORM_URL}
+                    href={DAFTAR1_FORM_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="rounded-full bg-[#2a1616] px-5 py-3 text-[10px] font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-[#f5b446] hover:text-[#170401] sm:px-6 sm:py-3.5 sm:text-xs"
@@ -402,15 +405,11 @@ export default function PendaftaranFinalisPage() {
 
               {/* IMAGE */}
 
-              <div className="relative mx-auto w-full max-w-[430px]">
-                <div className="absolute -inset-3 rounded-[30px] bg-[#f5b446]/10 blur-2xl sm:-inset-4 sm:rounded-[38px]" />
-
-                <div className="relative rounded-[25px] border border-white/70 bg-white/35 p-1.5 shadow-[0_20px_60px_rgba(23,4,1,0.12)] backdrop-blur-2xl sm:rounded-[32px] sm:p-2">
-                  <div className="overflow-hidden rounded-[20px] sm:rounded-[25px]">
+              <div className="flex items-center justify-center">
                     <img
                       src="/HEROFINALIS.webp"
                       alt="Panduan Pendaftaran Finalis Jegeg Bagus FEB Unmas"
-                      className="aspect-[4/3] h-full w-full object-cover object-center"
+                      className=" h-150% w-150% object-cover object-center"
                     />
                   </div>
 
@@ -425,8 +424,6 @@ export default function PendaftaranFinalisPage() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
         </section>
 
         {/* ======================================================= */}
@@ -471,20 +468,20 @@ export default function PendaftaranFinalisPage() {
                   </span>
 
                   <h3 className="mt-3 font-serif text-lg text-[#2a1616] sm:mt-5 sm:text-xl">
-                    Persiapkan
+                    Pendaftaran tahap 1
                   </h3>
 
                   <p className="mt-1.5 text-[10px] leading-4 text-black/50 sm:mt-2 sm:text-xs sm:leading-5">
-                    Persiapkan seluruh kelengkapan yang dibutuhkan.
+                    Daftar dan masuk grup wa peserta melalui Google Form tahap 1, Informasi lebih lanjut akan dikirimkan melalui email dan grup wa peserta.
                   </p>
 
                   <a
-                    href={DOCUMENT_FOLDER_URL}
+                    href={DAFTAR1_FORM_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-3 inline-block text-[8px] font-semibold uppercase tracking-[0.12em] text-[#9a742f] sm:mt-5 sm:text-[9px]"
                   >
-                    Lihat berkas
+                    Daftar dan masuk grup wa
                     <FontAwesomeIcon icon={faSquareUpRight} /> 
                   </a>
                 </div>
@@ -524,7 +521,7 @@ export default function PendaftaranFinalisPage() {
                   </span>
 
                   <h3 className="mt-3 font-serif text-lg text-[#2a1616] sm:mt-5 sm:text-xl">
-                    Upload
+                    Pendaftaran tahap 2
                   </h3>
 
                   <p className="mt-1.5 text-[10px] leading-4 text-black/50 sm:mt-2 sm:text-xs sm:leading-5">
@@ -532,7 +529,7 @@ export default function PendaftaranFinalisPage() {
                   </p>
 
                   <a
-                    href={REGISTRATION_FORM_URL}
+                    href={DAFTAR2_FORM_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-3 inline-block text-[8px] font-semibold uppercase tracking-[0.12em] text-[#9a742f] sm:mt-5 sm:text-[9px]"
@@ -550,11 +547,11 @@ export default function PendaftaranFinalisPage() {
                   </span>
 
                   <h3 className="mt-3 font-serif text-lg text-[#2a1616] sm:mt-5 sm:text-xl">
-                    WhatsApp
+                    Persiapan Seleksi
                   </h3>
 
                   <p className="mt-1.5 text-[10px] leading-4 text-black/50 sm:mt-2 sm:text-xs sm:leading-5">
-                    Pastikan kamu sudah masuk ke group WhatsApp peserta.
+                    Pastikan kamu sudah melakukan pendaftaran tahap 2 dan membawa seluruh berkas yang dibutuhkan.
                   </p>
                 </div>
               </div>
@@ -966,7 +963,7 @@ export default function PendaftaranFinalisPage() {
               </p>
 
               <a
-                href={REGISTRATION_FORM_URL}
+                href={DAFTAR1_FORM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-5 inline-flex items-center gap-2.5 rounded-full bg-[#2a1616] px-6 py-3.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-white shadow-xl transition-all duration-500 hover:-translate-y-1 hover:bg-[#f5b446] hover:text-[#170401] sm:mt-7 sm:gap-3 sm:px-7 sm:py-4 sm:text-xs sm:tracking-[0.12em]"
