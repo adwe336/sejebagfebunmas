@@ -969,7 +969,6 @@ export default function PendaftaranFinalisPage() {
                 className="mt-5 inline-flex items-center gap-2.5 rounded-full bg-[#2a1616] px-6 py-3.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-white shadow-xl transition-all duration-500 hover:-translate-y-1 hover:bg-[#f5b446] hover:text-[#170401] sm:mt-7 sm:gap-3 sm:px-7 sm:py-4 sm:text-xs sm:tracking-[0.12em]"
               >
                 Daftar Finalis 2027
-                <span className="text-xs sm:text-sm"><FontAwesomeIcon icon={faSquareUpRight} /></span>
               </a>
 
               <div className="mt-6 flex items-center justify-center gap-2 sm:mt-8 sm:gap-3">
