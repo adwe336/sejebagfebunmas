@@ -5,7 +5,10 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquareUpRight } from "@fortawesome/free-solid-svg-icons";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import narahubung from "@/components/home/Narahubung";
+import Narahubung from "@/components/home/Narahubung";
 /* ========================================================= */
 /* LINKS */
 /* ========================================================= */
@@ -30,13 +33,13 @@ const documents = [
 ];
 
 const mechanism = [
-  "Peserta wajib hadir tepat waktu dan melakukan absensi secara offline pada pukul 08.00–09.00.",
+  "Peserta wajib hadir tepat waktu dan melakukan absensi pada pukul 08.00–09.00.",
   "Peserta memakai pakaian yang sudah ditentukan.",
   "Peserta wajib membawa tumbler air masing-masing.",
-  "Acara berlangsung selama 8 jam, pukul 08.00–16.00 WITA.",
+  "Acara berlangsung mulai pukul 08.00–16.00 WITA.",
   "Peserta wajib mengikuti seluruh rangkaian acara dengan tertib dan rapi.",
   "Peserta tidak diperbolehkan meninggalkan acara sebelum acara selesai.",
-  "Waktu istirahat diberikan selama 1 jam, pukul 12.00–13.00.",
+  "Waktu istirahat diberikan selama satu jam, pukul 12.00–13.00.",
   "Seleksi akan dilanjutkan kembali hingga selesai.",
 ];
 
@@ -139,162 +142,8 @@ export default function PendaftaranFinalisPage() {
   };
 
   return (
-    <main className="min-h-screen w-full bg-[#e9e1d2] text-[#191814]">
-      {/* ========================================================= */}
-      {/* NAVBAR */}
-      {/* ========================================================= */}
-
-      <nav
-        ref={navRef}
-        className="fixed left-1/2 top-3 z-50 w-[calc(100%-20px)] max-w-7xl -translate-x-1/2 rounded-full border border-black/[0.08] bg-[#f5f1e8]/70 shadow-[0_8px_30px_rgba(23,4,1,0.08)] backdrop-blur-2xl backdrop-saturate-150 sm:w-[calc(100%-24px)]"
-      >
-        <div className="flex h-12 items-center justify-between px-3 sm:h-14 sm:px-4">
-          {/* LOGO */}
-
-          <Link
-            href="/"
-            onClick={() => setMenuOpen(false)}
-            className="flex items-center gap-2.5 transition-transform duration-300 active:scale-[0.97]"
-          >
-            <img
-              src="/Logo JEBAG FEB.webp"
-              alt="Logo Jegeg Bagus FEB Unmas"
-              className="h-8 w-8 object-contain sm:h-9 sm:w-9"
-            />
-
-            <div className="leading-tight">
-              <p className="text-[10px] font-semibold tracking-[0.08em] sm:text-[11px]">
-                JEGEG BAGUS
-              </p>
-
-              <p className="text-[7px] uppercase tracking-[0.18em] text-black/50 sm:text-[8px]">
-                FEB UNMAS
-              </p>
-            </div>
-          </Link>
-
-          {/* DESKTOP MENU */}
-
-          <div className="hidden items-center gap-6 text-xs font-medium lg:flex">
-            <Link href="/#tentang" className="nav-link">
-              Tentang
-            </Link>
-
-            <Link href="/#lentera" className="nav-link">
-              Lentera
-            </Link>
-
-            <Link href="/#alur" className="nav-link">
-              Alur
-            </Link>
-
-            <Link href="/program" className="nav-link">
-              Program
-            </Link>
-          </div>
-
-          {/* RIGHT */}
-
-          <div className="flex items-center gap-2">
-            <a
-              href={DAFTAR1_FORM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden rounded-full bg-[#170401] px-4 py-2 text-[10px] font-semibold uppercase tracking-wider text-white shadow-sm transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#f5b446] hover:text-[#170401] sm:block"
-            >
-              Daftar Sekarang
-            </a>
-
-            {/* HAMBURGER */}
-
-            <button
-              type="button"
-              onClick={() => setMenuOpen((prev) => !prev)}
-              aria-label={menuOpen ? "Tutup menu" : "Buka menu"}
-              aria-expanded={menuOpen}
-              className="group relative flex h-9 w-9 items-center justify-center rounded-full bg-white/30 transition-all duration-300 active:scale-[0.88] lg:hidden"
-            >
-              <div className="relative h-[14px] w-[16px]">
-                <span
-                  className={`absolute left-0 h-[1.5px] w-4 rounded-full bg-[#170401] transition-all duration-500 ${
-                    menuOpen ? "top-[6px] rotate-45" : "top-[2px]"
-                  }`}
-                />
-
-                <span
-                  className={`absolute left-0 top-[6px] h-[1.5px] w-4 rounded-full bg-[#170401] transition-all duration-300 ${
-                    menuOpen
-                      ? "scale-x-0 opacity-0"
-                      : "scale-x-100 opacity-100"
-                  }`}
-                />
-
-                <span
-                  className={`absolute left-0 h-[1.5px] w-4 rounded-full bg-[#170401] transition-all duration-500 ${
-                    menuOpen ? "top-[6px] -rotate-45" : "top-[10px]"
-                  }`}
-                />
-              </div>
-            </button>
-          </div>
-        </div>
-
-        {/* MOBILE MENU */}
-
-        <div
-          className={`absolute left-0 right-0 top-full mt-2 overflow-hidden rounded-[24px] border border-white/40 bg-[#f5f1e8]/95 shadow-[0_20px_50px_rgba(23,4,1,0.12)] backdrop-blur-2xl transition-all duration-500 lg:hidden ${
-            menuOpen
-              ? "pointer-events-auto translate-y-0 opacity-100"
-              : "pointer-events-none -translate-y-2 opacity-0"
-          }`}
-        >
-          <div className="p-2">
-            <Link
-              href="/#tentang"
-              onClick={() => setMenuOpen(false)}
-              className="flex rounded-[18px] px-4 py-3.5 text-sm"
-            >
-              Tentang
-            </Link>
-
-            <Link
-              href="/#lentera"
-              onClick={() => setMenuOpen(false)}
-              className="flex rounded-[18px] px-4 py-3.5 text-sm"
-            >
-              Lentera
-            </Link>
-
-            <Link
-              href="/#alur"
-              onClick={() => setMenuOpen(false)}
-              className="flex rounded-[18px] px-4 py-3.5 text-sm"
-            >
-              Alur
-            </Link>
-
-            <Link
-              href="/program"
-              onClick={() => setMenuOpen(false)}
-              className="flex rounded-[18px] px-4 py-3.5 text-sm"
-            >
-              Program
-            </Link>
-
-            <div className="my-1 h-px bg-black/[0.06]" />
-
-            <a
-              href={DAFTAR1_FORM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setMenuOpen(false)}
-              className="flex items-center justify-center rounded-[18px] bg-[#2a1616] px-5 py-3.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white"
-            >
-              Daftar Sekarang
-            </a>
-          </div>
-        </div>
-      </nav>
+    <main className="min-h-screen overflow-x-hidden bg-[#e9e1d2] text-[#191814]">
+      <Navbar />
 
       {/* ========================================================= */}
       {/* HEADER */}
@@ -486,32 +335,42 @@ export default function PendaftaranFinalisPage() {
                   </a>
                 </div>
 
-                {/* CARD 2 */}
+{/* CARD 2 */}
 
-                <div className="rounded-[20px] border border-white/60 bg-white/40 p-3.5 shadow-[0_12px_30px_rgba(23,4,1,0.05)] backdrop-blur-xl sm:rounded-[25px] sm:p-5">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#2a1616] text-[8px] font-semibold text-white sm:h-8 sm:w-8 sm:text-[9px]">
-                    02
-                  </span>
+<div className="rounded-[20px] border border-white/60 bg-white/40 p-3.5 shadow-[0_12px_30px_rgba(23,4,1,0.05)] backdrop-blur-xl sm:rounded-[25px] sm:p-5">
+  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#2a1616] text-[8px] font-semibold text-white sm:h-8 sm:w-8 sm:text-[9px]">
+    02
+  </span>
 
-                  <h3 className="mt-3 font-serif text-lg text-[#2a1616] sm:mt-5 sm:text-xl">
-                    Checklist
-                  </h3>
+  <h3 className="mt-3 font-serif text-lg text-[#2a1616] sm:mt-5 sm:text-xl">
+    Checklist
+  </h3>
 
-                  <div className="mt-3 space-y-2 sm:mt-4 sm:space-y-2.5">
-                    {documents.map((item) => (
-                      <div
-                        key={item}
-                        className="flex items-start gap-1.5 text-[9px] leading-4 text-black/55 sm:gap-2 sm:text-xs sm:leading-5"
-                      >
-                        <span className="mt-0.5 flex h-3 w-3 shrink-0 items-center justify-center rounded-full bg-[#315e50] text-[7px] text-white sm:h-3.5 sm:w-3.5 sm:text-[8px]">
-                          ✓
-                        </span>
+  <div className="mt-3 space-y-2 sm:mt-4 sm:space-y-2.5">
+    {documents.map((item) => (
+      <div
+        key={item}
+        className="flex items-start gap-1 text-[9px] leading-4 text-black/55 sm:gap-1.5 sm:text-xs sm:leading-5"
+      >
+        <span className="mt-0.5 flex h-4 w-2 shrink-0 items-center justify-center rounded-full bg-[#315e50] text-[7px] text-white sm:h-3.5 sm:w-3.5 sm:text-[8px]">
+          ✓
+        </span>
 
-                        <span>{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+        <span>{item}</span>
+      </div>
+    ))}
+
+    <a
+      href={DOCUMENT_FOLDER_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mt-1 inline-block text-[8px] font-semibold uppercase tracking-[0.08em] text-[#9a742f] sm:mt-2 sm:text-[9px]"
+    >
+      Panduan berkas{" "}
+      <FontAwesomeIcon icon={faSquareUpRight} />
+    </a>
+  </div>
+</div>
 
                 {/* CARD 3 */}
 
@@ -748,7 +607,7 @@ export default function PendaftaranFinalisPage() {
         {/* PAGE 04 — SELEKSI */}
         {/* ======================================================= */}
 
-        <section className="h-full min-w-full snap-start bg-[#2a1616] px-5 pb-6 text-white sm:px-8 sm:pb-8">
+        <section className="h-full min-w-full snap-start bg-[#1A0300] px-5 pb-6 text-white sm:px-8 sm:pb-8">
           <div className="mx-auto flex h-full max-w-7xl items-center">
             <div className="w-full">
               <div className="mb-3.5 sm:mb-5">
@@ -766,7 +625,7 @@ export default function PendaftaranFinalisPage() {
               <div className="grid gap-2.5 lg:grid-cols-[0.7fr_1.3fr] lg:gap-3">
                 {/* INFO */}
 
-                <div className="rounded-[22px] border border-white/10 bg-white/[0.06] p-4 shadow-[0_15px_45px_rgba(0,0,0,0.2)] backdrop-blur-xl sm:rounded-[27px] sm:p-7">
+                <div className="rounded-[22px] border border-white/10 bg-white/2% p-4 shadow-[0_15px_45px_rgba(0,0,0,0.2)] backdrop-blur-xl sm:rounded-[27px] sm:p-7">
                   <p className="text-[8px] uppercase tracking-[0.18em] text-[#b9d0c4]/50 sm:text-[9px] sm:tracking-[0.2em]">
                     Pelaksanaan Seleksi
                   </p>
@@ -803,7 +662,7 @@ export default function PendaftaranFinalisPage() {
 
                       <p className="mt-1 text-[10px] leading-4 text-white/70 sm:mt-1.5 sm:text-sm">
                         Ruangan
-                        <br className="sm:hidden" /> Widya Sabha
+                        <br className="sm:hidden" /> TBD
                       </p>
                     </div>
                   </div>
@@ -811,7 +670,7 @@ export default function PendaftaranFinalisPage() {
 
                 {/* MEKANISME */}
 
-                <div className="rounded-[22px] border border-white/10 bg-white/[0.06] p-4 backdrop-blur-xl sm:rounded-[27px] sm:p-7">
+                <div className="rounded-[22px] border border-white/10 bg-white/2% p-4 backdrop-blur-xl sm:rounded-[27px] sm:p-7">
                   <div className="flex items-center justify-between gap-3">
                     <div>
                       <p className="text-[8px] uppercase tracking-[0.18em] text-[#b9d0c4]/50 sm:text-[9px] sm:tracking-[0.2em]">
@@ -1011,67 +870,9 @@ export default function PendaftaranFinalisPage() {
         </div>
       </div>
 
-      {/* ========================================================= */}
-      {/* FOOTER */}
-      {/* ========================================================= */}
-
-      <footer className="border-t border-white/10 bg-[#2a1616] py-8 text-[#f5f1e8] sm:py-10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 sm:flex-row sm:items-center sm:justify-between md:px-8">
-          <div className="flex items-center gap-3">
-            <img
-              src="/Logo JEBAG FEB.webp"
-              alt="Logo Jegeg Bagus FEB Unmas"
-              className="h-10 w-10 object-contain sm:h-11 sm:w-11"
-            />
-
-            <div>
-              <p className="text-sm font-semibold">
-                Jegeg Bagus FEB Unmas
-              </p>
-
-              <p className="text-xs text-white/40">
-                Pemilihan 2027
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2 text-xs">
-            <a
-              href="https://www.instagram.com/sejebagfebunmas/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram Jegeg Bagus FEB Unmas"
-              className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-white/60 transition hover:border-white/20 hover:text-white"
-            >
-              Instagram
-            </a>
-
-            <a
-              href="https://www.tiktok.com/@sejebagfebunmas?is_from_webapp=1&sender_device=pc"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="TikTok Jegeg Bagus FEB Unmas"
-              className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-white/60 transition hover:border-white/20 hover:text-white"
-            >
-              TikTok
-            </a>
-
-            <a
-              href="https://www.youtube.com/@JegegBagusFEBUnmas"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="YouTube Jegeg Bagus FEB Unmas"
-              className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-white/60 transition hover:border-white/20 hover:text-white"
-            >
-              YouTube
-            </a>
-          </div>
-
-          <div className="text-xs text-white/40">
-            © 2026 Jegeg Bagus FEB Unmas
-          </div>
-        </div>
-      </footer>
+      
+      <Narahubung />
+      <Footer />
     </main>
   );
 }

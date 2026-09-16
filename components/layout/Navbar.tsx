@@ -118,6 +118,13 @@ export default function Navbar() {
             Program
           </Link>
 
+          <Link
+            href="/pendaftaran-finalis"
+            className="nav-link"
+            onClick={() => setMenuOpen(false)}
+          >
+            Daftar Finalis
+          </Link>
         </div>
 
         {/* ===================================================== */}
