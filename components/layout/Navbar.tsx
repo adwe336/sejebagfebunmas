@@ -123,8 +123,9 @@ export default function Navbar() {
             className="nav-link"
             onClick={() => setMenuOpen(false)}
           >
-            Daftar Finalis
+            Pendaftaran Finalis
           </Link>
+
         </div>
 
         {/* ===================================================== */}
@@ -248,6 +249,16 @@ export default function Navbar() {
             className="flex rounded-[18px] px-4 py-3.5 text-sm"
           >
             Program
+          </Link>
+
+          {/* PENDAFTARAN FINALIS */}
+
+          <Link
+            href="/pendaftaran-finalis"
+            onClick={() => setMenuOpen(false)}
+            className="flex rounded-[18px] px-4 py-3.5 text-sm"
+          >
+            Pendaftaran Finalis
           </Link>
 
           <div className="my-1 h-px bg-black/[0.06]" />

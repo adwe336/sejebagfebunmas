@@ -330,7 +330,7 @@ export default function PendaftaranFinalisPage() {
                     rel="noopener noreferrer"
                     className="mt-3 inline-block text-[8px] font-semibold uppercase tracking-[0.12em] text-[#9a742f] sm:mt-5 sm:text-[9px]"
                   >
-                    Daftar dan masuk grup wa
+                    Daftar & masuk grup wa
                     <FontAwesomeIcon icon={faSquareUpRight} /> 
                   </a>
                 </div>
@@ -352,7 +352,7 @@ export default function PendaftaranFinalisPage() {
         key={item}
         className="flex items-start gap-1 text-[9px] leading-4 text-black/55 sm:gap-1.5 sm:text-xs sm:leading-5"
       >
-        <span className="mt-0.5 flex h-4 w-2 shrink-0 items-center justify-center rounded-full bg-[#315e50] text-[7px] text-white sm:h-3.5 sm:w-3.5 sm:text-[8px]">
+        <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#315e50] text-[7px] text-white sm:h-3.5 sm:w-3.5 sm:text-[8px]">
           ✓
         </span>
 
@@ -682,7 +682,7 @@ export default function PendaftaranFinalisPage() {
                       </h3>
                     </div>
 
-                    <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-1 font-mono text-[7px] text-white/30 sm:px-3 sm:py-1.5 sm:text-[8px]">
+                    <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-1 font-mono text-[10px] text-white/30 sm:px-3 sm:py-1.5 sm:text-[11px]">
                       08:00 — 16:00
                     </span>
                   </div>
@@ -693,11 +693,11 @@ export default function PendaftaranFinalisPage() {
                         key={item}
                         className="flex gap-1.5 border-b border-white/[0.06] pb-2 sm:gap-3 sm:pb-3"
                       >
-                        <span className="shrink-0 font-mono text-[7px] text-[#b9d0c4]/45 sm:text-[8px]">
+                        <span className="shrink-0 font-mono text-[25px] text-[#b9d0c4]/45 sm:text-[25px] md:text-[20px]">
                           {String(index + 1).padStart(2, "0")}
                         </span>
 
-                        <p className="text-[8px] leading-4 text-white/55 sm:text-[11px] sm:leading-5">
+                        <p className="text-[9px] leading-4 text-white/55 sm:text-[4px] sm:leading-5 md:text-[16px]">
                           {item}
                         </p>
                       </div>
