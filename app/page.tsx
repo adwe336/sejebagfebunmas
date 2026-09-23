@@ -5,11 +5,11 @@ import Registration from "@/components/home/Registration";
 import Tentang from "@/components/home/Tentang";
 import Lentera from "@/components/home/Lentera";
 import Narahubung from "@/components/home/Narahubung";
-import PanitiaPopup from "@/components/home/PanitiaPopup";
+import { Analytics } from "@vercel/analytics/next"
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#e9e1d2] text-[#191814]">
+    <><main className="min-h-screen overflow-x-hidden bg-[#e9e1d2] text-[#191814]">
       <Navbar />
       <Hero />
       <Registration />
@@ -17,7 +17,6 @@ export default function Home() {
       <Lentera />
       <Narahubung />
       <Footer />
-      <PanitiaPopup />
-    </main>
+    </main><Analytics /></>
   );
 }
