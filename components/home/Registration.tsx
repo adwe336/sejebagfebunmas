@@ -72,16 +72,6 @@ export default function Registration() {
             className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-3 scroll-smooth sm:mx-0 sm:px-0 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible"
           >
 
-            <RegistrationCard
-              badge="Pendaftaran diperpanjang!"
-              title="Daftar Menjadi Panitia Pelaksana"
-              date="12–26 September 2026"
-              image="/Purnama.webp"
-              buttonText="Daftar Panitia"
-              href={PANITIA_FORM_URL}
-              description="Terbuka bagi mahasiswa FEB Unmas"
-            />
-
             <FinalistCard />
 
             <CountdownCard

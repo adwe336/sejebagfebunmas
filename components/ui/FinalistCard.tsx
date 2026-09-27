@@ -21,7 +21,7 @@ export default function FinalistCard() {
             <span className="mr-2 h-1.5 w-1.5 rounded-full bg-[#FFDC0F] shadow-[0_0_8px_rgba(245,217,138,0.8)]" />
 
             <p className="text-[7px] font-semibold uppercase tracking-[0.14em] text-[#f5d98a] sm:text-[8px]">
-              SEGERA HADIR
+              DAFTAR SEKARANG
             </p>
 
           </div>

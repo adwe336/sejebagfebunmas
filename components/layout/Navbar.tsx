@@ -137,7 +137,7 @@ export default function Navbar() {
           {/* DAFTAR SEKARANG */}
 
           <Link
-            href="/#registration"
+            href="/pendaftaran-finalis"
             onClick={() => setMenuOpen(false)}
             className="hidden rounded-full bg-[#170401] px-4 py-2 text-[10px] font-semibold uppercase tracking-wider text-white shadow-sm transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#f5b446] hover:text-[#170401] sm:block"
           >
@@ -266,8 +266,7 @@ export default function Navbar() {
           {/* DAFTAR SEKARANG */}
 
           <Link
-            href="/#registration"
-            onClick={() => setMenuOpen(false)}
+            href="/pendaftaran-finalis"
             className="flex items-center justify-center rounded-[18px] bg-[#2a1616]/90 px-5 py-3.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white"
           >
             Daftar Sekarang

@@ -607,7 +607,7 @@ export default function PendaftaranFinalisPage() {
         {/* PAGE 04 — SELEKSI */}
         {/* ======================================================= */}
 
-        <section className="h-full min-w-full snap-start bg-[#1A0300] px-5 pb-6 text-white sm:px-8 sm:pb-8">
+        <section className="h-full min-w-full snap-start bg-[#471D09] px-5 pb-6 text-white sm:px-8 sm:pb-8">
           <div className="mx-auto flex h-full max-w-7xl items-center">
             <div className="w-full">
               <div className="mb-3.5 sm:mb-5">
@@ -731,7 +731,7 @@ export default function PendaftaranFinalisPage() {
         {/* PAGE 05 — LARANGAN */}
         {/* ======================================================= */}
 
-        <section className="h-full min-w-full snap-start bg-[#170401] px-5 pb-6 text-white sm:px-8 sm:pb-8">
+        <section className="h-full min-w-full snap-start bg-[#471D09] px-5 pb-6 text-white sm:px-8 sm:pb-8">
           <div className="mx-auto flex h-full max-w-7xl items-center">
             <div className="w-full">
               <div className="grid items-center gap-5 lg:grid-cols-[0.7fr_1.3fr] lg:gap-8">
